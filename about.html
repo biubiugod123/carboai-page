@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About LIFEX TECHNOLOGIES LLC - makers of CarboAI">
+  <title>About - LIFEX TECHNOLOGIES LLC</title>
+  
+  <style>
+    /* === Design System (same as index.html) === */
+    :root {
+      --primary-50: #FFFCF5;
+      --primary-100: #FFF8E7;
+      --primary-200: #FFE8C5;
+      --accent: #F59E0B;
+      --gray-900: #2C2C2C;
+      --gray-700: #4A4A4A;
+      --gray-500: #666666;
+      --gray-300: #9CA3AF;
+      --gray-100: #F9FAFB;
+      --cta-bg: #000000;
+      --cta-text: #FFFFFF;
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 40px;
+      --space-xl: 64px;
+      --space-2xl: 80px;
+      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: var(--font-family);
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--gray-700);
+    }
+    
+    h1 {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--gray-900);
+      line-height: 1.2;
+    }
+    
+    h2 {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--gray-900);
+      line-height: 1.3;
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-md);
+    }
+    
+    p {
+      margin-bottom: var(--space-md);
+    }
+    
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 768px) {
+      h1 { font-size: 36px; }
+      h2 { font-size: 28px; }
+    }
+    
+    /* === Navbar (same as index.html) === */
+    .navbar {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: var(--space-sm) var(--space-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navbar-brand {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gray-900);
+      text-decoration: none;
+    }
+    
+    .navbar-links {
+      display: flex;
+      gap: var(--space-md);
+      list-style: none;
+    }
+    
+    .navbar-links a {
+      color: var(--gray-700);
+      text-decoration: none;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+    
+    .navbar-links a:hover {
+      color: var(--gray-900);
+    }
+    
+    @media (max-width: 768px) {
+      .navbar-links {
+        gap: var(--space-sm);
+      }
+      .navbar-links a {
+        font-size: 14px;
+      }
+    }
+    
+    /* === Content === */
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--space-md);
+      min-height: 60vh;
+    }
+    
+    .content h1 {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+    
+    /* === Footer (same as index.html) === */
+    .footer {
+      background: var(--gray-100);
+      padding: var(--space-xl) var(--space-md) var(--space-md);
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+      margin-bottom: var(--space-lg);
+    }
+    
+    .footer-brand h3 {
+      margin-bottom: var(--space-xs);
+    }
+    
+    .footer-brand p {
+      color: var(--gray-500);
+      font-size: 14px;
+    }
+    
+    .footer-links h4 {
+      font-size: 16px;
+      margin-bottom: var(--space-sm);
+    }
+    
+    .footer-links ul {
+      list-style: none;
+    }
+    
+    .footer-links a {
+      color: var(--gray-700);
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 2;
+      transition: color 0.2s;
+    }
+    
+    .footer-links a:hover {
+      color: var(--gray-900);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--gray-300);
+      color: var(--gray-500);
+      font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">CarboAI</a>
+    <ul class="navbar-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="terms.html">Terms</a></li>
+    </ul>
+  </nav>
+  
+  <main class="content">
+    <h1>About LIFEX TECHNOLOGIES LLC</h1>
+    
+    <h2>Who We Are</h2>
+    <p>LIFEX TECHNOLOGIES LLC is a health technology company dedicated to making nutrition science accessible to everyone. We combine cutting-edge artificial intelligence with evidence-based nutrition research to help people optimize their health and achieve their fitness goals.</p>
+    
+    <p>Founded with the belief that technology should empower personal health decisions, we're building tools that make complex nutritional concepts simple and actionable for everyday users.</p>
+    
+    <h2>Our Mission</h2>
+    <p>Empower individuals to take control of their nutrition through intelligent, personalized technology that adapts to their lifestyle and goals.</p>
+    
+    <h2>Our Product: CarboAI</h2>
+    <p>CarboAI is our flagship mobile application that revolutionizes how people manage carbohydrate intake through smart AI analysis and personalized cycling plans. By simply taking photos of meals, users receive instant nutrition insights and customized carb cycling recommendations based on their unique metabolism, activity levels, and health objectives.</p>
+    
+    <p><a href="index.html">Learn more about CarboAI →</a></p>
+    
+    <h2>Contact Us</h2>
+    <p>We'd love to hear from you. Reach us at <a href="mailto:support@lifextech.com">support@lifextech.com</a></p>
+  </main>
+  
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>CarboAI</h3>
+          <p>LIFEX TECHNOLOGIES LLC</p>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:support@lifextech.com">support@lifextech.com</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 LIFEX TECHNOLOGIES LLC. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
