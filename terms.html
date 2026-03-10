@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CarboAI Terms of Service">
+  <title>Terms of Service - CarboAI</title>
+  
+  <style>
+    /* === Same styles as privacy.html === */
+    :root {
+      --primary-50: #FFFCF5;
+      --primary-100: #FFF8E7;
+      --primary-200: #FFE8C5;
+      --accent: #F59E0B;
+      --gray-900: #2C2C2C;
+      --gray-700: #4A4A4A;
+      --gray-500: #666666;
+      --gray-300: #9CA3AF;
+      --gray-100: #F9FAFB;
+      --cta-bg: #000000;
+      --cta-text: #FFFFFF;
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 40px;
+      --space-xl: 64px;
+      --space-2xl: 80px;
+      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: var(--font-family);
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--gray-700);
+    }
+    
+    h1 {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--gray-900);
+      line-height: 1.2;
+    }
+    
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--gray-900);
+      line-height: 1.3;
+      margin-top: var(--space-lg);
+      margin-bottom: var(--space-sm);
+    }
+    
+    p {
+      margin-bottom: var(--space-md);
+    }
+    
+    @media (max-width: 768px) {
+      h1 { font-size: 36px; }
+      h2 { font-size: 20px; }
+    }
+    
+    /* === Navbar === */
+    .navbar {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: var(--space-sm) var(--space-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navbar-brand {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gray-900);
+      text-decoration: none;
+    }
+    
+    .navbar-links {
+      display: flex;
+      gap: var(--space-md);
+      list-style: none;
+    }
+    
+    .navbar-links a {
+      color: var(--gray-700);
+      text-decoration: none;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+    
+    .navbar-links a:hover {
+      color: var(--gray-900);
+    }
+    
+    @media (max-width: 768px) {
+      .navbar-links {
+        gap: var(--space-sm);
+      }
+      .navbar-links a {
+        font-size: 14px;
+      }
+    }
+    
+    /* === Content === */
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--space-md);
+      min-height: 60vh;
+    }
+    
+    .content h1 {
+      text-align: center;
+      margin-bottom: var(--space-md);
+    }
+    
+    .last-updated {
+      text-align: center;
+      color: var(--gray-500);
+      font-size: 14px;
+      margin-bottom: var(--space-xl);
+    }
+    
+    /* === Footer === */
+    .footer {
+      background: var(--gray-100);
+      padding: var(--space-xl) var(--space-md) var(--space-md);
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+      margin-bottom: var(--space-lg);
+    }
+    
+    .footer-brand h3 {
+      margin-bottom: var(--space-xs);
+    }
+    
+    .footer-brand p {
+      color: var(--gray-500);
+      font-size: 14px;
+    }
+    
+    .footer-links h4 {
+      font-size: 16px;
+      margin-bottom: var(--space-sm);
+    }
+    
+    .footer-links ul {
+      list-style: none;
+    }
+    
+    .footer-links a {
+      color: var(--gray-700);
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 2;
+      transition: color 0.2s;
+    }
+    
+    .footer-links a:hover {
+      color: var(--gray-900);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--gray-300);
+      color: var(--gray-500);
+      font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">CarboAI</a>
+    <ul class="navbar-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="terms.html">Terms</a></li>
+    </ul>
+  </nav>
+  
+  <main class="content">
+    <h1>Terms of Service</h1>
+    <p class="last-updated">Last Updated: March 10, 2026</p>
+    
+    <h2>Acceptance of Terms</h2>
+    <p>By accessing and using CarboAI ("the Service"), you accept and agree to be bound by the terms and provision of this agreement. LIFEX TECHNOLOGIES LLC reserves the right to modify these terms at any time.</p>
+    
+    <h2>Use of Service</h2>
+    <p>You agree to use CarboAI only for lawful purposes and in accordance with these Terms. You are responsible for maintaining the confidentiality of your account credentials.</p>
+    
+    <h2>User Content</h2>
+    <p>You retain ownership of any content you submit to CarboAI, including meal photos and personal health data. By submitting content, you grant us a license to use, store, and process that content solely for the purpose of providing our services.</p>
+    
+    <h2>Health Disclaimer</h2>
+    <p>CarboAI provides nutritional information and recommendations for informational purposes only. The Service is not intended to diagnose, treat, cure, or prevent any disease. Always consult with a qualified healthcare professional before making changes to your diet or exercise routine.</p>
+    
+    <h2>Limitation of Liability</h2>
+    <p>LIFEX TECHNOLOGIES LLC shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use the Service.</p>
+    
+    <h2>Contact</h2>
+    <p>For questions about these Terms, contact us at support@lifextech.com.</p>
+  </main>
+  
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>CarboAI</h3>
+          <p>LIFEX TECHNOLOGIES LLC</p>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:support@lifextech.com">support@lifextech.com</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 LIFEX TECHNOLOGIES LLC. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

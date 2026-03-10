@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CarboAI Privacy Policy">
+  <title>Privacy Policy - CarboAI</title>
+  
+  <style>
+    /* === Same design system as about.html === */
+    :root {
+      --primary-50: #FFFCF5;
+      --primary-100: #FFF8E7;
+      --primary-200: #FFE8C5;
+      --accent: #F59E0B;
+      --gray-900: #2C2C2C;
+      --gray-700: #4A4A4A;
+      --gray-500: #666666;
+      --gray-300: #9CA3AF;
+      --gray-100: #F9FAFB;
+      --cta-bg: #000000;
+      --cta-text: #FFFFFF;
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 40px;
+      --space-xl: 64px;
+      --space-2xl: 80px;
+      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: var(--font-family);
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--gray-700);
+    }
+    
+    h1 {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--gray-900);
+      line-height: 1.2;
+    }
+    
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--gray-900);
+      line-height: 1.3;
+      margin-top: var(--space-lg);
+      margin-bottom: var(--space-sm);
+    }
+    
+    p {
+      margin-bottom: var(--space-md);
+    }
+    
+    @media (max-width: 768px) {
+      h1 { font-size: 36px; }
+      h2 { font-size: 20px; }
+    }
+    
+    /* === Navbar === */
+    .navbar {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: var(--space-sm) var(--space-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navbar-brand {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gray-900);
+      text-decoration: none;
+    }
+    
+    .navbar-links {
+      display: flex;
+      gap: var(--space-md);
+      list-style: none;
+    }
+    
+    .navbar-links a {
+      color: var(--gray-700);
+      text-decoration: none;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+    
+    .navbar-links a:hover {
+      color: var(--gray-900);
+    }
+    
+    @media (max-width: 768px) {
+      .navbar-links {
+        gap: var(--space-sm);
+      }
+      .navbar-links a {
+        font-size: 14px;
+      }
+    }
+    
+    /* === Content === */
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--space-md);
+      min-height: 60vh;
+    }
+    
+    .content h1 {
+      text-align: center;
+      margin-bottom: var(--space-md);
+    }
+    
+    .last-updated {
+      text-align: center;
+      color: var(--gray-500);
+      font-size: 14px;
+      margin-bottom: var(--space-xl);
+    }
+    
+    /* === Footer === */
+    .footer {
+      background: var(--gray-100);
+      padding: var(--space-xl) var(--space-md) var(--space-md);
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+      margin-bottom: var(--space-lg);
+    }
+    
+    .footer-brand h3 {
+      margin-bottom: var(--space-xs);
+    }
+    
+    .footer-brand p {
+      color: var(--gray-500);
+      font-size: 14px;
+    }
+    
+    .footer-links h4 {
+      font-size: 16px;
+      margin-bottom: var(--space-sm);
+    }
+    
+    .footer-links ul {
+      list-style: none;
+    }
+    
+    .footer-links a {
+      color: var(--gray-700);
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 2;
+      transition: color 0.2s;
+    }
+    
+    .footer-links a:hover {
+      color: var(--gray-900);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--gray-300);
+      color: var(--gray-500);
+      font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">CarboAI</a>
+    <ul class="navbar-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="terms.html">Terms</a></li>
+    </ul>
+  </nav>
+  
+  <main class="content">
+    <h1>Privacy Policy</h1>
+    <p class="last-updated">Last Updated: March 10, 2026</p>
+    
+    <h2>Information We Collect</h2>
+    <p>CarboAI collects information you provide directly to us when using our mobile application, including but not limited to: account information, meal photos, nutritional data, health metrics (when you choose to sync with Apple Health or Google Fit), and usage data.</p>
+    
+    <h2>How We Use Your Information</h2>
+    <p>We use the information we collect to provide, maintain, and improve CarboAI's services, including generating personalized carb cycling recommendations, analyzing nutritional content from photos, and tracking your progress toward health goals.</p>
+    
+    <h2>Data Security</h2>
+    <p>We implement appropriate technical and organizational measures to protect your personal information against unauthorized or unlawful processing, accidental loss, destruction, or damage.</p>
+    
+    <h2>Third-Party Services</h2>
+    <p>CarboAI integrates with Apple Health and Google Fit for health data synchronization. We do not share your personal information with third parties except as necessary to provide our services or as required by law.</p>
+    
+    <h2>Your Rights</h2>
+    <p>You have the right to access, update, or delete your personal information at any time through the app settings or by contacting us at support@lifextech.com.</p>
+    
+    <h2>Contact Us</h2>
+    <p>If you have any questions about this Privacy Policy, please contact us at support@lifextech.com.</p>
+  </main>
+  
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>CarboAI</h3>
+          <p>LIFEX TECHNOLOGIES LLC</p>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:support@lifextech.com">support@lifextech.com</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 LIFEX TECHNOLOGIES LLC. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
