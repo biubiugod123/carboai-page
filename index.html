@@ -82,9 +82,345 @@
       h2 { font-size: 28px; }
       h3 { font-size: 20px; }
     }
+    
+    /* === Navbar === */
+    .navbar {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: var(--space-sm) var(--space-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      transition: box-shadow 0.3s;
+    }
+    
+    .navbar.scrolled {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navbar-brand {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gray-900);
+      text-decoration: none;
+    }
+    
+    .navbar-links {
+      display: flex;
+      gap: var(--space-md);
+      list-style: none;
+    }
+    
+    .navbar-links a {
+      color: var(--gray-700);
+      text-decoration: none;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+    
+    .navbar-links a:hover {
+      color: var(--gray-900);
+    }
+    
+    @media (max-width: 768px) {
+      .navbar-links {
+        gap: var(--space-sm);
+      }
+      
+      .navbar-links a {
+        font-size: 14px;
+      }
+    }
+    
+    /* === Hero Section === */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(180deg, var(--primary-50) 0%, var(--primary-100) 40%, #FFFFFF 100%);
+      display: flex;
+      align-items: center;
+      padding: var(--space-2xl) var(--space-md);
+    }
+    
+    .hero-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 60% 40%;
+      gap: var(--space-xl);
+      align-items: center;
+    }
+    
+    .hero-content h1 {
+      margin-bottom: var(--space-sm);
+    }
+    
+    .hero-subtitle {
+      font-size: 20px;
+      color: var(--gray-500);
+      margin-bottom: var(--space-lg);
+      line-height: 1.6;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background: var(--cta-bg);
+      color: var(--cta-text);
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .cta-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .hero-image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .hero-image-placeholder {
+      width: 300px;
+      height: 600px;
+      background: linear-gradient(135deg, var(--primary-200) 0%, var(--accent) 100%);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    @media (max-width: 768px) {
+      .hero {
+        min-height: auto;
+        padding: var(--space-xl) var(--space-md);
+      }
+      
+      .hero-container {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+      }
+      
+      .hero-subtitle {
+        font-size: 18px;
+      }
+      
+      .hero-image-placeholder {
+        width: 250px;
+        height: 500px;
+      }
+    }
+    
+    /* === Features Section === */
+    .features {
+      padding: var(--space-2xl) var(--space-md);
+      background: white;
+    }
+    
+    .features-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .features-title {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+    }
+    
+    .feature-card {
+      text-align: center;
+      padding: var(--space-lg);
+    }
+    
+    .feature-icon {
+      font-size: 64px;
+      margin-bottom: var(--space-md);
+    }
+    
+    .feature-card h3 {
+      margin-bottom: var(--space-xs);
+    }
+    
+    .feature-card p {
+      color: var(--gray-500);
+      line-height: 1.6;
+    }
+    
+    @media (max-width: 768px) {
+      .features {
+        padding: var(--space-xl) var(--space-md);
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+      
+      .feature-card {
+        padding: var(--space-md);
+      }
+    }
+    
+    /* === Footer === */
+    .footer {
+      background: var(--gray-100);
+      padding: var(--space-xl) var(--space-md) var(--space-md);
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+      margin-bottom: var(--space-lg);
+    }
+    
+    .footer-brand h3 {
+      margin-bottom: var(--space-xs);
+    }
+    
+    .footer-brand p {
+      color: var(--gray-500);
+      font-size: 14px;
+    }
+    
+    .footer-links h4 {
+      font-size: 16px;
+      margin-bottom: var(--space-sm);
+    }
+    
+    .footer-links ul {
+      list-style: none;
+    }
+    
+    .footer-links a {
+      color: var(--gray-700);
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 2;
+      transition: color 0.2s;
+    }
+    
+    .footer-links a:hover {
+      color: var(--gray-900);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--gray-300);
+      color: var(--gray-500);
+      font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Content will be added in next steps -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">CarboAI</a>
+    <ul class="navbar-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="terms.html">Terms</a></li>
+    </ul>
+  </nav>
+  
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1>CarboAI</h1>
+        <p class="hero-subtitle">Your Smart Carb Cycling Companion. AI-powered nutrition tracking and personalized carb cycling plans for optimal performance and health.</p>
+        <a href="#" class="cta-button">Download on App Store</a>
+      </div>
+      <div class="hero-image">
+        <div class="hero-image-placeholder">
+          App Screenshot
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="features">
+    <div class="features-container">
+      <h2 class="features-title">Why CarboAI?</h2>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📸</div>
+          <h3>Snap & Track</h3>
+          <p>Take a photo of your meal and get instant nutrition insights powered by AI. No manual logging required.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Personalized Plans</h3>
+          <p>AI-driven carb cycling plans tailored to your goals, activity level, and metabolism.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">❤️</div>
+          <h3>Seamless Sync</h3>
+          <p>Connect with Apple Health and Google Fit to track your progress holistically.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>CarboAI</h3>
+          <p>LIFEX TECHNOLOGIES LLC</p>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:support@lifextech.com">support@lifextech.com</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 LIFEX TECHNOLOGIES LLC. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
