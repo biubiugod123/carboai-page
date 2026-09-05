@@ -1,269 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="CarboAI Privacy Policy">
-  <title>Privacy Policy - CarboAI</title>
-  
-  <style>
-    /* === Same design system as about.html === */
-    :root {
-      --primary-50: #FFFCF5;
-      --primary-100: #FFF8E7;
-      --primary-200: #FFE8C5;
-      --accent: #F59E0B;
-      --gray-900: #2C2C2C;
-      --gray-700: #4A4A4A;
-      --gray-500: #666666;
-      --gray-300: #9CA3AF;
-      --gray-100: #F9FAFB;
-      --cta-bg: #000000;
-      --cta-text: #FFFFFF;
-      --space-xs: 8px;
-      --space-sm: 16px;
-      --space-md: 24px;
-      --space-lg: 40px;
-      --space-xl: 64px;
-      --space-2xl: 80px;
-      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    html {
-      scroll-behavior: smooth;
-    }
-    
-    body {
-      font-family: var(--font-family);
-      font-size: 16px;
-      line-height: 1.8;
-      color: var(--gray-700);
-    }
-    
-    h1 {
-      font-size: 48px;
-      font-weight: 700;
-      color: var(--gray-900);
-      line-height: 1.2;
-    }
-    
-    h2 {
-      font-size: 24px;
-      font-weight: 600;
-      color: var(--gray-900);
-      line-height: 1.3;
-      margin-top: var(--space-lg);
-      margin-bottom: var(--space-sm);
-    }
-    
-    p {
-      margin-bottom: var(--space-md);
-    }
-    
-    @media (max-width: 768px) {
-      h1 { font-size: 36px; }
-      h2 { font-size: 20px; }
-    }
-    
-    /* === Navbar === */
-    .navbar {
-      position: sticky;
-      top: 0;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      padding: var(--space-sm) var(--space-md);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    
-    .navbar-brand {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--gray-900);
-      text-decoration: none;
-    }
-    
-    .navbar-links {
-      display: flex;
-      gap: var(--space-md);
-      list-style: none;
-    }
-    
-    .navbar-links a {
-      color: var(--gray-700);
-      text-decoration: none;
-      font-size: 15px;
-      transition: color 0.2s;
-    }
-    
-    .navbar-links a:hover {
-      color: var(--gray-900);
-    }
-    
-    @media (max-width: 768px) {
-      .navbar-links {
-        gap: var(--space-sm);
-      }
-      .navbar-links a {
-        font-size: 14px;
-      }
-    }
-    
-    /* === Content === */
-    .content {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: var(--space-2xl) var(--space-md);
-      min-height: 60vh;
-    }
-    
-    .content h1 {
-      text-align: center;
-      margin-bottom: var(--space-md);
-    }
-    
-    .last-updated {
-      text-align: center;
-      color: var(--gray-500);
-      font-size: 14px;
-      margin-bottom: var(--space-xl);
-    }
-    
-    /* === Footer === */
-    .footer {
-      background: var(--gray-100);
-      padding: var(--space-xl) var(--space-md) var(--space-md);
-    }
-    
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    .footer-content {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-lg);
-      margin-bottom: var(--space-lg);
-    }
-    
-    .footer-brand h3 {
-      margin-bottom: var(--space-xs);
-    }
-    
-    .footer-brand p {
-      color: var(--gray-500);
-      font-size: 14px;
-    }
-    
-    .footer-links h4 {
-      font-size: 16px;
-      margin-bottom: var(--space-sm);
-    }
-    
-    .footer-links ul {
-      list-style: none;
-    }
-    
-    .footer-links a {
-      color: var(--gray-700);
-      text-decoration: none;
-      font-size: 14px;
-      line-height: 2;
-      transition: color 0.2s;
-    }
-    
-    .footer-links a:hover {
-      color: var(--gray-900);
-    }
-    
-    .footer-bottom {
-      text-align: center;
-      padding-top: var(--space-md);
-      border-top: 1px solid var(--gray-300);
-      color: var(--gray-500);
-      font-size: 14px;
-    }
-    
-    @media (max-width: 768px) {
-      .footer-content {
-        grid-template-columns: 1fr;
-        gap: var(--space-md);
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Carbo-AI</title>
+<link rel="alternate" hreflang="zh-Hans" href="privacy-zh.html">
+<link rel="alternate" hreflang="en" href="privacy.html">
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+    line-height: 1.65;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+    color: #1a1a1a;
+    background: #ffffff;
+  }
+  h1 { font-size: 1.8rem; margin-bottom: 0.2em; }
+  h2 { font-size: 1.25rem; margin-top: 2em; border-bottom: 1px solid #e5e5e5; padding-bottom: 0.3em; }
+  .updated { color: #666; font-size: 0.95rem; margin-top: 0; }
+  .lang-nav { font-size: 0.95rem; margin: 1.5em 0; }
+  .lang-nav a { margin-right: 1em; }
+  ul { padding-left: 1.4em; }
+  li { margin-bottom: 0.4em; }
+  a { color: #0b6bcb; }
+  footer { margin-top: 3em; color: #666; font-size: 0.9rem; }
+  @media (prefers-color-scheme: dark) {
+    body { color: #e8e8e8; background: #121212; }
+    h2 { border-bottom-color: #333; }
+    .updated, footer { color: #999; }
+    a { color: #6cb6ff; }
+  }
+</style>
 </head>
 <body>
-  <nav class="navbar">
-    <a href="index.html" class="navbar-brand">CarboAI</a>
-    <ul class="navbar-links">
-      <li><a href="about.html">About</a></li>
-      <li><a href="privacy.html">Privacy</a></li>
-      <li><a href="terms.html">Terms</a></li>
-    </ul>
-  </nav>
-  
-  <main class="content">
-    <h1>Privacy Policy</h1>
-    <p class="last-updated">Last Updated: March 10, 2026</p>
-    
-    <h2>Information We Collect</h2>
-    <p>CarboAI collects information you provide directly to us when using our mobile application, including but not limited to: account information, meal photos, nutritional data, health metrics (when you choose to sync with Apple Health or Google Fit), and usage data.</p>
-    
-    <h2>How We Use Your Information</h2>
-    <p>We use the information we collect to provide, maintain, and improve CarboAI's services, including generating personalized carb cycling recommendations, analyzing nutritional content from photos, and tracking your progress toward health goals.</p>
-    
-    <h2>Data Security</h2>
-    <p>We implement appropriate technical and organizational measures to protect your personal information against unauthorized or unlawful processing, accidental loss, destruction, or damage.</p>
-    
-    <h2>Third-Party Services</h2>
-    <p>CarboAI integrates with Apple Health and Google Fit for health data synchronization. We do not share your personal information with third parties except as necessary to provide our services or as required by law.</p>
-    
-    <h2>Your Rights</h2>
-    <p>You have the right to access, update, or delete your personal information at any time through the app settings or by contacting us at support@carboai.app.</p>
-    
-    <h2>Contact Us</h2>
-    <p>If you have any questions about this Privacy Policy, please contact us at support@carboai.app.</p>
-  </main>
-  
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <h3>CarboAI</h3>
-          <p>LIFEX TECHNOLOGIES LLC</p>
-        </div>
-        
-        <div class="footer-links">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="about.html">About</a></li>
-            <li><a href="privacy.html">Privacy</a></li>
-            <li><a href="terms.html">Terms</a></li>
-          </ul>
-        </div>
-        
-        <div class="footer-links">
-          <h4>Contact</h4>
-          <ul>
-            <li><a href="mailto:support@carboai.app">support@carboai.app</a></li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <p>&copy; 2026 LIFEX TECHNOLOGIES LLC. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+
+<h1>Privacy Policy</h1>
+<p class="updated">Carbo-AI · Last updated: 2026-09-04</p>
+
+<p class="lang-nav"><strong>English</strong> · <a href="privacy-zh.html">简体中文</a> · <a href="terms.html">Terms of Service</a></p>
+
+<h2>Who we are</h2>
+<p>Carbo-AI is an iOS app published by <strong>LIFEX TECHNOLOGIES LLC</strong> ("we", "us"). The app helps you photograph meals, estimate their carbohydrate content, and follow a carb-cycling plan. This policy explains what personal information we handle and why.</p>
+<p>Questions about this policy or your data: <a href="mailto:support@carboai.app">support@carboai.app</a></p>
+
+<h2>What we collect</h2>
+<ul>
+  <li><strong>Account information</strong> — the email address and display name on your account. You can sign in with Apple, or with an email address and password.</li>
+  <li><strong>Meal photos</strong> — photos you take in the app or choose from your photo library, at the moment you submit them for analysis. See <a href="#photos">Meal photos and AI</a> below.</li>
+  <li><strong>Meal entries and nutrition totals</strong> — the food items, portions and nutrition figures that come out of an analysis, plus anything you edit or add yourself.</li>
+  <li><strong>Apple Health data (read-only, with your permission)</strong> — active energy, resting energy, steps, weight, body fat percentage and workouts.</li>
+  <li><strong>Profile and plan data</strong> — the goals, body measurements and carb-cycling plan you set up in the app.</li>
+  <li><strong>Usage data</strong> — basic records of which screens you open and which controls you tap, stored together with your user ID.</li>
+  <li><strong>Subscription status</strong> — whether you have an active Carbo-AI Pro subscription, based on your Apple App Store purchases.</li>
+</ul>
+<p>We do not collect your precise location, your contacts, your activity in other apps, or your payment card details.</p>
+
+<h2>How we use it</h2>
+<ul>
+  <li>To create and maintain your account and let you sign in.</li>
+  <li>To estimate the food and carbohydrates in a meal photo and show you the result.</li>
+  <li>To calculate your daily energy expenditure and your carb-cycling plan, and to show your history and progress.</li>
+  <li>To back up and restore your data if you are a Pro subscriber.</li>
+  <li>To understand which parts of the app are used, so we can fix problems and improve the product.</li>
+  <li>To unlock Pro features for subscribers and to provide customer support.</li>
+</ul>
+<p>We do not use your data for advertising, we do not sell it, and we do not share it with data brokers.</p>
+
+<h2>Apple Health</h2>
+<p>If you grant permission, Carbo-AI reads the following from Apple Health: <strong>active energy, resting energy, steps, weight, body fat percentage and workouts</strong>.</p>
+<ul>
+  <li>Access is <strong>read-only</strong>. The app never writes data to Apple Health.</li>
+  <li>These readings are used <strong>on your device</strong> to work out your daily energy expenditure and your carb-day plan.</li>
+  <li>We never use Health data for advertising or marketing, we never sell it, and we never share it with data brokers.</li>
+  <li>The app does not store Health data, or anything calculated from it, in iCloud.</li>
+  <li>If you are a Pro subscriber, your backup contains the <strong>daily energy totals the app calculated</strong> — not your raw Apple Health records.</li>
+  <li>You can review or withdraw Health permissions at any time in the iOS Health app, under Sharing → Apps.</li>
+</ul>
+
+<h2 id="photos">Meal photos and AI</h2>
+<p>When you submit a meal photo for analysis:</p>
+<ul>
+  <li>The photo is sent from your device to our servers and passed to a third-party AI provider, which identifies the food and estimates its nutrition.</li>
+  <li>Once the estimate comes back, <strong>the photo is discarded</strong>. We do not store meal photos on our servers.</li>
+  <li>The photo stays on your device — and in your photo library, if you took or saved it there — under your control.</li>
+  <li>What we keep is the <em>result</em>: the food items and nutrition figures saved to your meal history.</li>
+</ul>
+<p>Because the image is sent off your device for analysis, please avoid including other people, documents or anything sensitive in the frame.</p>
+
+<h2>Usage analytics</h2>
+<p>The app records simple usage events — which screens are opened and which controls are tapped — stored in our database together with your user ID, so they are linked to you rather than fully anonymous.</p>
+<ul>
+  <li>We use them only to understand how the app is used and to improve it.</li>
+  <li>There are no advertising SDKs in the app, and we do not track you across other companies' apps or websites.</li>
+  <li>These events are deleted when you delete your account.</li>
+</ul>
+
+<h2>Subscriptions and payments</h2>
+<p>Carbo-AI Pro is an auto-renewable subscription sold through the Apple App Store. Payment is handled entirely by Apple.</p>
+<ul>
+  <li>We check with the App Store whether your subscription is active, so we can unlock Pro features.</li>
+  <li>We receive purchase and subscription <em>status</em> only. <strong>We never see your card number or your Apple ID password.</strong></li>
+  <li>Refunds and billing questions are handled by Apple.</li>
+</ul>
+
+<h2>Who we share it with</h2>
+<p>We do not sell your personal information and we do not share it for advertising. We share it only with:</p>
+<ul>
+  <li><strong>Service providers</strong> who run parts of the app for us — cloud hosting and databases, AI food recognition, and subscription verification. They act on our instructions and may use the data only to provide their service to us.</li>
+  <li><strong>Apple</strong>, for purchases and — with your permission — Apple Health.</li>
+  <li><strong>Others, when the law requires it</strong>: for example in response to a valid legal request, to protect our rights or someone's safety, or to a successor if the business is transferred.</li>
+</ul>
+
+<h2>Storage, backups and security</h2>
+<ul>
+  <li>Your account, meal entries, profile, plan and usage events are stored in our database, hosted by a cloud provider on servers <strong>outside mainland China</strong>.</li>
+  <li>Meal photos are not stored on our servers.</li>
+  <li><strong>Pro backup:</strong> for Pro subscribers, the app backs up your meals, plan, profile, body measurements and daily energy totals, so you can restore them on a new phone. Free users' data stays on the device.</li>
+  <li>Data travels over encrypted connections, and access is restricted so that you can only reach your own data.</li>
+  <li>No system is perfectly secure, so we cannot promise absolute security, but we take reasonable measures to protect your information.</li>
+</ul>
+<p>We are a US company, so your data may be processed in the United States and in other countries where our providers operate. Carbo-AI is not offered in the mainland China App Store.</p>
+
+<h2>Retention and deletion</h2>
+<ul>
+  <li>We keep your account data for as long as your account exists.</li>
+  <li>You can delete your account inside the app: <strong>Settings → Delete account</strong>.</li>
+  <li>When you delete your account, we remove the account and all associated server-side data — meal entries, profile and plan data, backups and usage events — <strong>within 30 days</strong>.</li>
+  <li>Data stored only on your device is removed when you delete the app.</li>
+  <li>We may keep records we are legally required to keep. Transaction records held by Apple are outside our control.</li>
+</ul>
+
+<h2>Your rights</h2>
+<p>Depending on where you live, you may have rights over your personal information — for example to access it, correct it, obtain a copy, or have it deleted. Wherever you live, we offer the following:</p>
+<ul>
+  <li><strong>Access and copy:</strong> email <a href="mailto:support@carboai.app">support@carboai.app</a> and we will provide a copy of the data we hold about you.</li>
+  <li><strong>Correction:</strong> most of your data — profile, meals, plan — can be edited directly in the app; write to us for anything you cannot change yourself.</li>
+  <li><strong>Deletion:</strong> use Settings → Delete account in the app, or email us and we will do it for you.</li>
+  <li><strong>Withdrawing permission:</strong> you can revoke Apple Health, camera and photo access at any time in iOS Settings; the app keeps working with reduced functionality.</li>
+</ul>
+<p>We do not sell personal information, and we do not share it for cross-context behavioural advertising. We will not treat you differently for exercising any of these rights. If you believe we have not handled your request properly, you may be able to complain to your local data protection authority.</p>
+
+<h2>Children</h2>
+<p>Carbo-AI is intended for people aged <strong>16 and over</strong>. It is not directed at children, and we do not knowingly collect personal information from anyone under 16. If you believe a child has created an account, contact <a href="mailto:support@carboai.app">support@carboai.app</a> and we will delete it.</p>
+
+<h2>Changes</h2>
+<p>We may update this policy as the app changes. When we do, we will update the "Last updated" date at the top of this page and publish the new version here. If a change materially affects how we handle your data, we will make a reasonable effort to tell you in the app.</p>
+
+<h2>Contact</h2>
+<p>LIFEX TECHNOLOGIES LLC<br>
+Email: <a href="mailto:support@carboai.app">support@carboai.app</a></p>
+
+<footer>
+  <p>© 2026 LIFEX TECHNOLOGIES LLC · <a href="https://carboai.app">carboai.app</a> · <a href="terms.html">Terms of Service</a> · <a href="privacy-zh.html">简体中文</a></p>
+</footer>
+
 </body>
 </html>

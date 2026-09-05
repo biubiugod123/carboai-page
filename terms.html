@@ -1,269 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="CarboAI Terms of Service">
-  <title>Terms of Service - CarboAI</title>
-  
-  <style>
-    /* === Same styles as privacy.html === */
-    :root {
-      --primary-50: #FFFCF5;
-      --primary-100: #FFF8E7;
-      --primary-200: #FFE8C5;
-      --accent: #F59E0B;
-      --gray-900: #2C2C2C;
-      --gray-700: #4A4A4A;
-      --gray-500: #666666;
-      --gray-300: #9CA3AF;
-      --gray-100: #F9FAFB;
-      --cta-bg: #000000;
-      --cta-text: #FFFFFF;
-      --space-xs: 8px;
-      --space-sm: 16px;
-      --space-md: 24px;
-      --space-lg: 40px;
-      --space-xl: 64px;
-      --space-2xl: 80px;
-      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    html {
-      scroll-behavior: smooth;
-    }
-    
-    body {
-      font-family: var(--font-family);
-      font-size: 16px;
-      line-height: 1.8;
-      color: var(--gray-700);
-    }
-    
-    h1 {
-      font-size: 48px;
-      font-weight: 700;
-      color: var(--gray-900);
-      line-height: 1.2;
-    }
-    
-    h2 {
-      font-size: 24px;
-      font-weight: 600;
-      color: var(--gray-900);
-      line-height: 1.3;
-      margin-top: var(--space-lg);
-      margin-bottom: var(--space-sm);
-    }
-    
-    p {
-      margin-bottom: var(--space-md);
-    }
-    
-    @media (max-width: 768px) {
-      h1 { font-size: 36px; }
-      h2 { font-size: 20px; }
-    }
-    
-    /* === Navbar === */
-    .navbar {
-      position: sticky;
-      top: 0;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      padding: var(--space-sm) var(--space-md);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    
-    .navbar-brand {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--gray-900);
-      text-decoration: none;
-    }
-    
-    .navbar-links {
-      display: flex;
-      gap: var(--space-md);
-      list-style: none;
-    }
-    
-    .navbar-links a {
-      color: var(--gray-700);
-      text-decoration: none;
-      font-size: 15px;
-      transition: color 0.2s;
-    }
-    
-    .navbar-links a:hover {
-      color: var(--gray-900);
-    }
-    
-    @media (max-width: 768px) {
-      .navbar-links {
-        gap: var(--space-sm);
-      }
-      .navbar-links a {
-        font-size: 14px;
-      }
-    }
-    
-    /* === Content === */
-    .content {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: var(--space-2xl) var(--space-md);
-      min-height: 60vh;
-    }
-    
-    .content h1 {
-      text-align: center;
-      margin-bottom: var(--space-md);
-    }
-    
-    .last-updated {
-      text-align: center;
-      color: var(--gray-500);
-      font-size: 14px;
-      margin-bottom: var(--space-xl);
-    }
-    
-    /* === Footer === */
-    .footer {
-      background: var(--gray-100);
-      padding: var(--space-xl) var(--space-md) var(--space-md);
-    }
-    
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    .footer-content {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-lg);
-      margin-bottom: var(--space-lg);
-    }
-    
-    .footer-brand h3 {
-      margin-bottom: var(--space-xs);
-    }
-    
-    .footer-brand p {
-      color: var(--gray-500);
-      font-size: 14px;
-    }
-    
-    .footer-links h4 {
-      font-size: 16px;
-      margin-bottom: var(--space-sm);
-    }
-    
-    .footer-links ul {
-      list-style: none;
-    }
-    
-    .footer-links a {
-      color: var(--gray-700);
-      text-decoration: none;
-      font-size: 14px;
-      line-height: 2;
-      transition: color 0.2s;
-    }
-    
-    .footer-links a:hover {
-      color: var(--gray-900);
-    }
-    
-    .footer-bottom {
-      text-align: center;
-      padding-top: var(--space-md);
-      border-top: 1px solid var(--gray-300);
-      color: var(--gray-500);
-      font-size: 14px;
-    }
-    
-    @media (max-width: 768px) {
-      .footer-content {
-        grid-template-columns: 1fr;
-        gap: var(--space-md);
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terms of Service — Carbo-AI</title>
+<link rel="alternate" hreflang="zh-Hans" href="terms-zh.html">
+<link rel="alternate" hreflang="en" href="terms.html">
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+    line-height: 1.65;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+    color: #1a1a1a;
+    background: #ffffff;
+  }
+  h1 { font-size: 1.8rem; margin-bottom: 0.2em; }
+  h2 { font-size: 1.25rem; margin-top: 2em; border-bottom: 1px solid #e5e5e5; padding-bottom: 0.3em; }
+  .updated { color: #666; font-size: 0.95rem; margin-top: 0; }
+  .lang-nav { font-size: 0.95rem; margin: 1.5em 0; }
+  .lang-nav a { margin-right: 1em; }
+  ul { padding-left: 1.4em; }
+  li { margin-bottom: 0.4em; }
+  a { color: #0b6bcb; }
+  footer { margin-top: 3em; color: #666; font-size: 0.9rem; }
+  @media (prefers-color-scheme: dark) {
+    body { color: #e8e8e8; background: #121212; }
+    h2 { border-bottom-color: #333; }
+    .updated, footer { color: #999; }
+    a { color: #6cb6ff; }
+  }
+</style>
 </head>
 <body>
-  <nav class="navbar">
-    <a href="index.html" class="navbar-brand">CarboAI</a>
-    <ul class="navbar-links">
-      <li><a href="about.html">About</a></li>
-      <li><a href="privacy.html">Privacy</a></li>
-      <li><a href="terms.html">Terms</a></li>
-    </ul>
-  </nav>
-  
-  <main class="content">
-    <h1>Terms of Service</h1>
-    <p class="last-updated">Last Updated: March 10, 2026</p>
-    
-    <h2>Acceptance of Terms</h2>
-    <p>By accessing and using CarboAI ("the Service"), you accept and agree to be bound by the terms and provision of this agreement. LIFEX TECHNOLOGIES LLC reserves the right to modify these terms at any time.</p>
-    
-    <h2>Use of Service</h2>
-    <p>You agree to use CarboAI only for lawful purposes and in accordance with these Terms. You are responsible for maintaining the confidentiality of your account credentials.</p>
-    
-    <h2>User Content</h2>
-    <p>You retain ownership of any content you submit to CarboAI, including meal photos and personal health data. By submitting content, you grant us a license to use, store, and process that content solely for the purpose of providing our services.</p>
-    
-    <h2>Health Disclaimer</h2>
-    <p>CarboAI provides nutritional information and recommendations for informational purposes only. The Service is not intended to diagnose, treat, cure, or prevent any disease. Always consult with a qualified healthcare professional before making changes to your diet or exercise routine.</p>
-    
-    <h2>Limitation of Liability</h2>
-    <p>LIFEX TECHNOLOGIES LLC shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use the Service.</p>
-    
-    <h2>Contact</h2>
-    <p>For questions about these Terms, contact us at support@carboai.app.</p>
-  </main>
-  
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <h3>CarboAI</h3>
-          <p>LIFEX TECHNOLOGIES LLC</p>
-        </div>
-        
-        <div class="footer-links">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="about.html">About</a></li>
-            <li><a href="privacy.html">Privacy</a></li>
-            <li><a href="terms.html">Terms</a></li>
-          </ul>
-        </div>
-        
-        <div class="footer-links">
-          <h4>Contact</h4>
-          <ul>
-            <li><a href="mailto:support@carboai.app">support@carboai.app</a></li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <p>&copy; 2026 LIFEX TECHNOLOGIES LLC. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+
+<h1>Terms of Service</h1>
+<p class="updated">Carbo-AI · Last updated: 2026-09-04</p>
+
+<p class="lang-nav"><strong>English</strong> · <a href="terms-zh.html">简体中文</a> · <a href="privacy.html">Privacy Policy</a></p>
+
+<h2>1. Acceptance</h2>
+<p>These Terms of Service ("Terms") are an agreement between you and <strong>LIFEX TECHNOLOGIES LLC</strong> ("we", "us") covering your use of the Carbo-AI iOS app and related services (the "App"). By downloading, opening or using the App, you agree to these Terms. If you do not agree, please do not use the App.</p>
+<p>Your use of the App is also subject to our <a href="privacy.html">Privacy Policy</a> and to Apple's standard End User Licence Agreement, available at <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">https://www.apple.com/legal/internet-services/itunes/dev/stdeula/</a>, which applies as the licence terms for the App.</p>
+
+<h2>2. Eligibility</h2>
+<p>You must be at least <strong>16 years old</strong> to use the App. By using it, you confirm that you meet this requirement. The App is available on iOS only.</p>
+
+<h2>3. Account</h2>
+<ul>
+  <li>You need an account to use the App. You can create one with Sign in with Apple, or with an email address and password.</li>
+  <li>You are responsible for keeping your login details secure and for activity that happens under your account.</li>
+  <li>Please give accurate information, and let us know at <a href="mailto:support@carboai.app">support@carboai.app</a> if you believe your account has been used without your permission.</li>
+  <li>One account is for one person. Do not share your account or let someone else use it.</li>
+</ul>
+
+<h2>4. Subscriptions</h2>
+<p>Some features require <strong>Carbo-AI Pro</strong>, an auto-renewable subscription offered in monthly and yearly options.</p>
+<ul>
+  <li><strong>Price:</strong> prices are shown in the App Store for your region and are displayed in the App before you purchase.</li>
+  <li><strong>Payment:</strong> payment is charged to your Apple ID account when you confirm the purchase.</li>
+  <li><strong>Auto-renewal:</strong> the subscription renews automatically for the same period unless you cancel it <strong>at least 24 hours before the end of the current period</strong>. Your Apple ID account is charged for the renewal within 24 hours before the period ends.</li>
+  <li><strong>Managing and cancelling:</strong> you can manage or cancel your subscription in iOS <strong>Settings → your Apple ID → Subscriptions</strong>. Deleting the App does not cancel the subscription.</li>
+  <li><strong>Free trials:</strong> if a free trial is offered, its length and terms are as stated in the App Store listing. Unless you cancel before the trial ends, it converts to a paid subscription and you will be charged.</li>
+  <li><strong>Refunds:</strong> purchases are made through the Apple App Store, so refunds are handled by Apple according to Apple's policies. We cannot issue refunds for App Store purchases directly.</li>
+</ul>
+<p>We confirm your subscription status through the App Store in order to unlock Pro features. We never see your payment card details.</p>
+
+<h2>5. Acceptable use</h2>
+<p>When using the App, please do not:</p>
+<ul>
+  <li>Break the law, or use the App to harm or harass anyone.</li>
+  <li>Upload photos of other people without their consent, or images containing other people's private or sensitive information.</li>
+  <li>Attempt to reverse engineer, decompile, or interfere with the App or our servers, or bypass security or usage limits.</li>
+  <li>Use automated tools to access the service, resell it, or abuse the AI analysis feature (for example, with unreasonable volumes of requests).</li>
+  <li>Try to access another user's account or data.</li>
+</ul>
+<p>We may suspend or terminate access if these Terms are broken.</p>
+
+<h2>6. Your content</h2>
+<ul>
+  <li>You keep ownership of the photos you take or select and of the meal data you record. They are yours.</li>
+  <li>By submitting a photo for analysis, you give us a limited licence to transmit and process that photo <strong>only for the purpose of providing the analysis you requested</strong>, including passing it to the third-party AI provider that performs the analysis on our behalf. The photo is discarded after the estimate is returned and is not stored on our servers.</li>
+  <li>This licence does not allow us to publish or sell your photos, or to use them for advertising, and it ends when the processing of that request ends.</li>
+  <li>You are responsible for having the right to submit the images you upload.</li>
+</ul>
+
+<h2>7. Health disclaimer</h2>
+<p><strong>Carbo-AI is a general wellness and food-tracking tool. It is not a medical device and does not provide medical advice.</strong></p>
+<ul>
+  <li>Nutrition figures produced from photos are <strong>estimates</strong> generated by an AI model. They can be inaccurate or incomplete, and they should not be relied on where precision matters.</li>
+  <li>Energy expenditure and carb-plan figures are calculated from the data available to the App and are also estimates.</li>
+  <li>Nothing in the App is a substitute for advice from a doctor, dietitian or other qualified professional.</li>
+  <li><strong>Consult a qualified professional before changing your diet</strong>, especially if you have a medical condition (for example diabetes or an eating disorder), are pregnant or breastfeeding, or are taking medication.</li>
+  <li>If you have a medical emergency, contact your local emergency services.</li>
+</ul>
+
+<h2>8. Availability and changes</h2>
+<ul>
+  <li>We aim to keep the App available, but we do not guarantee uninterrupted or error-free service. Maintenance, updates, network problems or outages at Apple or at our service providers may cause interruptions.</li>
+  <li>We may add, change or remove features over time. If we make a material change that reduces a feature you are paying for, you may cancel your subscription as described above.</li>
+  <li>We may update these Terms. When we do, we will change the "Last updated" date and publish the new version on this page. If you keep using the App after a change takes effect, you accept the updated Terms.</li>
+</ul>
+
+<h2>9. Termination and deletion</h2>
+<ul>
+  <li>You can stop using the App at any time. You can delete your account in the App at <strong>Settings → Delete account</strong>; we then remove your account and all associated server-side data within 30 days, as described in the <a href="privacy.html">Privacy Policy</a>.</li>
+  <li>Deleting your account does <strong>not</strong> cancel your App Store subscription — cancel that separately in iOS Settings → your Apple ID → Subscriptions.</li>
+  <li>We may suspend or terminate your access if you materially break these Terms, or if we are required to do so by law. Where it is reasonable to do so, we will tell you why.</li>
+  <li>If we discontinue the App entirely, we will give reasonable notice where we can.</li>
+</ul>
+
+<h2>10. Disclaimers and limitation of liability</h2>
+<p>To the fullest extent permitted by law:</p>
+<ul>
+  <li>The App is provided <strong>"as is" and "as available"</strong>, without warranties of any kind, whether express or implied, including any implied warranties of merchantability, fitness for a particular purpose or non-infringement. We do not warrant that the App's estimates are accurate or that the App will meet your requirements.</li>
+  <li>We are not liable for indirect, incidental, special, consequential or punitive damages, or for lost profits, data or goodwill, arising from your use of the App.</li>
+  <li>Our total liability for any claim relating to the App is limited to the amount you paid us in the <strong>12 months</strong> before the event giving rise to the claim.</li>
+</ul>
+<p>Some jurisdictions do not allow certain exclusions or limitations of liability, so parts of the above may not apply to you. Nothing in these Terms excludes liability that cannot be excluded by law, including for death or personal injury caused by negligence, or for fraud.</p>
+<p>Apple is not responsible for the App or its content, and Apple has no obligation to provide maintenance or support for it. Apple is a third-party beneficiary of these Terms and may enforce them against you.</p>
+
+<h2>11. Governing law</h2>
+<p>These Terms are governed by the laws of the <strong>Commonwealth of Massachusetts, United States</strong>, without regard to its conflict-of-law rules. Any dispute will be resolved in the state or federal courts located in <strong>Boston, Massachusetts</strong>, and you consent to the personal jurisdiction of those courts. Where mandatory consumer-protection law in your country of residence gives you stronger rights or a local forum, that law continues to apply to you.</p>
+
+<h2>12. Contact</h2>
+<p>LIFEX TECHNOLOGIES LLC<br>
+Email: <a href="mailto:support@carboai.app">support@carboai.app</a></p>
+
+<footer>
+  <p>© 2026 LIFEX TECHNOLOGIES LLC · <a href="https://carboai.app">carboai.app</a> · <a href="privacy.html">Privacy Policy</a> · <a href="terms-zh.html">简体中文</a></p>
+</footer>
+
 </body>
 </html>
