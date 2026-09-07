@@ -1,0 +1,6 @@
+# GitHub Pages (Jekyll) — keep build sources and repo docs out of the published site.
+exclude:
+  - tools
+  - docs
+  - README.md
+  - .worktrees
