@@ -31,7 +31,7 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: var(--font-family); color: var(--gray-900); background: #FDFBF7; line-height: 1.6; }
-    .navbar { position: sticky; top: 0; z-index: 10; background: rgba(253,251,247,.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .navbar { position: sticky; top: 0; z-index: 10; background: rgba(253,251,247,.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
     .nav-inner { max-width: 1120px; margin: 0 auto; padding: 0 var(--space-md); height: 70px; display: flex; align-items: center; justify-content: space-between; }
     .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: var(--gray-900); text-decoration: none; }
     .brand img { width: 32px; height: 32px; }
@@ -43,7 +43,7 @@
     .hero p { font-size: 18px; color: var(--gray-700); max-width: 48ch; margin-bottom: var(--space-md); }
     .cta-row { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
     .soon-pill { display: inline-flex; align-items: center; height: 50px; padding: 0 22px; border-radius: 14px; background: var(--gray-900); color: #fff; font-weight: 700; font-size: 15px; letter-spacing: .02em; }
-    .btn-ghost { display: inline-block; padding: 13px 22px; border: 2px solid var(--line); border-radius: 14px; color: var(--gray-900); font-weight: 700; text-decoration: none; background: #fff; box-shadow: 0 2px 0 var(--line); }
+    .btn-ghost { display: inline-flex; align-items: center; height: 50px; padding: 0 22px; border: 2px solid var(--line); border-radius: 14px; color: var(--gray-900); font-weight: 700; font-size: 15px; text-decoration: none; background: #fff; box-shadow: 0 2px 0 var(--line); }
     .trust { margin-top: var(--space-md); font-size: 13px; color: var(--gray-500); }
     .phone { width: 300px; justify-self: center; border-radius: 36px; border: 8px solid #1F2937; overflow: hidden; background: #000; box-shadow: 0 30px 60px -30px rgba(0,0,0,.35); }
     .phone img { display: block; width: 100%; height: auto; }
@@ -83,15 +83,15 @@
         <span class="soon-pill">Coming soon to the App Store</span>
         <a class="btn-ghost" href="about.html">Questions? Support</a>
       </div>
-      <p class="trust">Photos aren't kept · Apple Health read-only · No ads</p>
+      <p class="trust">Photos aren't stored on our servers · Apple Health read-only · No ads</p>
     </div>
-    <div class="phone"><img src="assets/img/home-en.jpg" srcset="assets/img/home-en@2x.jpg 2x" width="450" height="621" alt="Carbo-AI home screen: today's carb-day chip, carbs left, and this week's carb cycle"></div>
+    <div class="phone"><img src="assets/img/home-en.jpg" srcset="assets/img/home-en.jpg 450w, assets/img/home-en@2x.jpg 900w" sizes="(max-width: 768px) 234px, 284px" width="450" height="621" alt="Carbo-AI home screen: today's carb-day chip, carbs left, and this week's carb cycle"></div>
   </div></section>
 
   <section class="features">
     <h2>What Carbo-AI does</h2>
     <div class="features-grid">
-      <div class="feature"><h3>AI photo recognition</h3><p>Snap a photo, instantly know what you ate — food, portion and carbs in a few seconds. You can always edit the result.</p></div>
+      <div class="feature"><h3>AI photo recognition</h3><p>Snap a photo and Carbo-AI estimates the food, portion and carbs in a few seconds. You can edit it before it's saved.</p></div>
       <div class="feature"><h3>Smart carb days</h3><p>High, medium and low carb days set around your training. Each day has a target; the app tracks what's left.</p></div>
       <div class="feature"><h3>Apple Health, read-only</h3><p>Reads energy, steps and weight to size your carb days. Never writes anything back.</p></div>
     </div>
@@ -99,7 +99,7 @@
 
   <footer class="footer"><div class="footer-inner">
     <span>© 2026 LIFEX TECHNOLOGIES LLC · Built in Boston, MA</span>
-    <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="about.html">Support</a> · <a href="mailto:support@carboai.app">support@carboai.app</a> · <a href="privacy-zh.html">中文</a></span>
+    <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="about.html">Support</a> · <a href="mailto:support@carboai.app">support@carboai.app</a> · <a href="privacy-zh.html" lang="zh-Hans" hreflang="zh-Hans">隐私政策（中文）</a></span>
   </div></footer>
 </body>
 </html>
