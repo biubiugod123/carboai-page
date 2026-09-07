@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 // Static gate for carboai-page marketing pages.
 // Usage: node tools/check-site.mjs   (exit 1 on any problem)
+// House style this relies on: double-quoted lowercase attributes; site links relative (no leading "/").
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = resolve(dirname(new URL(import.meta.url).pathname), '..');
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PAGES = ['index.html', 'about.html', 'how-it-works.html',
   'zh/index.html', 'zh/about.html', 'zh/how-it-works.html']
   .filter((p) => existsSync(join(ROOT, p)));
@@ -29,6 +31,12 @@ const REQUIRED_HEAD = [
 
 let failures = 0;
 const fail = (page, msg) => { failures += 1; console.log(`  ✗ ${page}: ${msg}`); };
+if (PAGES.length === 0) fail('(site)', `no pages found under ${ROOT} — wrong ROOT?`);
+
+const checkLocal = (page, url) => {
+  const [path] = url.split('#');
+  if (!existsSync(resolve(dirname(join(ROOT, page)), path))) fail(page, `broken link ${url}`);
+};
 
 for (const page of PAGES) {
   const html = readFileSync(join(ROOT, page), 'utf8');
@@ -43,9 +51,12 @@ for (const page of PAGES) {
   for (const m of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
     const url = m[1];
     if (/^(https?:|mailto:|data:)/.test(url)) continue;
+    if (url === '#') continue; // already reported above
     if (url.startsWith('#')) { if (!ids.has(url.slice(1))) fail(page, `anchor ${url} not found`); continue; }
-    const [path] = url.split('#');
-    if (!existsSync(resolve(dirname(join(ROOT, page)), path))) fail(page, `broken link ${url}`);
+    checkLocal(page, url);
+  }
+  for (const m of html.matchAll(/srcset="([^"]+)"/g)) {
+    for (const candidate of m[1].split(',')) checkLocal(page, candidate.trim().split(/\s+/)[0]);
   }
 }
 console.log(failures ? `\n${failures} problem(s)` : `\nOK — ${PAGES.length} page(s) clean`);
