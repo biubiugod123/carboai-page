@@ -1,6 +1,11 @@
 # GitHub Pages (Jekyll) — keep build sources and repo docs out of the published site.
+# Adding a .nojekyll file would disable this and republish tools/ (the gate script names vendors the site never mentions).
 exclude:
   - tools
   - docs
   - README.md
-  - .worktrees
+  # Jekyll's own defaults — a user exclude: list replaces them
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
