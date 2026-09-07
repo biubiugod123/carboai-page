@@ -3,424 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="CarboAI - Your Smart Carb Cycling Companion. AI-powered nutrition tracking and personalized carb cycling plans.">
-  <title>CarboAI - Smart Carb Cycling Companion</title>
-  
+  <title>Carbo-AI — Snap a meal. Know your carbs.</title>
+  <meta name="description" content="Carbo-AI reads the carbs in a photo of your meal and tells you whether they fit today's carb day. iPhone app, coming soon to the App Store.">
+  <link rel="canonical" href="https://carboai.app/">
+  <link rel="alternate" hreflang="en" href="https://carboai.app/">
+  <link rel="alternate" hreflang="x-default" href="https://carboai.app/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#FDFBF7">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Carbo-AI — Snap a meal. Know your carbs.">
+  <meta property="og:description" content="Photo → carbs → today's carb day. Coming soon to the App Store.">
+  <meta property="og:image" content="https://carboai.app/og-en.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Carbo the dog next to the headline “Snap a meal. Know your carbs.”">
+  <meta property="og:url" content="https://carboai.app/">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
   <style>
-    /* === Design System === */
     :root {
-      /* Colors */
-      --primary-50: #FFFCF5;
-      --primary-100: #FFF8E7;
-      --primary-200: #FFE8C5;
-      --accent: #F59E0B;
-      
-      --gray-900: #2C2C2C;
-      --gray-700: #4A4A4A;
-      --gray-500: #666666;
-      --gray-300: #9CA3AF;
-      --gray-100: #F9FAFB;
-      
-      --cta-bg: #000000;
-      --cta-text: #FFFFFF;
-      
-      /* Spacing */
-      --space-xs: 8px;
-      --space-sm: 16px;
-      --space-md: 24px;
-      --space-lg: 40px;
-      --space-xl: 64px;
-      --space-2xl: 80px;
-      
-      /* Typography */
-      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      --primary-50: #FFFCF5; --primary-100: #FFF8E7; --accent: #F59E0B; --on-accent: #4A1B0C; --accent-lip: #B45309;
+      --gray-900: #111827; --gray-700: #4B5563; --gray-500: #666666; --gray-100: #F9FAFB; --line: #E5E7EB;
+      --space-sm: 16px; --space-md: 24px; --space-lg: 40px; --space-xl: 64px; --space-2xl: 80px;
+      --font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     }
-    
-    /* === Global Styles === */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    html {
-      scroll-behavior: smooth;
-    }
-    
-    body {
-      font-family: var(--font-family);
-      font-size: 16px;
-      line-height: 1.6;
-      color: var(--gray-700);
-    }
-    
-    /* === Typography === */
-    h1 {
-      font-size: 48px;
-      font-weight: 700;
-      color: var(--gray-900);
-      line-height: 1.2;
-    }
-    
-    h2 {
-      font-size: 32px;
-      font-weight: 600;
-      color: var(--gray-900);
-      line-height: 1.3;
-    }
-    
-    h3 {
-      font-size: 24px;
-      font-weight: 600;
-      color: var(--gray-900);
-      line-height: 1.4;
-    }
-    
-    /* === Responsive Typography === */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-family); color: var(--gray-900); background: #FDFBF7; line-height: 1.6; }
+    .navbar { position: sticky; top: 0; z-index: 10; background: rgba(253,251,247,.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .nav-inner { max-width: 1120px; margin: 0 auto; padding: 0 var(--space-md); height: 70px; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: var(--gray-900); text-decoration: none; }
+    .brand img { width: 32px; height: 32px; }
+    .nav-links { display: flex; gap: var(--space-md); list-style: none; }
+    .nav-links a { color: var(--gray-700); text-decoration: none; font-size: 15px; }
+    .hero { background: linear-gradient(180deg, var(--primary-50) 0%, var(--primary-100) 40%, #FDFBF7 100%); padding: var(--space-2xl) var(--space-md); }
+    .hero-inner { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-xl); align-items: center; }
+    .hero h1 { font-size: 44px; line-height: 1.15; letter-spacing: -.01em; margin-bottom: var(--space-sm); }
+    .hero p { font-size: 18px; color: var(--gray-700); max-width: 48ch; margin-bottom: var(--space-md); }
+    .cta-row { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
+    .soon-pill { display: inline-flex; align-items: center; height: 50px; padding: 0 22px; border-radius: 14px; background: var(--gray-900); color: #fff; font-weight: 700; font-size: 15px; letter-spacing: .02em; }
+    .btn-ghost { display: inline-block; padding: 13px 22px; border: 2px solid var(--line); border-radius: 14px; color: var(--gray-900); font-weight: 700; text-decoration: none; background: #fff; box-shadow: 0 2px 0 var(--line); }
+    .trust { margin-top: var(--space-md); font-size: 13px; color: var(--gray-500); }
+    .phone { width: 300px; justify-self: center; border-radius: 36px; border: 8px solid #1F2937; overflow: hidden; background: #000; box-shadow: 0 30px 60px -30px rgba(0,0,0,.35); }
+    .phone img { display: block; width: 100%; height: auto; }
+    .features { padding: var(--space-2xl) var(--space-md); background: #fff; }
+    .features h2 { text-align: center; font-size: 32px; margin-bottom: var(--space-lg); }
+    .features-grid { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
+    .feature { background: #FDFBF7; border: 1px solid var(--line); border-radius: 20px; padding: var(--space-md); }
+    .feature h3 { font-size: 20px; margin-bottom: 8px; }
+    .feature p { color: var(--gray-700); }
+    .footer { background: var(--gray-100); padding: var(--space-xl) var(--space-md) var(--space-md); border-top: 1px solid var(--line); }
+    .footer-inner { max-width: 1120px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: var(--space-md); justify-content: space-between; color: var(--gray-700); font-size: 14px; }
+    .footer a { color: var(--gray-700); }
     @media (max-width: 768px) {
-      h1 { font-size: 36px; }
-      h2 { font-size: 28px; }
-      h3 { font-size: 20px; }
-    }
-    
-    /* === Navbar === */
-    .navbar {
-      position: sticky;
-      top: 0;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      padding: var(--space-sm) var(--space-md);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-      transition: box-shadow 0.3s;
-    }
-    
-    .navbar.scrolled {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    
-    .navbar-brand {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--gray-900);
-      text-decoration: none;
-    }
-    
-    .navbar-links {
-      display: flex;
-      gap: var(--space-md);
-      list-style: none;
-    }
-    
-    .navbar-links a {
-      color: var(--gray-700);
-      text-decoration: none;
-      font-size: 15px;
-      transition: color 0.2s;
-    }
-    
-    .navbar-links a:hover {
-      color: var(--gray-900);
-    }
-    
-    @media (max-width: 768px) {
-      .navbar-links {
-        gap: var(--space-sm);
-      }
-      
-      .navbar-links a {
-        font-size: 14px;
-      }
-    }
-    
-    /* === Hero Section === */
-    .hero {
-      min-height: 100vh;
-      background: linear-gradient(180deg, var(--primary-50) 0%, var(--primary-100) 40%, #FFFFFF 100%);
-      display: flex;
-      align-items: center;
-      padding: var(--space-2xl) var(--space-md);
-    }
-    
-    .hero-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 60% 40%;
-      gap: var(--space-xl);
-      align-items: center;
-    }
-    
-    .hero-content h1 {
-      margin-bottom: var(--space-sm);
-    }
-    
-    .hero-subtitle {
-      font-size: 20px;
-      color: var(--gray-500);
-      margin-bottom: var(--space-lg);
-      line-height: 1.6;
-    }
-    
-    .cta-button {
-      display: inline-block;
-      background: var(--cta-bg);
-      color: var(--cta-text);
-      padding: 16px 32px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    
-    .cta-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-    
-    .hero-image {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .hero-image-placeholder {
-      width: 300px;
-      height: 600px;
-      background: linear-gradient(135deg, var(--primary-200) 0%, var(--accent) 100%);
-      border-radius: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 18px;
-      font-weight: 600;
-    }
-    
-    @media (max-width: 768px) {
-      .hero {
-        min-height: auto;
-        padding: var(--space-xl) var(--space-md);
-      }
-      
-      .hero-container {
-        grid-template-columns: 1fr;
-        gap: var(--space-lg);
-      }
-      
-      .hero-subtitle {
-        font-size: 18px;
-      }
-      
-      .hero-image-placeholder {
-        width: 250px;
-        height: 500px;
-      }
-    }
-    
-    /* === Features Section === */
-    .features {
-      padding: var(--space-2xl) var(--space-md);
-      background: white;
-    }
-    
-    .features-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    .features-title {
-      text-align: center;
-      margin-bottom: var(--space-xl);
-    }
-    
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-lg);
-    }
-    
-    .feature-card {
-      text-align: center;
-      padding: var(--space-lg);
-    }
-    
-    .feature-icon {
-      font-size: 64px;
-      margin-bottom: var(--space-md);
-    }
-    
-    .feature-card h3 {
-      margin-bottom: var(--space-xs);
-    }
-    
-    .feature-card p {
-      color: var(--gray-500);
-      line-height: 1.6;
-    }
-    
-    @media (max-width: 768px) {
-      .features {
-        padding: var(--space-xl) var(--space-md);
-      }
-      
-      .features-grid {
-        grid-template-columns: 1fr;
-        gap: var(--space-md);
-      }
-      
-      .feature-card {
-        padding: var(--space-md);
-      }
-    }
-    
-    /* === Footer === */
-    .footer {
-      background: var(--gray-100);
-      padding: var(--space-xl) var(--space-md) var(--space-md);
-    }
-    
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    .footer-content {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-lg);
-      margin-bottom: var(--space-lg);
-    }
-    
-    .footer-brand h3 {
-      margin-bottom: var(--space-xs);
-    }
-    
-    .footer-brand p {
-      color: var(--gray-500);
-      font-size: 14px;
-    }
-    
-    .footer-links h4 {
-      font-size: 16px;
-      margin-bottom: var(--space-sm);
-    }
-    
-    .footer-links ul {
-      list-style: none;
-    }
-    
-    .footer-links a {
-      color: var(--gray-700);
-      text-decoration: none;
-      font-size: 14px;
-      line-height: 2;
-      transition: color 0.2s;
-    }
-    
-    .footer-links a:hover {
-      color: var(--gray-900);
-    }
-    
-    .footer-bottom {
-      text-align: center;
-      padding-top: var(--space-md);
-      border-top: 1px solid var(--gray-300);
-      color: var(--gray-500);
-      font-size: 14px;
-    }
-    
-    @media (max-width: 768px) {
-      .footer-content {
-        grid-template-columns: 1fr;
-        gap: var(--space-md);
-      }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 34px; }
+      .phone { width: 250px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .nav-links { gap: var(--space-sm); }
     }
   </style>
 </head>
 <body>
-  <nav class="navbar">
-    <a href="index.html" class="navbar-brand">CarboAI</a>
-    <ul class="navbar-links">
-      <li><a href="about.html">About</a></li>
+  <nav class="navbar"><div class="nav-inner">
+    <a class="brand" href="index.html"><img src="favicon.svg" alt="">Carbo-AI</a>
+    <ul class="nav-links">
+      <li><a href="about.html">Support</a></li>
       <li><a href="privacy.html">Privacy</a></li>
       <li><a href="terms.html">Terms</a></li>
     </ul>
-  </nav>
-  
-  <section class="hero">
-    <div class="hero-container">
-      <div class="hero-content">
-        <h1>CarboAI</h1>
-        <p class="hero-subtitle">Your Smart Carb Cycling Companion. AI-powered nutrition tracking and personalized carb cycling plans for optimal performance and health.</p>
-        <a href="#" class="cta-button">Download on App Store</a>
+  </div></nav>
+
+  <section class="hero"><div class="hero-inner">
+    <div>
+      <h1>Snap a meal.<br>Know your carbs.</h1>
+      <p>Carbo-AI reads the carbs in your photo and tells you whether they fit today's carb day. Built around carb cycling: more carbs on training days, fewer on rest days.</p>
+      <div class="cta-row">
+        <span class="soon-pill">Coming soon to the App Store</span>
+        <a class="btn-ghost" href="about.html">Questions? Support</a>
       </div>
-      <div class="hero-image">
-        <div class="hero-image-placeholder">
-          App Screenshot
-        </div>
-      </div>
+      <p class="trust">Photos aren't kept · Apple Health read-only · No ads</p>
     </div>
-  </section>
-  
+    <div class="phone"><img src="assets/img/home-en.jpg" srcset="assets/img/home-en@2x.jpg 2x" width="450" height="621" alt="Carbo-AI home screen: today's carb-day chip, carbs left, and this week's carb cycle"></div>
+  </div></section>
+
   <section class="features">
-    <div class="features-container">
-      <h2 class="features-title">Why CarboAI?</h2>
-      
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">📸</div>
-          <h3>Snap & Track</h3>
-          <p>Take a photo of your meal and get instant nutrition insights powered by AI. No manual logging required.</p>
-        </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <h3>Personalized Plans</h3>
-          <p>AI-driven carb cycling plans tailored to your goals, activity level, and metabolism.</p>
-        </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon">❤️</div>
-          <h3>Seamless Sync</h3>
-          <p>Connect with Apple Health and Google Fit to track your progress holistically.</p>
-        </div>
-      </div>
+    <h2>What Carbo-AI does</h2>
+    <div class="features-grid">
+      <div class="feature"><h3>AI photo recognition</h3><p>Snap a photo, instantly know what you ate — food, portion and carbs in a few seconds. You can always edit the result.</p></div>
+      <div class="feature"><h3>Smart carb days</h3><p>High, medium and low carb days set around your training. Each day has a target; the app tracks what's left.</p></div>
+      <div class="feature"><h3>Apple Health, read-only</h3><p>Reads energy, steps and weight to size your carb days. Never writes anything back.</p></div>
     </div>
   </section>
-  
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <h3>CarboAI</h3>
-          <p>LIFEX TECHNOLOGIES LLC</p>
-        </div>
-        
-        <div class="footer-links">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="about.html">About</a></li>
-            <li><a href="privacy.html">Privacy</a></li>
-            <li><a href="terms.html">Terms</a></li>
-          </ul>
-        </div>
-        
-        <div class="footer-links">
-          <h4>Contact</h4>
-          <ul>
-            <li><a href="mailto:support@carboai.app">support@carboai.app</a></li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <p>&copy; 2026 LIFEX TECHNOLOGIES LLC. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+
+  <footer class="footer"><div class="footer-inner">
+    <span>© 2026 LIFEX TECHNOLOGIES LLC · Built in Boston, MA</span>
+    <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="about.html">Support</a> · <a href="mailto:support@carboai.app">support@carboai.app</a> · <a href="privacy-zh.html">中文</a></span>
+  </div></footer>
 </body>
 </html>
