@@ -1,5 +1,5 @@
-/* Carbo-AI marketing site. Colour rule from the app: cool manages status, warm manages action. */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+/* Carbo-AI marketing site. Colour rule from the app: cool manages status, warm manages action.
+   Inter is loaded from <head> (<link rel="stylesheet"> after two preconnects) — an @import here would add a serial round trip. */
 
 :root {
   /* carb-day scale lives in the app's carb-day-colors.ts, not tokens.json */
@@ -100,7 +100,7 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 .chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
 .chip--carbs { background: color-mix(in srgb, var(--orange) 12%, var(--card)); color: var(--orange-lip); }
 .chip--protein { background: var(--teal-chip-lo); color: var(--teal-ink); }
-.carbo-sm { position: absolute; right: 10px; bottom: 8px; width: 96px; }
+.step__art img.carbo-sm { position: absolute; right: 10px; bottom: 8px; width: 96px; height: auto; object-fit: contain; } /* must outrank .step__art img above */
 
 /* carb-day chip + week */
 .daychip { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; padding: 5px 12px; font-size: 13px; font-weight: 600; background: var(--teal-chip-lo); color: var(--teal-ink); }
@@ -112,6 +112,7 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 .week__day { display: grid; gap: 8px; justify-items: center; font-size: 12px; color: var(--ink-2); font-weight: 600; }
 .week__dot { width: 34px; height: 34px; border-radius: 50%; background: var(--teal-dot-lo); }
 .week__dot--md { background: var(--teal-dot-md); } .week__dot--hi { background: var(--teal-dot-hi); }
+.week__dot--today { box-shadow: 0 0 0 3px var(--card), 0 0 0 5px var(--teal-dot-hi); }
 .legend { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
 
 /* two-column feature rows */
@@ -154,7 +155,6 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 .marquee__track { display: flex; width: max-content; font-weight: 800; font-size: 40px; letter-spacing: -.01em; white-space: nowrap; color: var(--ink); }
 .marquee__track--reverse { color: var(--teal-dot-md); }
 .marquee__track span { padding-right: 48px; }
-.week__dot--today { box-shadow: 0 0 0 3px var(--card), 0 0 0 5px var(--teal-dot-hi); }
 
 /* final band */
 .band { background: var(--orange); color: var(--on-orange); padding: 72px 0; }
@@ -168,9 +168,10 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 .footer a { color: var(--ink-2); }
 
 /* reveal on scroll (only when JS is on) */
-/* reveal uses the independent `translate` property so `transform` stays free for the card hover lift; the transition list
-   includes transform/box-shadow because this rule outranks .card's own transition on .card.reveal elements */
-html.js .reveal { opacity: 0; translate: 0 12px; transition: opacity .5s ease, translate .5s ease, transform .22s ease, box-shadow .22s ease; }
+/* reveal uses the independent `translate` property so `transform` stays free for the card hover lift; .card.reveal merges the
+   hover transitions into its list because this rule outranks .card's own transition */
+html.js .reveal { opacity: 0; translate: 0 12px; transition: opacity .5s ease, translate .5s ease; }
+html.js .card.reveal { transition: opacity .5s ease, translate .5s ease, transform .22s ease, box-shadow .22s ease; } /* only cards lift on hover */
 html.js .reveal.is-visible { opacity: 1; translate: 0 0; }
 
 @media (max-width: 640px) {

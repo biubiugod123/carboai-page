@@ -13,6 +13,8 @@ import { join, resolve } from 'node:path';
 
 const args = process.argv.slice(2);
 const motion = args.includes('--motion');
+const unknown = args.filter((a) => a.startsWith('--') && a !== '--motion');
+if (unknown.length) { console.error(`unknown flag: ${unknown.join(' ')}`); process.exit(2); }
 const [page, outdir, label] = args.filter((a) => !a.startsWith('--'));
 if (!page || !outdir || !label) { console.error('usage: node tools/shoot.mjs <page.html> <outdir> <label> [--motion]'); process.exit(2); }
 const file = resolve(page);
