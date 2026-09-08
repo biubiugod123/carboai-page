@@ -53,6 +53,14 @@ const FORBIDDEN = [
 // presence and their value are the same question and the parse must not care about attribute order.
 const REQUIRED_HEAD = [
   [/<html[^>]+lang="(en|zh-Hans)"/, '<html lang>'],
+  // The charset *value* is case-insensitive per HTML, so "UTF-8" passes too; the attribute name
+  // is not, and house style writes it lowercase.
+  [/<meta charset="utf-8">/i, 'charset'],
+  // Without it a phone — and tools/shoot.mjs's emulated one — lays the page out at 980 px and
+  // shrinks the result, which is how the 320 px reflow check silently stops meaning anything. The
+  // literal 1 is what every page here writes, accepted when closed by the quote, a comma or a
+  // space; "1.0" is the same number spelled differently and is reported, so no page drifts.
+  [/<meta name="viewport" content="[^"]*initial-scale=1["', ]/, 'viewport initial-scale'],
   [/<title>[^<]+<\/title>/, '<title>'],
   [/<meta name="description" content="[^"]+"/, 'meta description'],
   [/<meta property="og:title" content="[^"]+"/, 'og:title'],

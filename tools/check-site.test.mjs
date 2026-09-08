@@ -241,6 +241,37 @@ test('the marketing <head> must carry the sharing tags a shared link renders fro
   assert.match(out, /index\.html: missing og:title/);
 });
 
+test('the marketing <head> must declare utf-8 and an initial-scale of 1', () => {
+  const files = pair();
+  const swap = (from, to) => run(fixture({ ...ASSETS, ...files,
+    'index.html': files['index.html'].replace(from, to) }), PAIR);
+  const noCharset = swap('<meta charset="utf-8">', '');
+  assert.equal(noCharset.status, 1);
+  assert.match(noCharset.out, /index\.html: missing charset/);
+  // The value is case-insensitive per HTML — about.html shipped "UTF-8" and was not wrong.
+  const upper = swap('<meta charset="utf-8">', '<meta charset="UTF-8">');
+  assert.equal(upper.status, 0, upper.out);
+  const noViewport = swap(/<meta name="viewport"[^>]*>/, '');
+  assert.equal(noViewport.status, 1);
+  assert.match(noViewport.out, /index\.html: missing viewport initial-scale/);
+  // A viewport without the scale is the case that hurts: the page lays out at 980 px on a phone.
+  const noScale = swap(/content="[^"]*initial-scale=1"/, 'content="width=device-width"');
+  assert.equal(noScale.status, 1);
+  assert.match(noScale.out, /index\.html: missing viewport initial-scale/);
+  // "1.0" is the same number spelled differently, and the rule is that every page writes one head.
+  const dotted = swap('initial-scale=1"', 'initial-scale=1.0"');
+  assert.equal(dotted.status, 1);
+  assert.match(dotted.out, /index\.html: missing viewport initial-scale/);
+  // Closed by a comma or a space, it is the same declaration with more directives after it.
+  for (const tail of ['initial-scale=1, viewport-fit=cover"', 'initial-scale=1 , minimum-scale=1"']) {
+    const ok = swap('initial-scale=1"', tail);
+    assert.equal(ok.status, 0, ok.out);
+  }
+  // Legal pages carry neither check: their <head> was frozen 2026-09-05.
+  const frozen = run(fixture({ 'privacy.html': legal().replace('<meta charset="utf-8">', '') }), ['privacy.html:legal']);
+  assert.equal(frozen.status, 0, frozen.out);
+});
+
 test('hreflang must point at a published page, and that page must point back', () => {
   const both = {
     'about.html': page('', { self: 'https://carboai.app/about.html',
