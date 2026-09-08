@@ -19,28 +19,37 @@ const MANIFEST = ['index.html', 'about.html', 'how-it-works.html',
 const PAGES = (process.env.CHECK_SITE_PAGES || MANIFEST.join(','))
   .split(',').map((s) => s.trim()).filter(Boolean)
   .map((s) => { const [path, kind] = s.split(':'); return { path, legal: kind === 'legal' }; });
+// An override of whitespace or bare commas parses to nothing; reporting "0 page(s) clean" would be
+// a green run that opened no file at all.
+if (!PAGES.length) { console.error('no pages to check'); process.exit(2); }
 
 const SUPPORT = 'mailto:support@carboai.app';
+const METABOLISM = 'metabolism wording (site rule: no metabolism claims, not even disclaimers)';
 const FORBIDDEN = [
   [/\bCarboAI\b/, 'brand must be written "Carbo-AI"'],
   [/\b(supabase|gemini|revenuecat)\b/i, 'no vendor names'],
   [/google fit/i, 'no Google Fit claim'],
-  [/\bmetabolism\b/i, 'no metabolism claim'],
+  [/\bmetabolism\b/i, METABOLISM],
   [/\$\s?\d+(\.\d\d)?/, 'no prices on the site'],
   [/free (tier|plan)/i, 'there is no free tier'],
   [/谷歌健身/, 'no Google Fit claim'],
-  [/代谢/, 'no metabolism claim'],
+  [/代谢/, METABOLISM],
   [/[￥¥]\s?\d/, 'no prices on the site'],
   // 元 also opens 元旦/元气/元素…, so a digit before it is only a price when no such word follows.
   [/\d+\s*(元|日元)(?![素气旦宵件年数])/, 'no prices on the site'],
   // "免费下载" and "免费试用" are true and must stay legal; a free *tier* is what the site may not promise.
-  [/(永久|完全|一直|基础.{0,4})免费|免费(版|套餐|试用期永久)/, 'there is no free tier'],
+  // Only 版/套餐 follow 免费 here: "免费试用期永久" is not something anyone writes, and the phrase that
+  // is — 永久免费试用期 — is already caught by the leading-modifier branch.
+  [/(永久|完全|一直|基础.{0,4})免费|免费(版|套餐)/, 'there is no free tier'],
 ];
 const REQUIRED_HEAD = [
   [/<html[^>]+lang="(en|zh-Hans)"/, '<html lang>'],
   [/<title>[^<]+<\/title>/, '<title>'],
   [/<meta name="description" content="[^"]+"/, 'meta description'],
+  [/<meta property="og:title" content="[^"]+"/, 'og:title'],
+  [/<meta property="og:description" content="[^"]+"/, 'og:description'],
   [/<meta property="og:image" content="https:\/\/carboai\.app\/[^"]+"/, 'og:image (absolute URL)'],
+  [/<meta name="twitter:card" content="[^"]+"/, 'twitter:card'],
   [/<link rel="icon"/, 'favicon link'],
   [/<link rel="alternate" hreflang="/, 'hreflang'],
   [/<link rel="canonical" href="https:\/\/carboai\.app\//, 'canonical'],
@@ -48,6 +57,13 @@ const REQUIRED_HEAD = [
 
 let failures = 0;
 const fail = (page, msg) => { failures += 1; console.log(`  ✗ ${page}: ${msg}`); };
+
+// Site URL → the file that serves it: "https://carboai.app/" → index.html, "…/zh/" → zh/index.html.
+// A URL that is not on this origin comes back unchanged and simply matches no page.
+const fileFor = (url) => {
+  const rel = url.replace(/^https:\/\/carboai\.app\//, '');
+  return rel === '' || rel.endsWith('/') ? `${rel}index.html` : rel;
+};
 
 // Carries its own protocol guard: the srcset and data-frames loops call it directly.
 const checkLocal = (page, url) => {
@@ -59,6 +75,9 @@ const checkLocal = (page, url) => {
   if (!existsSync(resolve(dirname(join(ROOT, page)), path))) fail(page, `broken link ${url}`);
 };
 
+const heads = new Map(); // marketing page → { canonical, alts } for the hreflang reciprocity pass
+const noindex = new Set(); // pages that ask search engines to skip them — they must stay out of sitemap.xml
+
 for (const { path: page, legal } of PAGES) {
   if (!existsSync(join(ROOT, page))) { fail('(site)', `missing page: ${page}`); continue; }
   const html = readFileSync(join(ROOT, page), 'utf8');
@@ -68,6 +87,11 @@ for (const { path: page, legal } of PAGES) {
     if (m) fail(page, `${why} (found "${m[0]}")`);
   }
   if (!legal) for (const [re, what] of REQUIRED_HEAD) if (!re.test(html)) fail(page, `missing ${what}`);
+  if (!legal) heads.set(page, {
+    canonical: html.match(/<link rel="canonical" href="([^"]+)"/)?.[1] ?? '',
+    alts: [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)].map((m) => ({ lang: m[1], href: m[2] })),
+  });
+  if (/<meta name="robots" content="[^"]*noindex/.test(html)) noindex.add(page);
   if (/href="#"/.test(html)) fail(page, 'dead href="#"');
   // One wrong letter in the support address is the costliest single-character typo on the site.
   for (const m of html.matchAll(/mailto:[^"'\s>]+/g)) if (m[0].split('?')[0] !== SUPPORT) fail(page, `wrong support address ${m[0]}`);
@@ -91,6 +115,20 @@ for (const { path: page, legal } of PAGES) {
   }
 }
 
+// hreflang is a promise in both directions: Google drops a pair where the other page does not name
+// this one back. x-default is exempt from the return leg — it nominates the fallback, and the
+// fallback page is not obliged to name every locale that falls back to it.
+const known = new Set(PAGES.map((p) => p.path));
+for (const [page, { canonical, alts }] of heads) {
+  for (const { lang, href } of alts) {
+    const target = fileFor(href);
+    if (!known.has(target)) { fail(page, `hreflang ${lang} → ${href} is not a page in the manifest`); continue; }
+    // With no canonical there is nothing for the other page to point back at — already reported above.
+    if (lang === 'x-default' || !canonical) continue;
+    if (!heads.get(target)?.alts.some((a) => a.href === canonical)) fail(page, `hreflang ${lang} → ${target} has no alternate back`);
+  }
+}
+
 // The inline head script hides reveal states behind class="js" and drops the class after 1.5 s if
 // site.js never runs; site.js must cancel that timer or every animation vanishes 1.5 s in, silently.
 const SITE_JS = join(ROOT, 'assets/site.js');
@@ -103,12 +141,14 @@ if (existsSync(SITEMAP)) {
   const listed = new Set();
   for (const m of readFileSync(SITEMAP, 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)) {
     const loc = m[1].trim();
-    const rel = loc.replace(/^https:\/\/carboai\.app\//, '');
-    const file = rel === '' || rel.endsWith('/') ? `${rel}index.html` : rel; // "/" → index.html, "/zh/" → zh/index.html
+    const file = fileFor(loc);
     listed.add(file);
     if (!existsSync(join(ROOT, file))) fail('sitemap.xml', `<loc> ${loc} has no file (${file})`);
   }
-  for (const { path } of PAGES) if (!listed.has(path)) fail('sitemap.xml', `missing <loc> for ${path}`);
+  // noindex and a sitemap entry ask search engines for opposite things; a thin page in progress is
+  // noindex and stays out of the sitemap until it is finished.
+  for (const page of noindex) if (listed.has(page)) fail('sitemap.xml', `${page} is noindex and must not be listed`);
+  for (const { path } of PAGES) if (!listed.has(path) && !noindex.has(path)) fail('sitemap.xml', `missing <loc> for ${path}`);
 }
 
 console.log(failures ? `\n${failures} problem(s)` : `\nOK — ${PAGES.length} page(s) clean`);

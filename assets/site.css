@@ -45,10 +45,10 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 /* nav */
 .nav { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--ground) 92%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .nav__in { height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.nav__brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
+.nav__brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; white-space: nowrap; } /* "Carbo-AI" would otherwise break at its hyphen and double the bar's height at 320 */
 .nav__brand img { width: 34px; height: 34px; }
 .nav__links { display: flex; gap: 22px; align-items: center; list-style: none; margin: 0; padding: 0; }
-.nav__links a { color: var(--ink-2); text-decoration: none; font-size: 15px; font-weight: 500; padding: 13px 0; }
+.nav__links a { color: var(--ink-2); text-decoration: none; font-size: 15px; font-weight: 500; padding: 13px 0; white-space: nowrap; } /* 中文 wraps to 中/文 at 320 without this */
 .nav__links a.is-lang { color: var(--ink-3); font-weight: 600; letter-spacing: .02em; }
 
 /* buttons — Duolingo's lip, our orange */
@@ -180,8 +180,9 @@ html.js .card.reveal { transition: opacity .5s ease, translate .5s ease, transfo
 html.js .reveal.is-visible { opacity: 1; translate: 0 0; }
 
 @media (max-width: 640px) {
-  /* five links do not fit beside the brand on a phone; the three in-page anchors are one scroll away anyway */
-  .nav__links a[href^="#"] { display: none; }
+  /* five links do not fit beside the brand on a phone; the three in-page anchors are one scroll away anyway.
+     [href*="#"], not [href^="#"]: on a subpage the same three links are index.html#how and friends. */
+  .nav__links a[href*="#"] { display: none; }
   .nav__brand { font-size: 17px; }
 }
 @media (max-width: 380px) {

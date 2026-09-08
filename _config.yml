@@ -4,6 +4,8 @@ exclude:
   - tools
   - docs
   - README.md
+  # Internal notes on where the demo photos came from — never a public URL
+  - assets/demo/SOURCES.md
   # Jekyll's own defaults — a user exclude: list replaces them
   - Gemfile
   - Gemfile.lock
