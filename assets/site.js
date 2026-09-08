@@ -4,10 +4,12 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const list = (el, key) => (el.dataset[key] || '').split(',').map((x) => x.trim()).filter(Boolean);
   const preload = (srcs) => srcs.forEach((src) => { const i = new Image(); i.src = src; });
-  // Show frames[i] for durations[i] ms each; call `then` after the last one.
-  const play = (img, frames, durations, then) => {
+  // Show frames[i] for durations[i] ms each; call `then` after the last one. The optional `alive`
+  // predicate is checked before every frame write, so a chain that has been superseded stops there
+  // instead of writing a stale src over the newer chain's frames.
+  const play = (img, frames, durations, then, alive) => {
     let i = 0;
-    const step = () => { img.src = frames[i]; const d = durations[i] ?? 160; if (i < frames.length - 1) { i += 1; setTimeout(step, d); } else if (then) setTimeout(then, d); };
+    const step = () => { if (alive && !alive()) return; img.src = frames[i]; const d = durations[i] ?? 160; if (i < frames.length - 1) { i += 1; setTimeout(step, d); } else if (then) setTimeout(then, d); };
     step();
   };
 
@@ -75,17 +77,18 @@
       const st = state.get(img) || {}; if (st.playing) return;
       const frames = list(img, 'frames'); const durations = list(img, 'durations').map(Number);
       const loop = img.dataset.loop === 'true';
-      // gen is the cancellation token: pausing (or a fresh start) bumps it, and the in-flight chain
-      // stops at its next frame boundary instead of looping forever alongside the new one.
+      // gen is the liveness token: pausing (or a fresh start) bumps it, so the superseded chain's
+      // `alive` check fails and it stops before writing its next frame — never over the new one.
       st.playing = true; st.gen = (st.gen || 0) + 1; const gen = st.gen; state.set(img, st);
-      const run = () => { if (st.gen !== gen) return; play(img, frames, durations, () => { if (st.gen !== gen) return; if (loop && st.playing) run(); else st.playing = false; }); };
+      const alive = () => st.gen === gen;
+      const run = () => { if (!alive()) return; play(img, frames, durations, () => { if (!alive()) return; if (loop && st.playing) run(); else st.playing = false; }, alive); };
       preload(frames); setTimeout(run, st.started ? 0 : 200); st.started = true;
     };
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
         const st = state.get(e.target) || {};
         if (e.isIntersecting) start(e.target);
-        else if (e.target.dataset.loop === 'true') { st.playing = false; st.gen = (st.gen || 0) + 1; state.set(e.target, st); } // pause loops off-screen
+        else if (e.target.dataset.loop === 'true') { st.playing = false; st.gen = (st.gen || 0) + 1; state.set(e.target, st); } // loops stop off-screen, before their next frame
       }
     }, { threshold: 0.5 });
     tiles.forEach((t) => { io.observe(t); t.closest('.emotion')?.addEventListener('mouseenter', () => start(t)); t.closest('.emotion')?.addEventListener('click', () => start(t)); });

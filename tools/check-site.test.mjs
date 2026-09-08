@@ -31,9 +31,13 @@ const fixture = (files) => {
   return dir;
 };
 
-const run = (dir) => {
+// `pages` replaces the gate's built-in manifest with the pages this fixture actually wrote
+// ("privacy.html:legal" marks a legal page); omit it to run against the real site manifest.
+const run = (dir, pages) => {
   const script = join(dir, 'tools', 'check-site.mjs');
-  try { return { status: 0, out: execFileSync(process.execPath, [script], { encoding: 'utf8' }) }; }
+  const env = { ...process.env };
+  if (pages) env.CHECK_SITE_PAGES = pages.join(','); else delete env.CHECK_SITE_PAGES;
+  try { return { status: 0, out: execFileSync(process.execPath, [script], { encoding: 'utf8', env }) }; }
   catch (e) { return { status: e.status, out: `${e.stdout ?? ''}${e.stderr ?? ''}` }; }
 };
 const count = (hay, needle) => hay.split(needle).length - 1;
@@ -44,35 +48,50 @@ const page = (up = '', { lang = 'en', body = '' } = {}) => `<!DOCTYPE html><html
 <link rel="canonical" href="https://carboai.app/how-it-works.html"><link rel="alternate" hreflang="en" href="https://carboai.app/how-it-works.html"><link rel="alternate" hreflang="zh-Hans" href="https://carboai.app/zh/how-it-works.html"><link rel="alternate" hreflang="x-default" href="https://carboai.app/how-it-works.html">
 <link rel="icon" href="${up}favicon.svg" type="image/svg+xml"><meta property="og:image" content="https://carboai.app/og-en.png"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"><link rel="stylesheet" href="${up}assets/tokens.css"><link rel="stylesheet" href="${up}assets/site.css"></head>
 <body><main class="wrap section"><h1>How the estimate works</h1>${body}</main></body></html>`;
+// A legal page as the real ones are: frozen 2026-09-05, so no description, canonical, og:image or icon.
+const legal = (body = '', lang = 'en') => `<!DOCTYPE html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Carbo-AI</title></head><body><h1>Privacy Policy</h1>${body}</body></html>`;
 const ASSETS = { 'favicon.svg': '<svg xmlns="http://www.w3.org/2000/svg"/>', 'assets/tokens.css': ':root{}', 'assets/site.css': 'body{}' };
 const sitemap = (...locs) => `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${locs.map((l) => `<url><loc>${l}</loc></url>`).join('')}</urlset>`;
 
-test('a directory with no pages is a wrong ROOT, not a clean site', () => {
-  const { status, out } = run(fixture({}));
-  assert.equal(status, 1);
-  assert.match(out, /no pages found/);
+test('a manifest page that is not on disk fails; it is never silently skipped', () => {
+  const empty = run(fixture({})); // no override: the real ten-page manifest, none of it present
+  assert.equal(empty.status, 1);
+  assert.match(empty.out, /\(site\): missing page: index\.html/);
+  const gone = run(fixture({ ...ASSETS, 'index.html': page() }), ['index.html', 'gone.html']);
+  assert.equal(gone.status, 1);
+  assert.match(gone.out, /\(site\): missing page: gone\.html/);
 });
 
 test('one valid page under a path with spaces is clean', () => {
-  const { status, out } = run(fixture({ ...ASSETS, 'index.html': page() }));
+  const { status, out } = run(fixture({ ...ASSETS, 'index.html': page() }), ['index.html']);
   assert.equal(status, 0, out);
   assert.match(out, /OK — 1 page\(s\) clean/);
 });
 
 test('links from zh/ resolve against zh/, not the site root', () => {
   const ok = run(fixture({ ...ASSETS, 'privacy.html': 'privacy',
-    'zh/index.html': page('../', { lang: 'zh-Hans', body: '<a href="../privacy.html">privacy</a>' }) }));
+    'zh/index.html': page('../', { lang: 'zh-Hans', body: '<a href="../privacy.html">privacy</a>' }) }), ['zh/index.html']);
   assert.equal(ok.status, 0, ok.out);
   const bad = run(fixture({ ...ASSETS,
-    'zh/index.html': page('../', { lang: 'zh-Hans', body: '<a href="../nope.html">nope</a>' }) }));
+    'zh/index.html': page('../', { lang: 'zh-Hans', body: '<a href="../nope.html">nope</a>' }) }), ['zh/index.html']);
   assert.equal(bad.status, 1);
   assert.match(bad.out, /zh\/index\.html: broken link \.\.\/nope\.html/);
 });
 
+test('a link that is only a query or fragment string has no target', () => {
+  const query = run(fixture({ ...ASSETS, 'index.html': page('', { body: '<a href="?utm=x">go</a>' }) }), ['index.html']);
+  assert.equal(query.status, 1);
+  assert.match(query.out, /index\.html: empty link \?utm=x/);
+  const frames = run(fixture({ ...ASSETS, 'index.html': page('', { body: '<img src="favicon.svg" data-frames="" alt="">' }) }), ['index.html']);
+  assert.equal(frames.status, 1);
+  assert.match(frames.out, /index\.html: empty link/);
+});
+
 test('a missing srcset candidate is reported exactly once', () => {
   const { status, out } = run(fixture({ ...ASSETS, 'b.png': 'png',
-    'index.html': page('', { body: '<img src="b.png" srcset="a@2x.png 2x, b.png 640w" alt="">' }) }));
+    'index.html': page('', { body: '<img src="b.png" srcset="a@2x.png 2x, b.png 640w" alt="">' }) }), ['index.html']);
   assert.equal(status, 1);
   assert.equal(count(out, 'broken link a@2x.png'), 1, out);
 });
@@ -80,37 +99,37 @@ test('a missing srcset candidate is reported exactly once', () => {
 test('remote and data: candidates are not local files', () => {
   const dataUri = 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
   const { status, out } = run(fixture({ ...ASSETS, 'b.png': 'png',
-    'index.html': page('', { body: `<img src="${dataUri}" srcset="https://cdn.example.com/y.png 2x, ${dataUri} 1x, b.png 640w" alt="">` }) }));
+    'index.html': page('', { body: `<img src="${dataUri}" srcset="https://cdn.example.com/y.png 2x, ${dataUri} 1x, b.png 640w" alt="">` }) }), ['index.html']);
   assert.equal(status, 0, out);
 });
 
 test('dead href="#" is reported once however many there are', () => {
   const { status, out } = run(fixture({ ...ASSETS,
-    'index.html': page('', { body: '<a href="#">one</a> <a href="#">two</a>' }) }));
+    'index.html': page('', { body: '<a href="#">one</a> <a href="#">two</a>' }) }), ['index.html']);
   assert.equal(status, 1);
   assert.equal(count(out, 'dead href="#"'), 1, out);
 });
 
 test('data-frames lists are checked like any other local path', () => {
   const { status, out } = run(fixture({ ...ASSETS, 'a.webp': 'webp',
-    'index.html': page('', { body: '<img src="a.webp" data-frames="a.webp, gone.webp" alt="">' }) }));
+    'index.html': page('', { body: '<img src="a.webp" data-frames="a.webp, gone.webp" alt="">' }) }), ['index.html']);
   assert.equal(status, 1);
   assert.equal(count(out, 'broken link gone.webp'), 1, out);
 });
 
 test('every mailto: must be the real support address', () => {
   const good = run(fixture({ ...ASSETS,
-    'index.html': page('', { body: '<a href="mailto:support@carboai.app">mail</a>' }) }));
+    'index.html': page('', { body: '<a href="mailto:support@carboai.app">mail</a>' }) }), ['index.html']);
   assert.equal(good.status, 0, good.out);
   const bad = run(fixture({ ...ASSETS,
-    'index.html': page('', { body: '<a href="mailto:suport@carboai.app">mail</a>' }) }));
+    'index.html': page('', { body: '<a href="mailto:suport@carboai.app">mail</a>' }) }), ['index.html']);
   assert.equal(bad.status, 1);
   assert.match(bad.out, /mailto:suport@carboai\.app/);
 });
 
 test('every forbidden claim on one page is reported separately', () => {
   const { status, out } = run(fixture({ ...ASSETS,
-    'index.html': page('', { body: '<p>CarboAI costs $9.99 on the free tier.</p>' }) }));
+    'index.html': page('', { body: '<p>CarboAI costs $9.99 on the free tier.</p>' }) }), ['index.html']);
   assert.equal(status, 1);
   assert.match(out, /brand must be written "Carbo-AI"/);
   assert.match(out, /no prices on the site \(found "\$9\.99"\)/);
@@ -118,7 +137,7 @@ test('every forbidden claim on one page is reported separately', () => {
 });
 
 test('the zh claim guards read Chinese too', () => {
-  const zh = (body) => run(fixture({ ...ASSETS, 'zh/index.html': page('../', { lang: 'zh-Hans', body }) }));
+  const zh = (body) => run(fixture({ ...ASSETS, 'zh/index.html': page('../', { lang: 'zh-Hans', body }) }), ['zh/index.html']);
   assert.match(zh('<p>每月 30 元。</p>').out, /no prices on the site/);
   assert.match(zh('<p>￥30 起。</p>').out, /no prices on the site/);
   assert.match(zh('<p>促进代谢。</p>').out, /no metabolism claim/);
@@ -129,41 +148,69 @@ test('the zh claim guards read Chinese too', () => {
   assert.equal(ok.status, 0, ok.out);
 });
 
+test('the widened zh guards catch more claims without catching ordinary Chinese', () => {
+  const zh = (body) => run(fixture({ ...ASSETS, 'zh/index.html': page('../', { lang: 'zh-Hans', body }) }), ['zh/index.html']);
+  const forever = zh('<p>永久免费。</p>');
+  assert.equal(forever.status, 1);
+  assert.match(forever.out, /there is no free tier \(found "永久免费"\)/);
+  const meta = zh('<p>帮你提升代谢。</p>');
+  assert.equal(meta.status, 1);
+  assert.match(meta.out, /no metabolism claim \(found "代谢"\)/);
+  // 元 opens 元旦 as often as it closes a price, and downloading really is free.
+  const fine = zh('<p>2026 元旦上线，免费下载。</p>');
+  assert.equal(fine.status, 0, fine.out);
+});
+
 test('a page without a canonical link is reported', () => {
   const { status, out } = run(fixture({ ...ASSETS,
-    'index.html': page().replace(/<link rel="canonical"[^>]*>/, '') }));
+    'index.html': page().replace(/<link rel="canonical"[^>]*>/, '') }), ['index.html']);
   assert.equal(status, 1);
   assert.match(out, /missing canonical/);
 });
 
+test('legal pages are scanned for claims but not for the marketing <head> or the joiner', () => {
+  const clean = run(fixture({ 'privacy.html': legal('<p>Photos are deleted after processing.</p>') }), ['privacy.html:legal']);
+  assert.equal(clean.status, 0, clean.out); // no description, canonical, og:image or icon — and no failure
+  const vendor = run(fixture({ 'privacy.html': legal('<p>Stored in Supabase.</p>') }), ['privacy.html:legal']);
+  assert.equal(vendor.status, 1);
+  assert.match(vendor.out, /privacy\.html: no vendor names \(found "Supabase"\)/);
+  assert.doesNotMatch(vendor.out, /missing (canonical|meta description|og:image)/);
+  const zh = run(fixture({ 'privacy-zh.html': legal('<h2>照片怎么处理</h2>', 'zh-Hans') }), ['privacy-zh.html:legal']);
+  assert.equal(zh.status, 0, zh.out); // frozen Chinese copy, no U+2060
+});
+
 test('zh headings and the hero bubble must be run through the joiner', () => {
   const body = '<h2>拍一张碳水算清</h2><div class="bubble">午饭给我看看。</div>';
-  const bad = run(fixture({ ...ASSETS, 'zh/index.html': page('../', { lang: 'zh-Hans', body }) }));
+  const bad = run(fixture({ ...ASSETS, 'zh/index.html': page('../', { lang: 'zh-Hans', body }) }), ['zh/index.html']);
   assert.equal(bad.status, 1);
   assert.match(bad.out, /zh\/index\.html: heading\/bubble text not run through tools\/cjk-joiner\.mjs/);
   const good = run(fixture({ ...ASSETS,
-    'zh/index.html': joinHeadings(page('../', { lang: 'zh-Hans', body })) }));
+    'zh/index.html': joinHeadings(page('../', { lang: 'zh-Hans', body })) }), ['zh/index.html']);
   assert.equal(good.status, 0, good.out);
+  // The rule follows <html lang>, not the directory: the same file at the root is checked the same way.
+  const root = run(fixture({ ...ASSETS, 'index.html': page('', { lang: 'zh-Hans', body }) }), ['index.html']);
+  assert.equal(root.status, 1);
+  assert.match(root.out, /index\.html: heading\/bubble text not run through/);
 });
 
 test('sitemap lists every page and points only at files that exist', () => {
   const ok = run(fixture({ ...ASSETS, 'index.html': page(), 'zh/index.html': page('../', { lang: 'zh-Hans' }),
-    'sitemap.xml': sitemap('https://carboai.app/', 'https://carboai.app/zh/') }));
+    'sitemap.xml': sitemap('https://carboai.app/', 'https://carboai.app/zh/') }), ['index.html', 'zh/index.html']);
   assert.equal(ok.status, 0, ok.out);
   const ghost = run(fixture({ ...ASSETS, 'index.html': page(),
-    'sitemap.xml': sitemap('https://carboai.app/', 'https://carboai.app/ghost.html') }));
+    'sitemap.xml': sitemap('https://carboai.app/', 'https://carboai.app/ghost.html') }), ['index.html']);
   assert.equal(ghost.status, 1);
   assert.match(ghost.out, /<loc> .* has no file/);
   const unlisted = run(fixture({ ...ASSETS, 'index.html': page(), 'zh/index.html': page('../', { lang: 'zh-Hans' }),
-    'sitemap.xml': sitemap('https://carboai.app/') }));
+    'sitemap.xml': sitemap('https://carboai.app/') }), ['index.html', 'zh/index.html']);
   assert.equal(unlisted.status, 1);
   assert.match(unlisted.out, /missing <loc> for zh\/index\.html/);
 });
 
 test('assets/site.js must release the inline head guard', () => {
-  const bad = run(fixture({ ...ASSETS, 'index.html': page(), 'assets/site.js': 'console.log("no guard release")' }));
+  const bad = run(fixture({ ...ASSETS, 'index.html': page(), 'assets/site.js': 'console.log("no guard release")' }), ['index.html']);
   assert.equal(bad.status, 1);
   assert.match(bad.out, /__jsGuard/);
-  const good = run(fixture({ ...ASSETS, 'index.html': page(), 'assets/site.js': 'clearTimeout(window.__jsGuard);' }));
+  const good = run(fixture({ ...ASSETS, 'index.html': page(), 'assets/site.js': 'clearTimeout(window.__jsGuard);' }), ['index.html']);
   assert.equal(good.status, 0, good.out);
 });

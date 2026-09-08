@@ -18,11 +18,13 @@ export function joinCjk(s) {
 
 // The joiner belongs on the big type only: <h1>/<h2> and the hero .bubble. Tags inside them
 // (<br>, <span>) are copied through untouched, so text either side of one is joined separately.
+// The class match is exact: \b would also fire on "speech-bubble" and "bubble-tail", since "-" is
+// a non-word character and therefore a word boundary.
 export function joinHeadings(html) {
   const inner = (s) => s.split(/(<[^>]*>)/).map((x) => (x.startsWith('<') ? x : joinCjk(x))).join('');
   return html
     .replace(/(<(h[12])(?:\s[^>]*)?>)([\s\S]*?)(<\/\2>)/g, (m, open, tag, body, close) => open + inner(body) + close)
-    .replace(/(<(\w+)[^>]*\sclass="[^"]*\bbubble\b[^"]*"[^>]*>)([\s\S]*?)(<\/\2>)/g, (m, open, tag, body, close) => open + inner(body) + close);
+    .replace(/(<(\w+)[^>]*\sclass="[^"]*(?<![\w-])bubble(?![\w-])[^"]*"[^>]*>)([\s\S]*?)(<\/\2>)/g, (m, open, tag, body, close) => open + inner(body) + close);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

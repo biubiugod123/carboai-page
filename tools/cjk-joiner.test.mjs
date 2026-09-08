@@ -19,6 +19,12 @@ test('joinHeadings joins h1, h2 and .bubble but nothing else', () => {
     '<h1>拍⁠一⁠张，<br>碳⁠水⁠算⁠清。</h1><h2 class="x">三⁠步，然⁠后⁠开⁠饭。</h2>'
     + '<div class="bubble">午⁠饭⁠给⁠我⁠看⁠看。</div><p>今天这个碳水日还剩多少。</p>');
 });
+test('the .bubble rule matches the whole class name, not a hyphenated part of one', () => {
+  const html = '<div class="speech-bubble">午饭给我看看。</div><div class="bubble-tail">午饭给我看看。</div>';
+  assert.equal(joinHeadings(html), html);
+  assert.equal(joinHeadings('<div class="bubble">午饭。</div>'), '<div class="bubble">午\u2060饭。</div>');
+  assert.equal(joinHeadings('<div class="hero bubble">午饭。</div>'), '<div class="hero bubble">午\u2060饭。</div>');
+});
 test('joinHeadings is idempotent', () => {
   const once = joinHeadings('<h2>常见问题</h2><div class="bubble is-in">碳水我来算。</div>');
   assert.equal(joinHeadings(once), once);

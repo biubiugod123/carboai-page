@@ -95,7 +95,7 @@ try {
     // the fold stay blank. Grow the emulated viewport to the document height first and let them load.
     const { result: docHeight } = await send('Runtime.evaluate', { expression: 'document.documentElement.scrollHeight', returnByValue: true }, sessionId);
     await send('Emulation.setDeviceMetricsOverride', { width, height: Math.max(900, docHeight.value), deviceScaleFactor: 1, mobile: width < 768 }, sessionId);
-    await new Promise((r) => setTimeout(r, 500));
+    await new Promise((r) => setTimeout(r, 900)); // reveals now in view: 0.5 s transition + --i×80 ms stagger ≈ 740 ms worst case
     const { result } = await send('Runtime.evaluate', { expression: 'document.documentElement.scrollWidth - document.documentElement.clientWidth', returnByValue: true }, sessionId);
     const shot = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true }, sessionId);
     const dest = join(out, `${label}-${width}.png`);
