@@ -39,7 +39,7 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 .section--teal { background: color-mix(in srgb, var(--teal-chip-lo) 45%, var(--ground)); }
 .section__head { margin-bottom: 40px; max-width: 60ch; }
 .section__head p { color: var(--ink-2); margin-top: 10px; font-size: 18px; }
-section[id] { scroll-margin-top: 88px; }
+html { scroll-padding-top: 88px; } /* anchors, Tab focus and scrollIntoView all clear the 71px sticky nav */
 .muted { color: var(--ink-2); }
 
 /* nav */
@@ -133,7 +133,7 @@ section[id] { scroll-margin-top: 88px; }
 .pro__list > div { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; }
 .pro__list b { display: block; font-weight: 600; }
 .pro__list b + span { color: var(--ink-2); font-size: 15px; }
-.tick { width: 22px; height: 22px; border-radius: 50%; background: color-mix(in srgb, var(--orange) 22%, var(--card)); color: var(--orange-lip); display: grid; place-items: center; font-size: 13px; font-weight: 800; }
+.tick { width: 22px; height: 22px; border-radius: 50%; background: color-mix(in srgb, var(--orange) 12%, var(--card)); color: var(--orange-lip); display: grid; place-items: center; font-size: 13px; font-weight: 800; }
 
 /* faq */
 .faq { max-width: 760px; }

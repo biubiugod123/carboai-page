@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Carbo-AI — Snap a meal. Know your carbs.</title>
-  <meta name="description" content="Carbo-AI estimates the carbs in a photo of your meal and tells you whether they fit today's carb day. iPhone app, coming soon to the App Store.">
+  <meta name="description" content="Carbo-AI estimates the carbs in a photo of your meal and tells you whether they fit today's carb day. A carb-cycling plan, not just a log. iPhone, coming soon.">
   <link rel="canonical" href="https://carboai.app/">
   <link rel="alternate" hreflang="en" href="https://carboai.app/">
+  <link rel="alternate" hreflang="zh-Hans" href="https://carboai.app/zh/">
   <link rel="alternate" hreflang="x-default" href="https://carboai.app/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="icon" href="favicon.ico" sizes="32x32">
@@ -14,7 +15,7 @@
   <meta name="theme-color" content="#FDFBF7">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Carbo-AI — Snap a meal. Know your carbs.">
-  <meta property="og:description" content="Photo → carbs → today's carb day. Coming soon to the App Store.">
+  <meta property="og:description" content="Photo → carbs → today's carb day. A carb-cycling plan, not just a log.">
   <meta property="og:image" content="https://carboai.app/og-en.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -22,84 +23,51 @@
   <meta property="og:url" content="https://carboai.app/">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <style>
-    :root {
-      --primary-50: #FFFCF5; --primary-100: #FFF8E7; --accent: #F59E0B; --on-accent: #4A1B0C; --accent-lip: #B45309;
-      --gray-900: #111827; --gray-700: #4B5563; --gray-500: #666666; --gray-100: #F9FAFB; --line: #E5E7EB;
-      --space-sm: 16px; --space-md: 24px; --space-lg: 40px; --space-xl: 64px; --space-2xl: 80px;
-      --font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: var(--font-family); color: var(--gray-900); background: #FDFBF7; line-height: 1.6; }
-    .navbar { position: sticky; top: 0; z-index: 10; background: rgba(253,251,247,.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-    .nav-inner { max-width: 1120px; margin: 0 auto; padding: 0 var(--space-md); height: 70px; display: flex; align-items: center; justify-content: space-between; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: var(--gray-900); text-decoration: none; }
-    .brand img { width: 32px; height: 32px; }
-    .nav-links { display: flex; gap: var(--space-md); list-style: none; }
-    .nav-links a { color: var(--gray-700); text-decoration: none; font-size: 15px; }
-    .hero { background: linear-gradient(180deg, var(--primary-50) 0%, var(--primary-100) 40%, #FDFBF7 100%); padding: var(--space-2xl) var(--space-md); }
-    .hero-inner { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-xl); align-items: center; }
-    .hero h1 { font-size: 44px; line-height: 1.15; letter-spacing: -.01em; margin-bottom: var(--space-sm); }
-    .hero p { font-size: 18px; color: var(--gray-700); max-width: 48ch; margin-bottom: var(--space-md); }
-    .cta-row { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
-    .soon-pill { display: inline-flex; align-items: center; height: 50px; padding: 0 22px; border-radius: 14px; background: var(--gray-900); color: #fff; font-weight: 700; font-size: 15px; letter-spacing: .02em; }
-    .btn-ghost { display: inline-flex; align-items: center; height: 50px; padding: 0 22px; border: 2px solid var(--line); border-radius: 14px; color: var(--gray-900); font-weight: 700; font-size: 15px; text-decoration: none; background: #fff; box-shadow: 0 2px 0 var(--line); }
-    .hero p.trust { margin-top: var(--space-md); font-size: 13px; color: var(--gray-500); max-width: none; }
-    .phone { width: 300px; justify-self: center; border-radius: 36px; border: 8px solid #1F2937; overflow: hidden; background: #000; box-shadow: 0 30px 60px -30px rgba(0,0,0,.35); }
-    .phone img { display: block; width: 100%; height: auto; }
-    .features { padding: var(--space-2xl) var(--space-md); background: #fff; }
-    .features h2 { text-align: center; font-size: 32px; margin-bottom: var(--space-lg); }
-    .features-grid { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
-    .feature { background: #FDFBF7; border: 1px solid var(--line); border-radius: 20px; padding: var(--space-md); }
-    .feature h3 { font-size: 20px; margin-bottom: 8px; }
-    .feature p { color: var(--gray-700); }
-    .footer { background: var(--gray-100); padding: var(--space-xl) var(--space-md) var(--space-md); border-top: 1px solid var(--line); }
-    .footer-inner { max-width: 1120px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: var(--space-md); justify-content: space-between; color: var(--gray-700); font-size: 14px; }
-    .footer a { color: var(--gray-700); }
-    @media (max-width: 768px) {
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 34px; }
-      .phone { width: 250px; }
-      .features-grid { grid-template-columns: 1fr; }
-      .nav-links { gap: var(--space-sm); }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/tokens.css">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/motion.css">
+  <script>document.documentElement.classList.add('js');window.__jsGuard=setTimeout(function(){document.documentElement.classList.remove('js')},4000);</script>
 </head>
 <body>
-  <nav class="navbar"><div class="nav-inner">
-    <a class="brand" href="index.html"><img src="favicon.svg" alt="">Carbo-AI</a>
-    <ul class="nav-links">
-      <li><a href="about.html">Support</a></li>
-      <li><a href="privacy.html">Privacy</a></li>
-      <li><a href="terms.html">Terms</a></li>
-    </ul>
-  </div></nav>
 
-  <section class="hero"><div class="hero-inner">
-    <div>
-      <h1>Snap a meal.<br>Know your carbs.</h1>
-      <p>Carbo-AI estimates the carbs in your photo and tells you whether they fit today's carb day. Built around carb cycling: more carbs on training days, fewer on rest days.</p>
-      <div class="cta-row">
-        <span class="soon-pill">Coming soon to the App Store</span>
-        <a class="btn-ghost" href="about.html">Questions? Support</a>
-      </div>
-      <p class="trust">Photos aren't stored on our servers · Apple Health read-only · No ads</p>
+<nav class="nav"><div class="wrap nav__in">
+  <a class="nav__brand" href="index.html"><img src="favicon.svg" alt="">Carbo-AI</a>
+  <ul class="nav__links">
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#pro">Pro</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="about.html">Support</a></li>
+    <li><a class="is-lang" href="zh/index.html" hreflang="zh-Hans" lang="zh-Hans">中文</a></li>
+  </ul>
+</div></nav>
+
+<header class="hero"><div class="wrap hero__grid">
+  <div class="hero__copy">
+    <h1>Snap a meal.<br>Know your carbs.</h1>
+    <p class="lede">Carbo-AI estimates the carbs in your photo and tells you whether they fit today's carb day.</p>
+    <div class="hero__cta">
+      <span class="soon-pill">Coming soon to the App Store</span>
+      <a class="btn btn--ghost" href="#how">How it works</a>
     </div>
-    <div class="phone"><img src="assets/img/home-en.jpg" srcset="assets/img/home-en.jpg 450w, assets/img/home-en@2x.jpg 900w" sizes="(max-width: 768px) 234px, 284px" width="450" height="621" alt="Carbo-AI home screen: today's carb-day chip, carbs left, and this week's carb cycle"></div>
-  </div></section>
+    <p class="hero__trust">Photos aren't stored on our servers · Apple Health read-only · No ads</p>
+  </div>
+  <div class="stage" aria-hidden="true">
+    <img class="stage__bg" src="assets/img/hero-hills.jpg" alt="">
+    <img class="stage__carbo" id="hero-carbo" src="assets/img/carbo-idle-0.webp" width="576" height="624" data-idle="assets/img/carbo-idle-0.webp,assets/img/carbo-idle-3.webp" data-wave="assets/img/carbo-waving-0.webp,assets/img/carbo-waving-1.webp,assets/img/carbo-waving-2.webp,assets/img/carbo-waving-3.webp" alt="">
+    <div class="bubble">Show me lunch — I'll count the carbs.</div>
+  </div>
+</div></header>
 
-  <section class="features">
-    <h2>What Carbo-AI does</h2>
-    <div class="features-grid">
-      <div class="feature"><h3>AI photo recognition</h3><p>Snap a photo and Carbo-AI estimates the food, portion and carbs in a few seconds. You can edit it before it's saved.</p></div>
-      <div class="feature"><h3>Smart carb days</h3><p>High, medium and low carb days set around your training. Each day has a target; the app tracks what's left.</p></div>
-      <div class="feature"><h3>Apple Health, read-only</h3><p>Reads energy, steps and weight to size your carb days. Never writes anything back.</p></div>
-    </div>
-  </section>
+<div class="wrap trust" aria-label="What Carbo-AI promises">
+  <span>Photos aren't stored on our servers</span><span>Apple Health read-only</span><span>No data brokers</span><span>Built in Boston, MA</span>
+</div>
 
-  <footer class="footer"><div class="footer-inner">
-    <span>© 2026 LIFEX TECHNOLOGIES LLC · Built in Boston, MA</span>
-    <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="about.html">Support</a> · <a href="mailto:support@carboai.app">support@carboai.app</a> · <a href="privacy-zh.html" lang="zh-Hans" hreflang="zh-Hans">隐私政策（中文）</a></span>
-  </div></footer>
+<!-- @sections -->
+
+<footer class="footer"><div class="wrap footer__in">
+  <span>© 2026 LIFEX TECHNOLOGIES LLC · Built in Boston, MA</span>
+  <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="about.html">Support</a> · <a href="mailto:support@carboai.app">support@carboai.app</a> · <a href="zh/index.html" hreflang="zh-Hans" lang="zh-Hans">中文</a></span>
+</div></footer>
+<script src="assets/site.js" defer></script>
 </body>
 </html>

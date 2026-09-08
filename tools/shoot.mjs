@@ -4,6 +4,7 @@
 // Usage: node tools/shoot.mjs <page.html> <outdir> <label>   → <outdir>/<label>-{1280,768,375}.png
 // Why not `chrome --screenshot --window-size=375,…`: macOS clamps the window to ~640 px, so mobile shots come out clipped.
 // Pages must carry <meta name="viewport"> — without it, mobile emulation lays the page out at 980 px.
+// Screenshots are taken with prefers-reduced-motion emulated so every reveal element and the hero's resting state are visible.
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:net';
@@ -75,6 +76,7 @@ try {
     const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true });
     await send('Page.enable', {}, sessionId);
     await send('Emulation.setDeviceMetricsOverride', { width, height: 900, deviceScaleFactor: 1, mobile: width < 768 }, sessionId);
+    await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] }, sessionId);
     events.length = 0;
     const nav = await send('Page.navigate', { url }, sessionId);
     if (nav.errorText) throw new Error(`navigation failed at ${width}px: ${nav.errorText}`);
