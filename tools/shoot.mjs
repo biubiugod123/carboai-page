@@ -1,18 +1,20 @@
 #!/usr/bin/env node
 // Full-page screenshots at true emulated viewports via CDP. Exits 1 if any width overflows horizontally
 // or a page never fires its load event; exits 2 on usage errors.
-// Usage: node tools/shoot.mjs <page.html> <outdir> <label>   → <outdir>/<label>-{1280,768,375}.png
+// Usage: node tools/shoot.mjs <page.html> <outdir> <label> [--motion]   → <outdir>/<label>-{1280,768,375}.png
 // Why not `chrome --screenshot --window-size=375,…`: macOS clamps the window to ~640 px, so mobile shots come out clipped.
 // Pages must carry <meta name="viewport"> — without it, mobile emulation lays the page out at 980 px.
-// Screenshots are taken with prefers-reduced-motion emulated so every reveal element and the hero's resting state are visible.
+// Screenshots emulate prefers-reduced-motion so every reveal element and the hero's resting state are visible, unless --motion is passed.
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
-const [page, outdir, label] = process.argv.slice(2);
-if (!page || !outdir || !label) { console.error('usage: node tools/shoot.mjs <page.html> <outdir> <label>'); process.exit(2); }
+const args = process.argv.slice(2);
+const motion = args.includes('--motion');
+const [page, outdir, label] = args.filter((a) => !a.startsWith('--'));
+if (!page || !outdir || !label) { console.error('usage: node tools/shoot.mjs <page.html> <outdir> <label> [--motion]'); process.exit(2); }
 const file = resolve(page);
 if (!existsSync(file)) { console.error(`no such page: ${file}`); process.exit(2); }
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
@@ -76,7 +78,7 @@ try {
     const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true });
     await send('Page.enable', {}, sessionId);
     await send('Emulation.setDeviceMetricsOverride', { width, height: 900, deviceScaleFactor: 1, mobile: width < 768 }, sessionId);
-    await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] }, sessionId);
+    if (!motion) await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] }, sessionId);
     events.length = 0;
     const nav = await send('Page.navigate', { url }, sessionId);
     if (nav.errorText) throw new Error(`navigation failed at ${width}px: ${nav.errorText}`);

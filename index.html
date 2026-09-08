@@ -23,21 +23,23 @@
   <meta property="og:url" content="https://carboai.app/">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="assets/tokens.css">
   <link rel="stylesheet" href="assets/site.css">
   <link rel="stylesheet" href="assets/motion.css">
-  <script>document.documentElement.classList.add('js');window.__jsGuard=setTimeout(function(){document.documentElement.classList.remove('js')},4000);</script>
+  <script>/* motion.css hides reveal/bubble/word states under html.js; site.js must clearTimeout(window.__jsGuard) — if it never runs, drop the class so nothing stays hidden */document.documentElement.classList.add('js');window.__jsGuard=setTimeout(function(){document.documentElement.classList.remove('js')},1500);</script>
 </head>
 <body>
 
 <nav class="nav"><div class="wrap nav__in">
-  <a class="nav__brand" href="index.html"><img src="apple-touch-icon.png" width="34" height="34" alt="">Carbo-AI</a>
+  <a class="nav__brand" href="./"><img src="apple-touch-icon.png" width="34" height="34" alt="">Carbo-AI</a>
   <ul class="nav__links">
     <li><a href="#how">How it works</a></li>
     <li><a href="#pro">Pro</a></li>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="about.html">Support</a></li>
-    <li><a class="is-lang" href="zh/index.html" hreflang="zh-Hans" lang="zh-Hans">中文</a></li>
+    <li><a class="is-lang" href="zh/" hreflang="zh-Hans" lang="zh-Hans">中文</a></li>
   </ul>
 </div></nav>
 
@@ -49,24 +51,23 @@
       <span class="soon-pill">Coming soon to the App Store</span>
       <a class="btn btn--ghost" href="#how">How it works</a>
     </div>
-    <p class="hero__trust">Photos aren't stored on our servers · Apple Health read-only · No ads</p>
   </div>
-  <div class="stage" aria-hidden="true">
-    <img class="stage__bg" src="assets/img/hero-hills.webp" alt="">
+  <div class="stage">
+    <img class="stage__bg" src="assets/img/hero-hills.webp" width="1040" height="1040" fetchpriority="high" alt="">
     <img class="stage__carbo" id="hero-carbo" src="assets/img/carbo-idle-0.webp" width="576" height="624" data-idle="assets/img/carbo-idle-0.webp,assets/img/carbo-idle-3.webp" data-wave="assets/img/carbo-waving-0.webp,assets/img/carbo-waving-1.webp,assets/img/carbo-waving-2.webp,assets/img/carbo-waving-3.webp" alt="">
     <div class="bubble">Show me lunch — I'll count the carbs.</div>
   </div>
 </div></header>
 
-<div class="wrap trust" aria-label="What Carbo-AI promises">
-  <span>Photos aren't stored on our servers</span><span>Apple Health read-only</span><span>No data brokers</span><span>Built in Boston, MA</span>
-</div>
+<ul class="wrap trust" aria-label="What Carbo-AI promises">
+  <li>Photos aren't stored on our servers</li><li>Apple Health read-only</li><li>No data brokers</li><li>No ads</li>
+</ul>
 
 <!-- @sections -->
 
 <footer class="footer"><div class="wrap footer__in">
   <span>© 2026 LIFEX TECHNOLOGIES LLC · Built in Boston, MA</span>
-  <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="about.html">Support</a> · <a href="mailto:support@carboai.app">support@carboai.app</a> · <a href="zh/index.html" hreflang="zh-Hans" lang="zh-Hans">中文</a></span>
+  <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="about.html">Support</a> · <a href="mailto:support@carboai.app">support@carboai.app</a> · <a href="zh/" hreflang="zh-Hans" lang="zh-Hans">中文</a></span>
 </div></footer>
 <script src="assets/site.js" defer></script>
 </body>

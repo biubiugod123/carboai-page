@@ -23,7 +23,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 88px; /* anchors, Tab focus and scrollIntoView all clear the 71px sticky nav */ }
 body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--font); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
 img { max-width: 100%; height: auto; display: block; }
 h1, h2, h3 { line-height: 1.2; letter-spacing: -0.012em; text-wrap: balance; margin: 0; }
@@ -39,7 +39,6 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 .section--teal { background: color-mix(in srgb, var(--teal-chip-lo) 45%, var(--ground)); }
 .section__head { margin-bottom: 40px; max-width: 60ch; }
 .section__head p { color: var(--ink-2); margin-top: 10px; font-size: 18px; }
-html { scroll-padding-top: 88px; } /* anchors, Tab focus and scrollIntoView all clear the 71px sticky nav */
 .muted { color: var(--ink-2); }
 
 /* nav */
@@ -69,19 +68,18 @@ html { scroll-padding-top: 88px; } /* anchors, Tab focus and scrollIntoView all 
 .hero__grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; }
 .hero__copy p.lede { font-size: 19px; color: var(--ink-2); margin: 18px 0 28px; }
 .hero__cta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.hero__trust { margin-top: 22px; font-size: 13.5px; color: var(--ink-3); font-weight: 500; max-width: none; }
 
 /* Carbo stage */
 .stage { position: relative; border-radius: 24px; overflow: hidden; background: var(--card); box-shadow: var(--shadow-lg); aspect-ratio: 1 / 1; max-width: 520px; justify-self: end; width: 100%; }
 .stage__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
 .stage__carbo { position: absolute; left: 50%; bottom: 0; width: 66%; height: auto; transform-origin: 50% 100%; translate: -50% 0; animation: breathe 4.3s ease-in-out infinite; }
-.bubble { position: absolute; top: 20px; left: 20px; max-width: 62%; background: var(--card); border: 1.5px solid var(--line); border-radius: 16px; padding: 10px 14px; font-size: 15px; font-weight: 500; line-height: 1.4; box-shadow: 0 2px 6px rgba(17,24,39,.06); }
-.bubble::after { content: ""; position: absolute; left: 22px; bottom: -9px; width: 16px; height: 16px; background: var(--card); border-right: 1.5px solid var(--line); border-bottom: 1.5px solid var(--line); transform: rotate(45deg); }
+.bubble { position: absolute; top: 20px; left: 20px; max-width: 58%; background: var(--card); border: 1.5px solid var(--line); border-radius: 16px; padding: 10px 14px; font-size: 15px; font-weight: 500; line-height: 1.4; box-shadow: 0 2px 6px rgba(17,24,39,.06); }
+.bubble::after { content: ""; position: absolute; right: 34px; bottom: -9px; /* tail on the right, pointing down at Carbo's head */ width: 16px; height: 16px; background: var(--card); border-right: 1.5px solid var(--line); border-bottom: 1.5px solid var(--line); transform: rotate(45deg); }
 @keyframes breathe { 0%, 100% { transform: scale(1, 1); } 44% { transform: scale(1.004, 1.012); } }
 
 /* trust strip */
-.trust { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 0 0 8px; }
-.trust span { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
+.trust { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 0 24px 8px; margin: 0 auto; list-style: none; }
+.trust li { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
 
 /* cards + steps */
 .card { background: var(--card); border-radius: 20px; box-shadow: var(--shadow-lg); padding: 24px; }
@@ -144,6 +142,20 @@ html { scroll-padding-top: 88px; } /* anchors, Tab focus and scrollIntoView all 
 .faq details[open] summary::after { content: "–"; }
 .faq details p { color: var(--ink-2); padding: 0 0 16px; max-width: 68ch; }
 
+/* emotion strip (Carbo reacts) — site.js plays the frames; no animation CSS needed */
+.emotions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.emotion { background: var(--card); border-radius: 20px; box-shadow: var(--shadow-lg); padding: 18px 16px 14px; text-align: center; }
+.emotion img { width: 128px; height: auto; margin: 0 auto 8px; }
+.emotion b { display: block; font-weight: 600; }
+.emotion span { color: var(--ink-2); font-size: 14px; }
+
+/* kinetic type band — the scrolling itself lives in motion.css */
+.marquee { overflow: hidden; padding: 18px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--card); }
+.marquee__track { display: flex; width: max-content; font-weight: 800; font-size: 40px; letter-spacing: -.01em; white-space: nowrap; color: var(--ink); }
+.marquee__track--reverse { color: var(--teal-dot-md); }
+.marquee__track span { padding-right: 48px; }
+.week__dot--today { box-shadow: 0 0 0 3px var(--card), 0 0 0 5px var(--teal-dot-hi); }
+
 /* final band */
 .band { background: var(--orange); color: var(--on-orange); padding: 72px 0; }
 .band__in { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
@@ -156,15 +168,16 @@ html { scroll-padding-top: 88px; } /* anchors, Tab focus and scrollIntoView all 
 .footer a { color: var(--ink-2); }
 
 /* reveal on scroll (only when JS is on) */
-html.js .reveal { opacity: 0; transform: translateY(12px); transition: opacity .5s ease, transform .5s ease; }
-html.js .reveal.is-visible { opacity: 1; transform: none; }
+/* reveal uses the independent `translate` property so `transform` stays free for the card hover lift; the transition list
+   includes transform/box-shadow because this rule outranks .card's own transition on .card.reveal elements */
+html.js .reveal { opacity: 0; translate: 0 12px; transition: opacity .5s ease, translate .5s ease, transform .22s ease, box-shadow .22s ease; }
+html.js .reveal.is-visible { opacity: 1; translate: 0 0; }
 
 @media (max-width: 640px) {
   /* five links do not fit beside the brand on a phone; the three in-page anchors are one scroll away anyway */
   .nav__links a[href^="#"] { display: none; }
   .nav__brand { font-size: 17px; }
 }
-
 @media (max-width: 900px) {
   h1 { font-size: 36px; } h2 { font-size: 28px; }
   .section { padding: 64px 0; }
@@ -173,10 +186,12 @@ html.js .reveal.is-visible { opacity: 1; transform: none; }
   .row--flip > :first-child { order: 0; }
   .stage { max-width: 420px; justify-self: center; }
   .steps { grid-template-columns: 1fr; }
+  .emotions { grid-template-columns: repeat(2, 1fr); }
+  .marquee__track { font-size: 28px; }
   .nav__links { gap: 14px; } .nav__links a { font-size: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .stage__carbo { animation: none; }
-  html.js .reveal { opacity: 1; transform: none; transition: none; }
+  html.js .reveal { opacity: 1; translate: 0 0; transition: none; }
 }
