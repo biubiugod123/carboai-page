@@ -4,9 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>How the estimate works — Carbo-AI</title>
-  <meta name="description" content="How Carbo-AI turns a meal photo into a carb estimate, and why carb cycling tolerates estimates.">
-  <!-- Placeholder page: noindex until the real copy lands, and kept out of sitemap.xml to match. -->
-  <meta name="robots" content="noindex">
+  <meta name="description" content="How Carbo-AI turns a meal photo into a carb estimate, where the photo goes, when the estimate is likely to be off, and why carb cycling tolerates estimates.">
   <link rel="canonical" href="https://carboai.app/how-it-works.html">
   <link rel="alternate" hreflang="en" href="https://carboai.app/how-it-works.html">
   <link rel="alternate" hreflang="zh-Hans" href="https://carboai.app/zh/how-it-works.html">
@@ -15,9 +13,9 @@
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="theme-color" content="#FDFBF7">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
   <meta property="og:title" content="How the estimate works — Carbo-AI">
-  <meta property="og:description" content="Photo → food → portion → carbs, and why a carb-cycling day tolerates an estimate.">
+  <meta property="og:description" content="Photo → food → portion → nutrition. What's estimated, what isn't, and why carb cycling tolerates it.">
   <meta property="og:image" content="https://carboai.app/og-en.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -31,6 +29,7 @@
   <link rel="stylesheet" href="assets/tokens.css">
   <link rel="stylesheet" href="assets/site.css">
   <!-- No motion.css, no site.js and no html.js guard: nothing here reveals, animates or is hidden until JS runs. -->
+  <style>.prose{max-width:720px}.prose h2{font-size:24px;margin:40px 0 10px}.prose p,.prose li{color:var(--ink-2);max-width:68ch}.prose ol,.prose ul{padding-left:1.3em}.prose li{margin-bottom:6px}</style>
 </head>
 <body>
 
@@ -45,9 +44,39 @@
   </ul>
 </div></nav>
 
-<main class="section"><div class="wrap">
+<main class="section"><div class="wrap prose">
   <h1>How the estimate works</h1>
-  <p class="muted" style="margin-top:12px">This page is being written. <a href="index.html">Back to Carbo-AI</a></p>
+  <p style="font-size:18px;margin-top:12px">Everything Carbo-AI shows you about a meal is an estimate built in four steps. This page says exactly what each step does, what it can't do, and what happens to your photo.</p>
+
+  <h2>1. Where the photo goes</h2>
+  <p>When you submit a photo, it travels from your phone to our servers and on to a third-party AI provider that recognises food. The provider returns its answer; the photo is then discarded — we don't store meal photos on our servers. The photo stays on your phone with the saved meal. If you use Pro cloud backup, the backup holds a reference to the photo, not the photo.</p>
+
+  <h2>2. What gets estimated</h2>
+  <ol>
+    <li><strong>What the food is.</strong> The AI names the items it sees — "chicken thigh", "white rice", "broccoli".</li>
+    <li><strong>How much there is.</strong> It estimates a portion in grams from the photo. This is the least certain step: a camera can't weigh food, and depth, plate size and angle all affect the guess.</li>
+    <li><strong>What's in it.</strong> Each item's carbs, protein and fat are looked up per gram and scaled to the estimated portion.</li>
+    <li><strong>Does it fit today?</strong> The app compares the carbs with what's left on today's carb day and shows you the difference.</li>
+  </ol>
+
+  <h2>3. When it's likely to be off</h2>
+  <ul>
+    <li>Mixed dishes where ingredients hide — stews, casseroles, fried rice.</li>
+    <li>Sauces, oils and dressings you can't see.</li>
+    <li>Deep bowls and stacked food, where the portion is hard to judge.</li>
+    <li>Poor light, a steep angle, or several dishes in one frame.</li>
+  </ul>
+  <p>For any of these, take the number as a starting point and correct it on the review screen — every number on the result card can be edited before you save, and the day is calculated from what you saved.</p>
+
+  <h2>4. Why carb cycling tolerates estimates</h2>
+  <p>Carb cycling works with day types — high, medium and low — and each has a target range rather than a single figure. An estimate that's somewhat high or low usually still lands you on the right side of the day. That's why Carbo-AI is built around the plan and not around gram-perfect logging.</p>
+
+  <h2>5. Apple Health</h2>
+  <p>With your permission the app reads active energy, resting energy, steps, weight, body fat percentage and workouts, and uses them on your phone to size your carb days. Access is read-only; the app never writes to Apple Health.</p>
+
+  <h2>Not medical advice</h2>
+  <p>Carbo-AI is a general wellness tool, not a medical device. If you have a medical condition — diabetes, an eating disorder, pregnancy — talk to a qualified professional before changing your diet.</p>
+  <p style="margin-top:32px"><a class="btn btn--ghost" href="index.html">Back to Carbo-AI</a></p>
 </div></main>
 
 <footer class="footer"><div class="wrap footer__in">

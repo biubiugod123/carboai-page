@@ -4,9 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>估算是怎么来的 — Carbo-AI</title>
-  <meta name="description" content="Carbo-AI 如何把一张餐食照片变成碳水估算，以及为什么碳循环能容忍估算。">
-  <!-- Placeholder page: noindex until the real copy lands, and kept out of sitemap.xml to match. -->
-  <meta name="robots" content="noindex">
+  <meta name="description" content="Carbo-AI 如何把餐食照片变成碳水估算，照片去了哪，什么时候容易估错，以及为什么碳循环能容忍估算。">
   <link rel="canonical" href="https://carboai.app/zh/how-it-works.html">
   <link rel="alternate" hreflang="zh-Hans" href="https://carboai.app/zh/how-it-works.html">
   <link rel="alternate" hreflang="en" href="https://carboai.app/how-it-works.html">
@@ -15,9 +13,9 @@
   <link rel="icon" href="../favicon.ico" sizes="32x32">
   <link rel="apple-touch-icon" href="../apple-touch-icon.png">
   <meta name="theme-color" content="#FDFBF7">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
   <meta property="og:title" content="估算是怎么来的 — Carbo-AI">
-  <meta property="og:description" content="照片 → 食物 → 份量 → 碳水，以及为什么碳循环容得下估算。">
+  <meta property="og:description" content="照片 → 食物 → 份量 → 营养。哪些是估的、哪些不是，以及为什么碳循环容得下估算。">
   <meta property="og:image" content="https://carboai.app/og-zh.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -31,6 +29,7 @@
   <link rel="stylesheet" href="../assets/tokens.css">
   <link rel="stylesheet" href="../assets/site.css">
   <!-- No motion.css, no site.js and no html.js guard: nothing here reveals, animates or is hidden until JS runs. -->
+  <style>.prose{max-width:720px}.prose h2{font-size:24px;margin:40px 0 10px}.prose p,.prose li{color:var(--ink-2);max-width:68ch}.prose ol,.prose ul{padding-left:1.3em}.prose li{margin-bottom:6px}</style>
 </head>
 <body>
 
@@ -45,9 +44,39 @@
   </ul>
 </div></nav>
 
-<main class="section"><div class="wrap">
+<main class="section"><div class="wrap prose">
   <h1>估⁠算⁠是⁠怎⁠么⁠来⁠的</h1>
-  <p class="muted" style="margin-top:12px">本页撰写中。<a href="index.html">返回 Carbo-AI</a></p>
+  <p style="font-size:18px;margin-top:12px">Carbo-AI 关于一餐的所有数字都是分四步得出的估算。这一页把每一步做什么、做不了什么、照片去了哪，全部说清楚。</p>
+
+  <h2>1. 照⁠片⁠去⁠了⁠哪</h2>
+  <p>你提交照片后，它从你的手机发到我们的服务器，再交给一个识别食物的第三方 AI 服务商。服务商返回结果后照片即被丢弃——我们的服务器不存餐食照片。照片随这餐记录留在你的手机上。如果你用 Pro 云备份，备份里存的是照片的引用，不是照片本身。</p>
+
+  <h2>2. 估⁠的⁠是⁠什⁠么</h2>
+  <ol>
+    <li><strong>这是什么。</strong>AI 说出它看到的东西——「鸡腿」、「白米饭」、「西兰花」。</li>
+    <li><strong>有多少。</strong>它从照片估一个克数。这是最不确定的一步：摄像头称不了重，景深、盘子大小、角度都会影响判断。</li>
+    <li><strong>里面有什么。</strong>每样食物按每克的碳水、蛋白质、脂肪查表，再按估出的份量换算。</li>
+    <li><strong>今天合不合适。</strong>应用把碳水和今天碳水日的剩余额度比一下，把差值给你看。</li>
+  </ol>
+
+  <h2>3. 什⁠么⁠时⁠候⁠容⁠易⁠估⁠错</h2>
+  <ul>
+    <li>食材藏在里面的混合菜——炖菜、砂锅、炒饭。</li>
+    <li>看不见的酱汁、油和调味料。</li>
+    <li>深碗和堆叠的食物，份量不好判断。</li>
+    <li>光线差、角度陡，或者一张照片里好几道菜。</li>
+  </ul>
+  <p>遇到这些情况，把数字当起点，在确认页上自己改——结果卡上的每个数字保存前都能改，当天的额度按你保存的数字算。</p>
+
+  <h2>4. 为⁠什⁠么⁠碳⁠循⁠环⁠容⁠得⁠下⁠估⁠算</h2>
+  <p>碳循环按「日类型」运作——高、中、低碳日——每种都是一个目标区间，不是一个精确数字。估算偏高或偏低一些，通常仍然落在正确的那一边。所以 Carbo-AI 是围绕计划设计的，不是围绕精确到克的记录。</p>
+
+  <h2>5. Apple 健⁠康</h2>
+  <p>经你授权后，应用读取活动能量、静息能量、步数、体重、体脂率和体能训练记录，并在你的手机上用它们来定碳水日。权限是只读的，应用不会向 Apple 健康写入任何数据。</p>
+
+  <h2>不⁠是⁠医⁠疗⁠建⁠议</h2>
+  <p>Carbo-AI 是通用健康工具，不是医疗器械。如果你有糖尿病、进食障碍，或处于孕期，请在改变饮食前咨询合格的专业人士。</p>
+  <p style="margin-top:32px"><a class="btn btn--ghost" href="index.html">返回 Carbo-AI</a></p>
 </div></main>
 
 <footer class="footer"><div class="wrap footer__in">
