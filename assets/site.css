@@ -210,3 +210,23 @@ html.js .reveal.is-visible { opacity: 1; translate: 0 0; }
   .stage__carbo { animation: none; }
   html.js .reveal { opacity: 1; translate: 0 0; transition: none; }
 }
+
+/* interactive demo */
+.demo { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+.demo__frame { position: relative; border-radius: 36px; border: 8px solid color-mix(in srgb, var(--teal-dot-md) 55%, var(--card)); background: var(--muted); aspect-ratio: 9 / 16; max-width: 320px; margin: 0 auto; overflow: hidden; }
+.demo__photo { width: 100%; height: 100%; object-fit: cover; }
+.demo__frame .scan { opacity: 0; transition: opacity .2s; }
+.demo__frame.is-scanning .scan { opacity: 1; }
+.demo__frame.is-scanning::after { content: ""; position: absolute; left: 14%; right: 14%; top: 14%; height: 2px; background: #fff; box-shadow: 0 0 12px #fff; animation: sweep 2s linear 1; }
+@keyframes sweep { from { top: 14%; } to { top: 86%; } }
+.demo__thumbs { display: flex; gap: 10px; margin-bottom: 18px; }
+.demo__thumb { padding: 0; border: 3px solid transparent; border-radius: 14px; overflow: hidden; background: none; cursor: pointer; line-height: 0; }
+.demo__thumb img { width: 84px; height: 84px; object-fit: cover; }
+.demo__thumb[aria-pressed="true"] { border-color: var(--orange); }
+.demo__side { position: relative; padding-bottom: 130px; } /* Carbo is 120px wide and 576:624, so he renders 130px tall; reserve exactly that, as .step__art does for the 96px one */
+.demo__carbo { position: absolute; left: 0; bottom: 0; width: 120px; }
+.demo__bubble { position: absolute; left: 130px; bottom: 34px; max-width: 60%; background: var(--card); border: 1.5px solid var(--line); border-radius: 16px; padding: 10px 14px; font-size: 15px; font-weight: 500; }
+.demo__bubble::after { content: ""; position: absolute; left: -9px; bottom: 16px; width: 14px; height: 14px; background: var(--card); border-left: 1.5px solid var(--line); border-bottom: 1.5px solid var(--line); transform: rotate(45deg); }
+.demo__note { font-size: 13px; color: var(--ink-3); margin-top: 12px; }
+@media (max-width: 900px) { .demo { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .demo__frame.is-scanning::after { animation: none; } }
