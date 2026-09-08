@@ -23,64 +23,50 @@
   <meta property="og:url" content="https://carboai.app/about.html">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <style>
-    :root { --gray-900:#111827; --gray-700:#4B5563; --gray-500:#666; --line:#E5E7EB; --font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: var(--font-family); color: var(--gray-900); background: #FDFBF7; line-height: 1.65; }
-    .navbar { position: sticky; top: 0; z-index: 10; background: rgba(253,251,247,.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-    .nav-inner { max-width: 1120px; margin: 0 auto; padding: 0 24px; height: 70px; display: flex; align-items: center; justify-content: space-between; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: var(--gray-900); text-decoration: none; }
-    .brand img { width: 32px; height: 32px; }
-    .nav-links { display: flex; gap: 24px; list-style: none; } .nav-links a { color: var(--gray-700); text-decoration: none; font-size: 15px; }
-    main { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
-    h1 { font-size: 36px; margin-bottom: 8px; } .lede { color: var(--gray-700); font-size: 18px; margin-bottom: 40px; }
-    h2 { font-size: 22px; margin: 40px 0 10px; padding-top: 16px; border-top: 1px solid var(--line); }
-    p, li { color: var(--gray-700); } ul, ol { padding-left: 1.3em; margin: 8px 0; } li { margin-bottom: 4px; }
-    a { color: #3A7777; }
-    .footer { border-top: 1px solid var(--line); padding: 32px 24px; font-size: 14px; color: var(--gray-700); text-align: center; }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="assets/tokens.css">
+  <link rel="stylesheet" href="assets/site.css">
+  <!-- No motion.css, no site.js and no html.js guard: <details> opens without JS, and nothing here reveals or animates. -->
+  <style>.prose{max-width:720px}.faq{margin-top:32px}.faq details ol{color:var(--ink-2);max-width:68ch;padding-left:1.3em;margin:2px 0 10px}.faq details li{margin-bottom:4px}</style>
 </head>
 <body>
-  <nav class="navbar"><div class="nav-inner">
-    <a class="brand" href="index.html"><img src="favicon.svg" alt="">Carbo-AI</a>
-    <ul class="nav-links"><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul>
-  </div></nav>
-  <main>
-    <h1>Support</h1>
-    <p class="lede">Carbo-AI is an iPhone app by LIFEX TECHNOLOGIES LLC, Boston, MA. Email <a href="mailto:support@carboai.app">support@carboai.app</a> — we usually reply within two business days.</p>
 
-    <h2>How accurate is the carb estimate?</h2>
-    <p>It's an estimate. Carbo-AI recognises the food in your photo, estimates the portion, and looks up its nutrition. No app can weigh food through a camera, so treat the number as a starting point, not a lab result. Carb cycling doesn't need a lab: each day has a target range rather than a single number to hit. When the estimate is off, adjust the portion before you save and the day is calculated from your numbers.</p>
+<nav class="nav"><div class="wrap nav__in">
+  <a class="nav__brand" href="./"><img src="apple-touch-icon.png" width="34" height="34" alt="">Carbo-AI</a>
+  <ul class="nav__links">
+    <li><a href="index.html#how">How it works</a></li>
+    <li><a href="index.html#pro">Pro</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
+    <li><a href="about.html">Support</a></li>
+    <li><a class="is-lang" href="zh/about.html" hreflang="zh-Hans" lang="zh-Hans">中文</a></li>
+  </ul>
+</div></nav>
 
-    <h2>What happens to my photos?</h2>
-    <p>Your photo is sent to our servers and on to a third-party AI provider to recognise the food. Once the estimate comes back, the photo is discarded — we don't store meal photos on our servers. The photo stays on your phone with the saved meal. Pro cloud backup stores only a reference to it, never the image. Details are in the <a href="privacy.html">Privacy Policy</a>.</p>
-
-    <h2>Is Carbo-AI free?</h2>
-    <p>Carbo-AI is free to download. Using it requires a Carbo-AI Pro subscription, billed through the App Store. If a free trial is offered, its length and terms are shown in the App Store listing and in the app before you buy. You can cancel at any time.</p>
-
-    <h2>How do I cancel my subscription?</h2>
-    <ol>
+<main class="section"><div class="wrap prose">
+  <h1>Support</h1>
+  <p style="font-size:18px;margin-top:12px">Carbo-AI is an iPhone app by LIFEX TECHNOLOGIES LLC, Boston, MA. Email <a href="mailto:support@carboai.app">support@carboai.app</a> — we usually reply within two business days.</p>
+  <div class="faq">
+    <details open><summary>How accurate is the carb estimate?</summary><p>It's an estimate. Carbo-AI recognises the food in your photo, estimates the portion, and looks up its nutrition. No app can weigh food through a camera, so treat the number as a starting point, not a lab result. Carb cycling doesn't need a lab: each day has a target range rather than a single number to hit. When the estimate is off, adjust the portion before you save and the day is calculated from your numbers.</p></details>
+    <details open><summary>What happens to my photos?</summary><p>Your photo is sent to our servers and on to a third-party AI provider to recognise the food. Once the estimate comes back, the photo is discarded — we don't store meal photos on our servers. The photo stays on your phone with the saved meal. Pro cloud backup stores only a reference to it, never the image. Details are in the <a href="privacy.html">Privacy Policy</a>.</p></details>
+    <details open><summary>Is Carbo-AI free?</summary><p>Carbo-AI is free to download. Using it requires a Carbo-AI Pro subscription, billed through the App Store. If a free trial is offered, its length and terms are shown in the App Store listing and in the app before you buy. You can cancel at any time.</p></details>
+    <details open><summary>How do I cancel my subscription?</summary><ol>
       <li>Open <strong>Settings</strong> on your iPhone and tap your name at the top.</li>
       <li>Tap <strong>Subscriptions</strong>, then <strong>Carbo-AI</strong>.</li>
       <li>Tap <strong>Cancel Subscription</strong>. You keep access until the end of the current period.</li>
-    </ol>
-    <p>Deleting the app does not cancel the subscription. Refunds are handled by Apple through <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>.</p>
+    </ol><p>Deleting the app does not cancel the subscription. Refunds are handled by Apple through <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>.</p></details>
+    <details open><summary>I already subscribed, but the app asks me to pay</summary><p>On the <strong>Upgrade to Pro</strong> screen, scroll to the bottom and tap <strong>Restore Purchases</strong>. Purchases are tied to your Apple ID, so this also works on a new phone.</p></details>
+    <details open><summary>How do I delete my account?</summary><p>In the app, open the <strong>Profile</strong> tab, tap the gear icon to open Settings, then tap <strong>Delete account</strong>. Your account and all server-side data — meals, plan, profile, backups and usage events — are removed within 30 days. Data stored only on your phone goes away when you delete the app. You can also email us and we'll do it for you.</p></details>
+    <details open><summary>Which Apple Health data does it read?</summary><p>With your permission: active energy, resting energy, steps, weight, body fat percentage and workouts. Access is read-only — the app never writes to Apple Health. You can withdraw access any time in the Health app under Sharing → Apps.</p></details>
+    <details open><summary>Is there an Android version?</summary><p>Not yet. Carbo-AI is iPhone-only.</p></details>
+    <details open><summary>Something else?</summary><p>Email <a href="mailto:support@carboai.app">support@carboai.app</a>. Include your iPhone model and iOS version if you're reporting a problem.</p></details>
+  </div>
+</div></main>
 
-    <h2>I already subscribed, but the app asks me to pay</h2>
-    <p>On the <strong>Upgrade to Pro</strong> screen, scroll to the bottom and tap <strong>Restore Purchases</strong>. Purchases are tied to your Apple ID, so this also works on a new phone.</p>
-
-    <h2>How do I delete my account?</h2>
-    <p>In the app, open the <strong>Profile</strong> tab, tap the gear icon to open Settings, then tap <strong>Delete account</strong>. Your account and all server-side data — meals, plan, profile, backups and usage events — are removed within 30 days. Data stored only on your phone goes away when you delete the app. You can also email us and we'll do it for you.</p>
-
-    <h2>Which Apple Health data does it read?</h2>
-    <p>With your permission: active energy, resting energy, steps, weight, body fat percentage and workouts. Access is read-only — the app never writes to Apple Health. You can withdraw access any time in the Health app under Sharing → Apps.</p>
-
-    <h2>Is there an Android version?</h2>
-    <p>Not yet. Carbo-AI is iPhone-only.</p>
-
-    <h2>Something else?</h2>
-    <p>Email <a href="mailto:support@carboai.app">support@carboai.app</a>. Include your iPhone model and iOS version if you're reporting a problem.</p>
-  </main>
-  <footer class="footer">© 2026 LIFEX TECHNOLOGIES LLC · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="index.html">Home</a></footer>
+<footer class="footer"><div class="wrap footer__in">
+  <span>© 2026 LIFEX TECHNOLOGIES LLC · Built in Boston, MA</span>
+  <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="about.html">Support</a> · <a href="mailto:support@carboai.app">support@carboai.app</a> · <a href="zh/about.html" hreflang="zh-Hans" lang="zh-Hans">中文</a></span>
+</div></footer>
 </body>
 </html>
