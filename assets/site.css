@@ -171,6 +171,9 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 .footer { padding: 40px 0 56px; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink-2); }
 .footer__in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
 .footer a { color: var(--ink-2); white-space: nowrap; } /* 服务条款 breaks as 服务条/款 at 320; the links wrap between themselves, never inside one */
+/* The email and the language link travel as one run: with five separate links the row breaks after the
+   last separator that fits, which at 375 left 中文 / English alone on a second line. */
+.footer__tail { white-space: nowrap; }
 
 /* reveal on scroll (only when JS is on) */
 /* reveal uses the independent `translate` property so `transform` stays free for the card hover lift; .card.reveal merges the
@@ -189,14 +192,11 @@ html.js .reveal.is-visible { opacity: 1; translate: 0 0; }
   /* 7 × 34px dots + 6 × 14px gaps = 322px does not fit a 272px column at 320 (WCAG reflow width) */
   .week__dot { width: 28px; height: 28px; }
   .week__strip { gap: 8px; }
-  /* At 320 the numbered method-page headings wrap after the numeral in both languages —
-     "4. 为什么碳循环容得下估算", and in English "1. Where the photo goes". The method pages set
-     .prose h2 in their own <style> — same specificity, later in the document — so this needs one
-     class more; the child combinator keeps it off the support pages' <summary><h2>. */
-  .wrap.prose > h2 { font-size: 21px; }
-  /* With the links unbreakable the English row runs to three lines at 320 ("中文" alone on the
-     third); one step down fits it in two. 13px is the smallest type on the site and only at this
-     width. */
+  /* Type step for the narrowest phones. It is not what balances the link row — .footer__tail is,
+     by binding the email to the language link; 375 sits inside this query and still orphaned
+     中文 / English before that class existed. At 320 both footer rows wrap in two at either size
+     (the copyright line alone fills the 272px column), so 13px is a density choice here, and the
+     smallest type on the site. */
   .footer { font-size: 13px; }
 }
 @media (max-width: 900px) {
@@ -253,7 +253,7 @@ html.js .reveal.is-visible { opacity: 1; translate: 0 0; }
 /* pretty, not balance: balance splits the Chinese lead down the middle (提/醒), while the default greedy
    wrap drops 发。 onto a line of its own; pretty only pulls the orphan back up. */
 .nudges .section__head p { text-wrap: pretty; }
-.nudges__stack { display: grid; gap: 14px; max-width: 440px; margin: 0 auto; }
+.nudges__stack { display: grid; gap: 14px; max-width: 440px; margin: 0 auto; padding: 0; list-style: none; }
 .nudge { margin: 0; border-radius: 20px; overflow: hidden; box-shadow: 0 12px 26px -14px rgba(17, 24, 39, .42); }
 .nudge img { width: 100%; }
 /* A cascade, not a ladder: each banner sits a little further in than the one above, the way a stack of
