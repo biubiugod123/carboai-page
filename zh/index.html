@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carbo-AI — 拍一张，碳水算清。</title>
+  <meta name="description" content="Carbo-AI 从餐食照片里估出碳水，再告诉你今天这个碳水日该吃多少。是碳循环计划，不只是记录。iPhone 应用，即将上线。">
+  <link rel="canonical" href="https://carboai.app/zh/">
+  <link rel="alternate" hreflang="zh-Hans" href="https://carboai.app/zh/">
+  <link rel="alternate" hreflang="en" href="https://carboai.app/">
+  <link rel="alternate" hreflang="x-default" href="https://carboai.app/">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <meta name="theme-color" content="#FDFBF7">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Carbo-AI — 拍一张，碳水算清。">
+  <meta property="og:description" content="照片 → 碳水 → 今天的碳水日。是碳循环计划，不只是记录。">
+  <meta property="og:image" content="https://carboai.app/og-zh.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Carbo 和标题「拍一张，碳水算清。」">
+  <meta property="og:url" content="https://carboai.app/zh/">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../assets/motion.css">
+  <script>/* motion.css hides reveal/bubble/word states under html.js; site.js must clearTimeout(window.__jsGuard) — if it never runs, drop the class so nothing stays hidden */document.documentElement.classList.add('js');window.__jsGuard=setTimeout(function(){document.documentElement.classList.remove('js')},1500);</script>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap nav__in">
+  <a class="nav__brand" href="./"><img src="../apple-touch-icon.png" width="34" height="34" alt="">Carbo-AI</a>
+  <ul class="nav__links">
+    <li><a href="#how">原理</a></li>
+    <li><a href="#pro">Pro</a></li>
+    <li><a href="#faq">常见问题</a></li>
+    <li><a href="about.html">支持</a></li>
+    <li><a class="is-lang" href="../" hreflang="en" lang="en">English</a></li>
+  </ul>
+</div></nav>
+
+<header class="hero"><div class="wrap hero__grid">
+  <div class="hero__copy">
+    <h1>拍⁠一⁠张，<br>碳⁠水⁠算⁠清。</h1>
+    <p class="lede">Carbo-AI 从照片里估出碳水，再告诉你今天该吃多少。</p>
+    <div class="hero__cta">
+      <span class="soon-pill">即将登陆 App Store</span>
+      <a class="btn btn--ghost" href="#how">看看原理</a>
+    </div>
+  </div>
+  <div class="stage">
+    <img class="stage__bg" src="../assets/img/hero-hills.webp" width="1040" height="1040" fetchpriority="high" alt="">
+    <img class="stage__carbo" id="hero-carbo" src="../assets/img/carbo-idle-0.webp" width="576" height="624" data-idle="../assets/img/carbo-idle-0.webp,../assets/img/carbo-idle-3.webp" data-wave="../assets/img/carbo-waving-0.webp,../assets/img/carbo-waving-1.webp,../assets/img/carbo-waving-2.webp,../assets/img/carbo-waving-3.webp" alt="">
+    <div class="bubble">午饭给我看看，碳水我来算。</div>
+  </div>
+</div></header>
+
+<ul class="wrap trust" role="list" aria-label="Carbo-AI 的承诺">
+  <li>照片不存我们的服务器</li><li>Apple 健康只读</li><li>不卖数据</li><li>没有广告</li>
+</ul>
+
+<section class="section" id="how"><div class="wrap">
+  <div class="section__head reveal"><h2>三⁠步，然⁠后⁠开⁠饭。</h2><p>拍下盘子，Carbo 来算，你看今天还剩多少。</p></div>
+  <div class="steps">
+    <div class="card step step--scan reveal">
+      <div class="step__label">第 1 步</div><h3>拍一张</h3><p>拍一张，或者从相册选。</p>
+      <div class="step__art"><img src="../assets/demo/meal-1.jpg" width="1200" height="902" loading="lazy" decoding="async" alt="木桌上托盘里的一碗鸡肉饭，配叉子和勺子"><div class="scan"></div></div>
+    </div>
+    <div class="card step reveal">
+      <div class="step__label">第 2 步</div><h3>Carbo 来算</h3><p>食物、份量、碳水，几秒钟。</p>
+      <div class="step__art step__art--result" style="background:var(--hero)">
+        <div class="result"><div class="result__name">鸡胸饭 · 220 g</div><div class="result__meta">午餐 · 430 kcal</div>
+          <div class="chips"><span class="chip chip--carbs">碳水 62 g</span><span class="chip chip--protein">蛋白质 35 g</span><span class="chip">脂肪 6 g</span></div></div>
+        <img class="carbo-sm" src="../assets/img/carbo-working-2.webp" width="288" height="312" loading="lazy" decoding="async" alt="">
+      </div>
+    </div>
+    <div class="card step reveal">
+      <div class="step__label">第 3 步</div><h3>今天合不合适</h3><p>今天这个碳水日还剩多少，一眼看到。</p>
+      <div class="step__art"><img src="../assets/img/home-en.jpg" srcset="../assets/img/home-en@2x.jpg 2x" width="450" height="621" loading="lazy" decoding="async" alt="Carbo-AI 首页：今日碳水日标签和剩余碳水环" style="object-position:50% 66%"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="section section--teal"><div class="wrap week">
+  <div class="reveal">
+    <h2>是⁠计⁠划，不⁠只⁠是⁠记⁠录。</h2>
+    <p class="muted" style="margin-top:12px;font-size:17px">训练日多吃碳水，休息日少吃，这就是碳循环。每天的目标 Carbo-AI 替你定。</p>
+  </div>
+  <div class="reveal">
+    <div class="week__strip" role="img" aria-label="示例一周：周一高碳、周二低碳、周三中碳、周四高碳、周五低碳、周六低碳、周日中碳">
+      <div class="week__day"><span class="week__dot week__dot--hi week__dot--today"></span>一</div>
+      <div class="week__day"><span class="week__dot"></span>二</div>
+      <div class="week__day"><span class="week__dot week__dot--md"></span>三</div>
+      <div class="week__day"><span class="week__dot week__dot--hi"></span>四</div>
+      <div class="week__day"><span class="week__dot"></span>五</div>
+      <div class="week__day"><span class="week__dot"></span>六</div>
+      <div class="week__day"><span class="week__dot week__dot--md"></span>日</div>
+    </div>
+    <div class="legend"><span class="daychip daychip--hi">高碳日</span><span class="daychip daychip--md">中碳日</span><span class="daychip">低碳日</span></div>
+  </div>
+</div></section>
+
+<section class="section" id="carbo"><div class="wrap">
+  <div class="section__head reveal"><h2>Carbo 会⁠有⁠反⁠应。</h2><p>他是 App 的情绪，不是贴在角落的装饰。</p></div>
+  <div class="emotions">
+    <div class="card emotion reveal"><img src="../assets/img/carbo-idle-0.webp" width="576" height="624" loading="lazy" decoding="async" data-frames="../assets/img/carbo-idle-0.webp,../assets/img/carbo-idle-3.webp,../assets/img/carbo-idle-0.webp" data-durations="1200,120,2000" data-loop="true" alt="Carbo 安静待着，偶尔眨眼"><h3>等着</h3><span>呼吸、眨眼，不打扰你。</span></div>
+    <div class="card emotion reveal"><img src="../assets/img/carbo-working-0.webp" width="288" height="312" loading="lazy" decoding="async" data-frames="../assets/img/carbo-working-0.webp,../assets/img/carbo-working-1.webp,../assets/img/carbo-working-2.webp,../assets/img/carbo-working-3.webp,../assets/img/carbo-working-4.webp,../assets/img/carbo-working-5.webp" data-durations="700,800,700,850,750,1000" data-loop="true" alt="Carbo 歪头思考"><h3>算着</h3><span>AI 在读你的盘子时。</span></div>
+    <div class="card emotion reveal"><img src="../assets/img/carbo-waving-0.webp" width="576" height="624" loading="lazy" decoding="async" data-frames="../assets/img/carbo-waving-0.webp,../assets/img/carbo-waving-1.webp,../assets/img/carbo-waving-2.webp,../assets/img/carbo-waving-3.webp" data-durations="150,180,220,320" alt="Carbo 挥手"><h3>搞定了</h3><span>这一餐和今天对上了。</span></div>
+    <div class="card emotion reveal"><img src="../assets/img/carbo-failed-7.webp" width="288" height="312" loading="lazy" decoding="async" data-frames="../assets/img/carbo-failed-0.webp,../assets/img/carbo-failed-1.webp,../assets/img/carbo-failed-2.webp,../assets/img/carbo-failed-3.webp,../assets/img/carbo-failed-4.webp,../assets/img/carbo-failed-5.webp,../assets/img/carbo-failed-6.webp,../assets/img/carbo-failed-7.webp" data-durations="150,170,190,220,240,260,280,500" alt="Carbo 有点失落"><h3>哎呀</h3><span>有个数字要改。从不说教。</span></div>
+  </div>
+</div></section>
+
+<section class="section"><div class="wrap row">
+  <div class="reveal">
+    <h2>这⁠是⁠估⁠算，没⁠关⁠系。</h2>
+    <p>没有哪个 App 能隔着摄像头称重，所以把数字当估算，不当实验室结果。碳循环也不需要实验室——每天是一个目标区间，不是一个必须打中的数。Carbo 算错了，保存前一键改。</p>
+    <a class="link" href="how-it-works.html">估算是怎么来的 →</a>
+  </div>
+  <div class="card reveal" style="position:relative;padding-bottom:64px">
+    <div class="result__name">鸡胸饭 · 220 g</div><div class="result__meta">保存前点任何数字即可修改</div>
+    <div class="chips"><span class="chip chip--carbs">碳水 62 g <span aria-hidden="true">✎</span></span><span class="chip chip--protein">蛋白质 35 g</span><span class="chip">脂肪 6 g</span></div>
+    <img src="../assets/img/carbo-failed-7.webp" width="288" height="312" loading="lazy" decoding="async" alt="" style="position:absolute;right:16px;bottom:-6px;width:110px">
+  </div>
+</div></section>
+
+<section class="section section--wash"><div class="wrap row row--flip">
+  <div class="reveal">
+    <h2>Apple 健⁠康，只⁠读。</h2>
+    <p>Carbo-AI 读取能量、步数和体重来定你的碳水日，不会写回任何东西。</p>
+  </div>
+  <div class="card reveal rows" role="group" aria-label="应用请求的 Apple 健康权限">
+    <div>活动能量 <span class="toggle" aria-hidden="true"></span></div>
+    <div>步数 <span class="toggle" aria-hidden="true"></span></div>
+    <div>体重 <span class="toggle" aria-hidden="true"></span></div>
+    <div style="background:transparent;color:var(--ink-3);font-size:13px;padding:4px 0 0">只读 · 不写入</div>
+  </div>
+</div></section>
+
+<section class="section" id="pro"><div class="wrap row">
+  <div class="reveal">
+    <h2>Carbo-AI Pro</h2>
+    <p>应用的全部功能，通过 Apple 订阅。随时取消。</p>
+    <div class="pro__list">
+      <div><span class="tick">✓</span><div><b>AI 拍照识别</b><span>拍下餐食即可估算碳水。</span></div></div>
+      <div><span class="tick">✓</span><div><b>智能碳日调整</b><span>结合 Apple 健康数据微调每日目标。</span></div></div>
+      <div><span class="tick">✓</span><div><b>云备份与恢复</b><span>记录安全保存，换手机也能找回。</span></div></div>
+      <div><span class="tick">✓</span><div><b>完整进度与趋势</b><span>查看全部历史，而不只是本周。</span></div></div>
+    </div>
+  </div>
+  <div class="reveal" style="text-align:center"><img src="../assets/img/carbo-data.webp" width="512" height="512" loading="lazy" decoding="async" alt="" style="width:260px;margin:0 auto"></div>
+</div></section>
+
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track"><span>拍一张 ·</span><span>算碳水 ·</span><span>跟着碳水日走 ·</span><span>拍一张 ·</span><span>算碳水 ·</span><span>跟着碳水日走 ·</span></div>
+  <div class="marquee__track marquee__track--reverse"><span>高碳日 ·</span><span>低碳日 ·</span><span>中碳日 ·</span><span>高碳日 ·</span><span>低碳日 ·</span><span>中碳日 ·</span></div>
+</div>
+
+<section class="section section--wash" id="faq"><div class="wrap">
+  <div class="section__head reveal"><h2>常⁠见⁠问⁠题</h2></div>
+  <div class="faq reveal">
+    <details><summary>Carbo-AI 免费吗？</summary><p>免费下载。使用需要 Carbo-AI Pro 订阅，通过 App Store 扣费。如提供免费试用，条件会在购买前展示。随时可以取消。</p></details>
+    <details><summary>碳水估算有多准？</summary><p>是估算：应用识别食物、估计份量、再查营养数据。把它当起点，不准就在保存前改。<a href="how-it-works.html">估算是怎么来的。</a></p></details>
+    <details><summary>我的照片去哪了？</summary><p>照片发送到我们的服务器，再交给第三方 AI 服务商识别食物。估算结果返回后照片即被丢弃，我们的服务器不存餐食照片。照片本身随这餐记录留在你的手机上。</p></details>
+    <details><summary>有安卓版吗？</summary><p>暂时没有，Carbo-AI 只有 iPhone 版。</p></details>
+    <details><summary>怎么取消订阅？</summary><p>iPhone 设置 → 你的名字 → 订阅 → Carbo-AI → 取消订阅。删除应用不会取消订阅。</p></details>
+    <details><summary>怎么删除账号？</summary><p>在应用里：我的 → 右上角齿轮 → 设置 → 删除账号。服务器端的所有数据会在 30 天内清除。</p></details>
+    <details><summary>会读取哪些 Apple 健康数据？</summary><p>活动能量、静息能量、步数、体重、体脂率和体能训练记录——只读，不写入。</p></details>
+  </div>
+</div></section>
+
+<section class="band" data-observe><div class="wrap band__in">
+  <div>
+    <h2>下⁠一⁠餐⁠见。</h2>
+    <div style="margin-top:18px"><span class="soon-pill soon-pill--onorange">即将登陆 App Store</span></div>
+  </div>
+  <img class="band__carbo" id="wave" src="../assets/img/carbo-waving-1.webp" width="576" height="624" loading="lazy" decoding="async" data-frames="../assets/img/carbo-waving-0.webp,../assets/img/carbo-waving-1.webp,../assets/img/carbo-waving-2.webp,../assets/img/carbo-waving-3.webp" data-durations="150,180,220,320" alt="">
+</div></section>
+
+<footer class="footer"><div class="wrap footer__in">
+  <span>© 2026 LIFEX TECHNOLOGIES LLC · Made in Boston</span>
+  <span><a href="../privacy-zh.html">隐私政策</a> · <a href="../terms-zh.html">服务条款</a> · <a href="about.html">支持</a> · <a href="mailto:support@carboai.app">support@carboai.app</a> · <a href="../" hreflang="en" lang="en">English</a></span>
+</div></footer>
+<script src="../assets/site.js" defer></script>
+</body>
+</html>
