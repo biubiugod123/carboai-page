@@ -1,268 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="About LIFEX TECHNOLOGIES LLC - makers of CarboAI">
-  <title>About - LIFEX TECHNOLOGIES LLC</title>
-  
-  <style>
-    /* === Design System (same as index.html) === */
-    :root {
-      --primary-50: #FFFCF5;
-      --primary-100: #FFF8E7;
-      --primary-200: #FFE8C5;
-      --accent: #F59E0B;
-      --gray-900: #2C2C2C;
-      --gray-700: #4A4A4A;
-      --gray-500: #666666;
-      --gray-300: #9CA3AF;
-      --gray-100: #F9FAFB;
-      --cta-bg: #000000;
-      --cta-text: #FFFFFF;
-      --space-xs: 8px;
-      --space-sm: 16px;
-      --space-md: 24px;
-      --space-lg: 40px;
-      --space-xl: 64px;
-      --space-2xl: 80px;
-      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    html {
-      scroll-behavior: smooth;
-    }
-    
-    body {
-      font-family: var(--font-family);
-      font-size: 16px;
-      line-height: 1.8;
-      color: var(--gray-700);
-    }
-    
-    h1 {
-      font-size: 48px;
-      font-weight: 700;
-      color: var(--gray-900);
-      line-height: 1.2;
-    }
-    
-    h2 {
-      font-size: 32px;
-      font-weight: 600;
-      color: var(--gray-900);
-      line-height: 1.3;
-      margin-top: var(--space-xl);
-      margin-bottom: var(--space-md);
-    }
-    
-    p {
-      margin-bottom: var(--space-md);
-    }
-    
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    
-    a:hover {
-      text-decoration: underline;
-    }
-    
-    @media (max-width: 768px) {
-      h1 { font-size: 36px; }
-      h2 { font-size: 28px; }
-    }
-    
-    /* === Navbar (same as index.html) === */
-    .navbar {
-      position: sticky;
-      top: 0;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      padding: var(--space-sm) var(--space-md);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    
-    .navbar-brand {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--gray-900);
-      text-decoration: none;
-    }
-    
-    .navbar-links {
-      display: flex;
-      gap: var(--space-md);
-      list-style: none;
-    }
-    
-    .navbar-links a {
-      color: var(--gray-700);
-      text-decoration: none;
-      font-size: 15px;
-      transition: color 0.2s;
-    }
-    
-    .navbar-links a:hover {
-      color: var(--gray-900);
-    }
-    
-    @media (max-width: 768px) {
-      .navbar-links {
-        gap: var(--space-sm);
-      }
-      .navbar-links a {
-        font-size: 14px;
-      }
-    }
-    
-    /* === Content === */
-    .content {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: var(--space-2xl) var(--space-md);
-      min-height: 60vh;
-    }
-    
-    .content h1 {
-      text-align: center;
-      margin-bottom: var(--space-xl);
-    }
-    
-    /* === Footer (same as index.html) === */
-    .footer {
-      background: var(--gray-100);
-      padding: var(--space-xl) var(--space-md) var(--space-md);
-    }
-    
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    .footer-content {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-lg);
-      margin-bottom: var(--space-lg);
-    }
-    
-    .footer-brand h3 {
-      margin-bottom: var(--space-xs);
-    }
-    
-    .footer-brand p {
-      color: var(--gray-500);
-      font-size: 14px;
-    }
-    
-    .footer-links h4 {
-      font-size: 16px;
-      margin-bottom: var(--space-sm);
-    }
-    
-    .footer-links ul {
-      list-style: none;
-    }
-    
-    .footer-links a {
-      color: var(--gray-700);
-      text-decoration: none;
-      font-size: 14px;
-      line-height: 2;
-      transition: color 0.2s;
-    }
-    
-    .footer-links a:hover {
-      color: var(--gray-900);
-    }
-    
-    .footer-bottom {
-      text-align: center;
-      padding-top: var(--space-md);
-      border-top: 1px solid var(--gray-300);
-      color: var(--gray-500);
-      font-size: 14px;
-    }
-    
-    @media (max-width: 768px) {
-      .footer-content {
-        grid-template-columns: 1fr;
-        gap: var(--space-md);
-      }
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Support — Carbo-AI</title>
+  <meta name="description" content="Carbo-AI support: how the carb estimate works, what happens to your photos, cancelling a subscription, deleting your account, and how to reach us.">
+  <link rel="canonical" href="https://carboai.app/about.html">
+  <link rel="alternate" hreflang="en" href="https://carboai.app/about.html">
+  <link rel="alternate" hreflang="zh-Hans" href="https://carboai.app/zh/about.html">
+  <link rel="alternate" hreflang="x-default" href="https://carboai.app/about.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#FDFBF7">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Support — Carbo-AI">
+  <meta property="og:description" content="Answers about accuracy, photos, subscriptions and account deletion.">
+  <meta property="og:image" content="https://carboai.app/og-en.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Carbo the dog next to the headline “Snap a meal. Know your carbs.”">
+  <meta property="og:url" content="https://carboai.app/about.html">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="assets/tokens.css">
+  <link rel="stylesheet" href="assets/site.css">
+  <!-- No motion.css, no site.js and no html.js guard: <details> opens without JS, and nothing here reveals or animates. -->
+  <style>.prose{max-width:720px}.faq{margin-top:32px}.faq details ol{color:var(--ink-2);max-width:68ch;padding-left:1.3em;margin:2px 0 10px}.faq details li{margin-bottom:4px}</style>
 </head>
 <body>
-  <nav class="navbar">
-    <a href="index.html" class="navbar-brand">CarboAI</a>
-    <ul class="navbar-links">
-      <li><a href="about.html">About</a></li>
-      <li><a href="privacy.html">Privacy</a></li>
-      <li><a href="terms.html">Terms</a></li>
-    </ul>
-  </nav>
-  
-  <main class="content">
-    <h1>About LIFEX TECHNOLOGIES LLC</h1>
-    
-    <h2>Who We Are</h2>
-    <p>LIFEX TECHNOLOGIES LLC is a health technology company dedicated to making nutrition science accessible to everyone. We combine cutting-edge artificial intelligence with evidence-based nutrition research to help people optimize their health and achieve their fitness goals.</p>
-    
-    <p>Founded with the belief that technology should empower personal health decisions, we're building tools that make complex nutritional concepts simple and actionable for everyday users.</p>
-    
-    <h2>Our Mission</h2>
-    <p>Empower individuals to take control of their nutrition through intelligent, personalized technology that adapts to their lifestyle and goals.</p>
-    
-    <h2>Our Product: CarboAI</h2>
-    <p>CarboAI is our flagship mobile application that revolutionizes how people manage carbohydrate intake through smart AI analysis and personalized cycling plans. By simply taking photos of meals, users receive instant nutrition insights and customized carb cycling recommendations based on their unique metabolism, activity levels, and health objectives.</p>
-    
-    <p><a href="index.html">Learn more about CarboAI →</a></p>
-    
-    <h2>Contact Us</h2>
-    <p>We'd love to hear from you. Reach us at <a href="mailto:support@carboai.app">support@carboai.app</a></p>
-  </main>
-  
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <h3>CarboAI</h3>
-          <p>LIFEX TECHNOLOGIES LLC</p>
-        </div>
-        
-        <div class="footer-links">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="about.html">About</a></li>
-            <li><a href="privacy.html">Privacy</a></li>
-            <li><a href="terms.html">Terms</a></li>
-          </ul>
-        </div>
-        
-        <div class="footer-links">
-          <h4>Contact</h4>
-          <ul>
-            <li><a href="mailto:support@carboai.app">support@carboai.app</a></li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <p>&copy; 2026 LIFEX TECHNOLOGIES LLC. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+
+<nav class="nav"><div class="wrap nav__in">
+  <a class="nav__brand" href="./"><img src="apple-touch-icon.png" width="34" height="34" alt="">Carbo-AI</a>
+  <ul class="nav__links">
+    <li><a href="index.html#how">How it works</a></li>
+    <li><a href="index.html#pro">Pro</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
+    <li><a href="about.html">Support</a></li>
+    <li><a class="is-lang" href="zh/about.html" hreflang="zh-Hans" lang="zh-Hans">中文</a></li>
+  </ul>
+</div></nav>
+
+<main class="section"><div class="wrap prose">
+  <h1>Support</h1>
+  <p style="font-size:18px;margin-top:12px">Carbo-AI is an iPhone app by LIFEX TECHNOLOGIES LLC, Boston, MA. Email <a href="mailto:support@carboai.app">support@carboai.app</a> — we usually reply within two business days.</p>
+  <div class="faq">
+    <details open><summary><h2>How accurate is the carb estimate?</h2></summary><p>It's an estimate. Carbo-AI recognises the food in your photo, estimates the portion, and looks up its nutrition. No app can weigh food through a camera, so treat the number as a starting point, not a lab result. Carb cycling doesn't need a lab: each day has a target range rather than a single number to hit. When the estimate is off, adjust the portion before you save and the day is calculated from your numbers.</p></details>
+    <details open><summary><h2>What happens to my photos?</h2></summary><p>Your photo is sent to our servers and on to a third-party AI provider to recognise the food. Once the estimate comes back, the photo is discarded — we don't store meal photos on our servers. The photo stays on your phone with the saved meal. Pro cloud backup stores only a reference to it, never the image. Details are in the <a href="privacy.html">Privacy Policy</a>.</p></details>
+    <details open><summary><h2>Is Carbo-AI free?</h2></summary><p>Carbo-AI is free to download. Using it requires a Carbo-AI Pro subscription, billed through the App Store. If a free trial is offered, its length and terms are shown in the App Store listing and in the app before you buy. You can cancel at any time.</p></details>
+    <details open><summary><h2>How do I cancel my subscription?</h2></summary><ol>
+      <li>Open <strong>Settings</strong> on your iPhone and tap your name at the top.</li>
+      <li>Tap <strong>Subscriptions</strong>, then <strong>Carbo-AI</strong>.</li>
+      <li>Tap <strong>Cancel Subscription</strong>. You keep access until the end of the current period.</li>
+    </ol><p>Deleting the app does not cancel the subscription. Refunds are handled by Apple through <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>.</p></details>
+    <details open><summary><h2>I already subscribed, but the app asks me to pay</h2></summary><p>On the <strong>Upgrade to Pro</strong> screen, scroll to the bottom and tap <strong>Restore Purchases</strong>. Purchases are tied to your Apple ID, so this also works on a new phone.</p></details>
+    <details open><summary><h2>How do I delete my account?</h2></summary><p>In the app, open the <strong>Profile</strong> tab, tap the gear icon to open Settings, then tap <strong>Delete account</strong>. Your account and all server-side data — meals, plan, profile, backups and usage events — are removed within 30 days. Data stored only on your phone goes away when you delete the app. You can also email us and we'll do it for you.</p></details>
+    <details open><summary><h2>Which Apple Health data does it read?</h2></summary><p>With your permission: active energy, resting energy, steps, weight, body fat percentage and workouts. Access is read-only — the app never writes to Apple Health. You can withdraw access any time in the Health app under Sharing → Apps.</p></details>
+    <details open><summary><h2>Is there an Android version?</h2></summary><p>Not yet. Carbo-AI is iPhone-only.</p></details>
+    <details open><summary><h2>Something else?</h2></summary><p>Email <a href="mailto:support@carboai.app">support@carboai.app</a>. Include your iPhone model and iOS version if you're reporting a problem.</p></details>
+  </div>
+</div></main>
+
+<footer class="footer"><div class="wrap footer__in">
+  <span>© 2026 LIFEX TECHNOLOGIES LLC · Built in Boston, MA</span>
+  <span><a href="about.html">Support</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <span class="footer__tail"><a href="mailto:support@carboai.app">support@carboai.app</a> · <a href="zh/about.html" hreflang="zh-Hans" lang="zh-Hans">中文</a></span></span>
+</div></footer>
 </body>
 </html>

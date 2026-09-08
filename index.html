@@ -1,426 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="CarboAI - Your Smart Carb Cycling Companion. AI-powered nutrition tracking and personalized carb cycling plans.">
-  <title>CarboAI - Smart Carb Cycling Companion</title>
-  
-  <style>
-    /* === Design System === */
-    :root {
-      /* Colors */
-      --primary-50: #FFFCF5;
-      --primary-100: #FFF8E7;
-      --primary-200: #FFE8C5;
-      --accent: #F59E0B;
-      
-      --gray-900: #2C2C2C;
-      --gray-700: #4A4A4A;
-      --gray-500: #666666;
-      --gray-300: #9CA3AF;
-      --gray-100: #F9FAFB;
-      
-      --cta-bg: #000000;
-      --cta-text: #FFFFFF;
-      
-      /* Spacing */
-      --space-xs: 8px;
-      --space-sm: 16px;
-      --space-md: 24px;
-      --space-lg: 40px;
-      --space-xl: 64px;
-      --space-2xl: 80px;
-      
-      /* Typography */
-      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    }
-    
-    /* === Global Styles === */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    html {
-      scroll-behavior: smooth;
-    }
-    
-    body {
-      font-family: var(--font-family);
-      font-size: 16px;
-      line-height: 1.6;
-      color: var(--gray-700);
-    }
-    
-    /* === Typography === */
-    h1 {
-      font-size: 48px;
-      font-weight: 700;
-      color: var(--gray-900);
-      line-height: 1.2;
-    }
-    
-    h2 {
-      font-size: 32px;
-      font-weight: 600;
-      color: var(--gray-900);
-      line-height: 1.3;
-    }
-    
-    h3 {
-      font-size: 24px;
-      font-weight: 600;
-      color: var(--gray-900);
-      line-height: 1.4;
-    }
-    
-    /* === Responsive Typography === */
-    @media (max-width: 768px) {
-      h1 { font-size: 36px; }
-      h2 { font-size: 28px; }
-      h3 { font-size: 20px; }
-    }
-    
-    /* === Navbar === */
-    .navbar {
-      position: sticky;
-      top: 0;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      padding: var(--space-sm) var(--space-md);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-      transition: box-shadow 0.3s;
-    }
-    
-    .navbar.scrolled {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    
-    .navbar-brand {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--gray-900);
-      text-decoration: none;
-    }
-    
-    .navbar-links {
-      display: flex;
-      gap: var(--space-md);
-      list-style: none;
-    }
-    
-    .navbar-links a {
-      color: var(--gray-700);
-      text-decoration: none;
-      font-size: 15px;
-      transition: color 0.2s;
-    }
-    
-    .navbar-links a:hover {
-      color: var(--gray-900);
-    }
-    
-    @media (max-width: 768px) {
-      .navbar-links {
-        gap: var(--space-sm);
-      }
-      
-      .navbar-links a {
-        font-size: 14px;
-      }
-    }
-    
-    /* === Hero Section === */
-    .hero {
-      min-height: 100vh;
-      background: linear-gradient(180deg, var(--primary-50) 0%, var(--primary-100) 40%, #FFFFFF 100%);
-      display: flex;
-      align-items: center;
-      padding: var(--space-2xl) var(--space-md);
-    }
-    
-    .hero-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 60% 40%;
-      gap: var(--space-xl);
-      align-items: center;
-    }
-    
-    .hero-content h1 {
-      margin-bottom: var(--space-sm);
-    }
-    
-    .hero-subtitle {
-      font-size: 20px;
-      color: var(--gray-500);
-      margin-bottom: var(--space-lg);
-      line-height: 1.6;
-    }
-    
-    .cta-button {
-      display: inline-block;
-      background: var(--cta-bg);
-      color: var(--cta-text);
-      padding: 16px 32px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    
-    .cta-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-    
-    .hero-image {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .hero-image-placeholder {
-      width: 300px;
-      height: 600px;
-      background: linear-gradient(135deg, var(--primary-200) 0%, var(--accent) 100%);
-      border-radius: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 18px;
-      font-weight: 600;
-    }
-    
-    @media (max-width: 768px) {
-      .hero {
-        min-height: auto;
-        padding: var(--space-xl) var(--space-md);
-      }
-      
-      .hero-container {
-        grid-template-columns: 1fr;
-        gap: var(--space-lg);
-      }
-      
-      .hero-subtitle {
-        font-size: 18px;
-      }
-      
-      .hero-image-placeholder {
-        width: 250px;
-        height: 500px;
-      }
-    }
-    
-    /* === Features Section === */
-    .features {
-      padding: var(--space-2xl) var(--space-md);
-      background: white;
-    }
-    
-    .features-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    .features-title {
-      text-align: center;
-      margin-bottom: var(--space-xl);
-    }
-    
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-lg);
-    }
-    
-    .feature-card {
-      text-align: center;
-      padding: var(--space-lg);
-    }
-    
-    .feature-icon {
-      font-size: 64px;
-      margin-bottom: var(--space-md);
-    }
-    
-    .feature-card h3 {
-      margin-bottom: var(--space-xs);
-    }
-    
-    .feature-card p {
-      color: var(--gray-500);
-      line-height: 1.6;
-    }
-    
-    @media (max-width: 768px) {
-      .features {
-        padding: var(--space-xl) var(--space-md);
-      }
-      
-      .features-grid {
-        grid-template-columns: 1fr;
-        gap: var(--space-md);
-      }
-      
-      .feature-card {
-        padding: var(--space-md);
-      }
-    }
-    
-    /* === Footer === */
-    .footer {
-      background: var(--gray-100);
-      padding: var(--space-xl) var(--space-md) var(--space-md);
-    }
-    
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    .footer-content {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-lg);
-      margin-bottom: var(--space-lg);
-    }
-    
-    .footer-brand h3 {
-      margin-bottom: var(--space-xs);
-    }
-    
-    .footer-brand p {
-      color: var(--gray-500);
-      font-size: 14px;
-    }
-    
-    .footer-links h4 {
-      font-size: 16px;
-      margin-bottom: var(--space-sm);
-    }
-    
-    .footer-links ul {
-      list-style: none;
-    }
-    
-    .footer-links a {
-      color: var(--gray-700);
-      text-decoration: none;
-      font-size: 14px;
-      line-height: 2;
-      transition: color 0.2s;
-    }
-    
-    .footer-links a:hover {
-      color: var(--gray-900);
-    }
-    
-    .footer-bottom {
-      text-align: center;
-      padding-top: var(--space-md);
-      border-top: 1px solid var(--gray-300);
-      color: var(--gray-500);
-      font-size: 14px;
-    }
-    
-    @media (max-width: 768px) {
-      .footer-content {
-        grid-template-columns: 1fr;
-        gap: var(--space-md);
-      }
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carbo-AI — Snap a meal. Know your carbs.</title>
+  <meta name="description" content="Carbo-AI estimates the carbs in a photo of your meal and tells you whether they fit today's carb day. A carb-cycling plan, not just a log. iPhone, coming soon.">
+  <link rel="canonical" href="https://carboai.app/">
+  <link rel="alternate" hreflang="en" href="https://carboai.app/">
+  <link rel="alternate" hreflang="zh-Hans" href="https://carboai.app/zh/">
+  <link rel="alternate" hreflang="x-default" href="https://carboai.app/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#FDFBF7">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Carbo-AI — Snap a meal. Know your carbs.">
+  <meta property="og:description" content="Photo → carbs → today's carb day. A carb-cycling plan, not just a log.">
+  <meta property="og:image" content="https://carboai.app/og-en.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Carbo the dog next to the headline “Snap a meal. Know your carbs.”">
+  <meta property="og:url" content="https://carboai.app/">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="assets/tokens.css">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/motion.css">
+  <script>/* motion.css hides reveal/bubble/word states under html.js; site.js must clearTimeout(window.__jsGuard) — if it never runs, drop the class so nothing stays hidden */document.documentElement.classList.add('js');window.__jsGuard=setTimeout(function(){document.documentElement.classList.remove('js')},1500);</script>
 </head>
 <body>
-  <nav class="navbar">
-    <a href="index.html" class="navbar-brand">CarboAI</a>
-    <ul class="navbar-links">
-      <li><a href="about.html">About</a></li>
-      <li><a href="privacy.html">Privacy</a></li>
-      <li><a href="terms.html">Terms</a></li>
+
+<nav class="nav"><div class="wrap nav__in">
+  <a class="nav__brand" href="./"><img src="apple-touch-icon.png" width="34" height="34" alt="">Carbo-AI</a>
+  <ul class="nav__links">
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#pro">Pro</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="about.html">Support</a></li>
+    <li><a class="is-lang" href="zh/" hreflang="zh-Hans" lang="zh-Hans">中文</a></li>
+  </ul>
+</div></nav>
+
+<header class="hero"><div class="wrap hero__grid">
+  <div class="hero__copy">
+    <h1>Snap a meal.<br>Know your carbs.</h1>
+    <p class="lede">Carbo-AI estimates the carbs in your photo and tells you whether they fit today's carb day.</p>
+    <div class="hero__cta">
+      <span class="soon-pill">Coming soon to the App Store</span>
+      <a class="btn btn--ghost" href="#how">How it works</a>
+    </div>
+  </div>
+  <div class="stage">
+    <img class="stage__bg" src="assets/img/hero-hills.webp" width="1040" height="1040" fetchpriority="high" alt="">
+    <img class="stage__carbo" id="hero-carbo" src="assets/img/carbo-idle-0.webp" width="576" height="624" data-idle="assets/img/carbo-idle-0.webp,assets/img/carbo-idle-3.webp" data-wave="assets/img/carbo-waving-0.webp,assets/img/carbo-waving-1.webp,assets/img/carbo-waving-2.webp,assets/img/carbo-waving-3.webp" alt="">
+    <div class="bubble">Show me lunch — I'll count the carbs.</div>
+  </div>
+</div></header>
+
+<ul class="wrap trust" role="list" aria-label="What Carbo-AI promises">
+  <li>Photos aren't stored on our servers</li><li>Apple Health read-only</li><li>No data brokers</li><li>No ads</li>
+</ul>
+
+<section class="section" id="how"><div class="wrap">
+  <div class="section__head reveal"><h2>Three taps, then dinner.</h2><p>Photograph the plate; Carbo does the counting; you see what's left for today.</p></div>
+  <div class="steps">
+    <div class="card step step--scan reveal">
+      <div class="step__label">Step 1</div><h3>Snap</h3><p>Take a photo, or pick one you already took.</p>
+      <div class="step__art"><img src="assets/demo/meal-1.jpg" width="1200" height="902" loading="lazy" decoding="async" alt="A bowl of chicken and rice on a tray with a fork and spoon, on a wooden table"><div class="scan"></div></div>
+    </div>
+    <div class="card step reveal">
+      <div class="step__label">Step 2</div><h3>Carbo counts</h3><p>Food, portion, carbs — in seconds.</p>
+      <div class="step__art step__art--result" style="background:var(--hero)">
+        <div class="result"><div class="result__name">Chicken rice · 220 g</div><div class="result__meta">Lunch · 430 kcal</div>
+          <div class="chips"><span class="chip chip--carbs">Carbs 62 g</span><span class="chip chip--protein">Protein 35 g</span><span class="chip">Fat 6 g</span></div></div>
+        <img class="carbo-sm" src="assets/img/carbo-working-2.webp" width="288" height="312" loading="lazy" decoding="async" alt="">
+      </div>
+    </div>
+    <div class="card step reveal">
+      <div class="step__label">Step 3</div><h3>Fits today?</h3><p>You see what's left for today's carb day.</p>
+      <div class="step__art"><img src="assets/img/home-en.jpg" srcset="assets/img/home-en@2x.jpg 2x" width="450" height="621" loading="lazy" decoding="async" alt="Carbo-AI home: today's carb-day chip and a ring showing carbs left" style="object-position:50% 66%"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="section section--teal"><div class="wrap week">
+  <div class="reveal">
+    <h2>A plan, not just a log.</h2>
+    <p class="muted" style="margin-top:12px;font-size:17px">More carbs on training days, fewer on rest days. That's carb cycling — and Carbo-AI sets each day's target for you.</p>
+  </div>
+  <div class="reveal">
+    <div class="week__strip" role="img" aria-label="Example week: Monday high-carb, Tuesday low, Wednesday medium, Thursday high, Friday low, Saturday low, Sunday medium">
+      <div class="week__day"><span class="week__dot week__dot--hi week__dot--today"></span>Mon</div>
+      <div class="week__day"><span class="week__dot"></span>Tue</div>
+      <div class="week__day"><span class="week__dot week__dot--md"></span>Wed</div>
+      <div class="week__day"><span class="week__dot week__dot--hi"></span>Thu</div>
+      <div class="week__day"><span class="week__dot"></span>Fri</div>
+      <div class="week__day"><span class="week__dot"></span>Sat</div>
+      <div class="week__day"><span class="week__dot week__dot--md"></span>Sun</div>
+    </div>
+    <div class="legend"><span class="daychip daychip--hi">High-carb day</span><span class="daychip daychip--md">Medium</span><span class="daychip">Low</span></div>
+  </div>
+</div></section>
+
+<section class="section" id="carbo"><div class="wrap">
+  <div class="section__head reveal"><h2>Carbo reacts.</h2><p>He's the app's mood — not a mascot glued to the corner.</p></div>
+  <div class="emotions">
+    <div class="card emotion reveal"><img src="assets/img/carbo-idle-0.webp" width="576" height="624" loading="lazy" decoding="async" data-frames="assets/img/carbo-idle-0.webp,assets/img/carbo-idle-3.webp,assets/img/carbo-idle-0.webp" data-durations="1200,120,2000" data-loop="true" alt=""><h3>Waiting</h3><span>Breathes, blinks, stays out of your way.</span></div>
+    <div class="card emotion reveal"><img src="assets/img/carbo-working-0.webp" width="288" height="312" loading="lazy" decoding="async" data-frames="assets/img/carbo-working-0.webp,assets/img/carbo-working-1.webp,assets/img/carbo-working-2.webp,assets/img/carbo-working-3.webp,assets/img/carbo-working-4.webp,assets/img/carbo-working-5.webp" data-durations="700,800,700,850,750,1000" data-loop="true" alt=""><h3>Counting</h3><span>While the AI reads your plate.</span></div>
+    <div class="card emotion reveal"><img src="assets/img/carbo-waving-0.webp" width="576" height="624" loading="lazy" decoding="async" data-frames="assets/img/carbo-waving-0.webp,assets/img/carbo-waving-1.webp,assets/img/carbo-waving-2.webp,assets/img/carbo-waving-3.webp" data-durations="150,180,220,320" alt=""><h3>Nailed it</h3><span>When a meal fits the day.</span></div>
+    <div class="card emotion reveal"><img src="assets/img/carbo-failed-7.webp" width="288" height="312" loading="lazy" decoding="async" data-frames="assets/img/carbo-failed-0.webp,assets/img/carbo-failed-1.webp,assets/img/carbo-failed-2.webp,assets/img/carbo-failed-3.webp,assets/img/carbo-failed-4.webp,assets/img/carbo-failed-5.webp,assets/img/carbo-failed-6.webp,assets/img/carbo-failed-7.webp" data-durations="150,170,190,220,240,260,280,500" alt=""><h3>Oops</h3><span>When a number needs a fix. Never a lecture.</span></div>
+  </div>
+</div></section>
+
+<section class="section section--wash nudges"><div class="wrap">
+  <div class="section__head reveal"><h2>Carbo nudges, never nags.</h2><p>One reminder per meal, only if you haven't logged it, never after the fact.</p></div>
+  <ul class="nudges__stack" role="list">
+    <li class="nudge reveal" style="--i:0"><img src="assets/img/notif-breakfast-en.webp" srcset="assets/img/notif-breakfast-en@2x.webp 2x" width="450" height="80" loading="lazy" decoding="async" alt="iOS notification from Carbo-AI. Show me your breakfast. Snap it before it's gone — I'll count the carbs."></li>
+    <li class="nudge reveal" style="--i:1"><img src="assets/img/notif-lunch-en.webp" srcset="assets/img/notif-lunch-en@2x.webp 2x" width="450" height="80" loading="lazy" decoding="async" alt="iOS notification from Carbo-AI. Show me your lunch. Snap it before it's gone — I'll count the carbs."></li>
+    <li class="nudge reveal" style="--i:2"><img src="assets/img/notif-dinner-en.webp" srcset="assets/img/notif-dinner-en@2x.webp 2x" width="450" height="80" loading="lazy" decoding="async" alt="iOS notification from Carbo-AI. Show me your dinner. Snap it before it's gone — I'll count the carbs."></li>
+  </ul>
+  <p class="nudges__trust reveal" style="--i:1">Local notifications only — nothing leaves your phone.</p>
+</div></section>
+
+<section class="section"><div class="wrap row">
+  <div class="reveal">
+    <h2>It's an estimate. That's fine.</h2>
+    <p>No app can weigh food through a camera, so treat the number as an estimate, not a lab result. Carb cycling doesn't need a lab — each day has a target range, not a single number to hit. And when Carbo gets it wrong, fix it before you save — one tap.</p>
+  </div>
+  <div class="card reveal" style="position:relative;padding-bottom:64px">
+    <div class="result__name">Chicken rice · 220 g</div><div class="result__meta">Tap any number to edit before saving</div>
+    <div class="chips"><span class="chip chip--carbs">Carbs 62 g <span aria-hidden="true">✎</span></span><span class="chip chip--protein">Protein 35 g</span><span class="chip">Fat 6 g</span></div>
+    <img src="assets/img/carbo-failed-7.webp" width="288" height="312" loading="lazy" decoding="async" alt="" style="position:absolute;right:16px;bottom:-6px;width:110px">
+  </div>
+</div></section>
+
+<section class="section section--wash"><div class="wrap row row--flip">
+  <div class="reveal">
+    <h2>Apple Health, read-only.</h2>
+    <p>Carbo-AI reads energy, steps and weight to size your carb days. It never writes anything back.</p>
+  </div>
+  <div class="card reveal rows" role="group" aria-label="Apple Health permissions the app asks for">
+    <div>Active energy <span class="toggle" aria-hidden="true"></span></div>
+    <div>Steps <span class="toggle" aria-hidden="true"></span></div>
+    <div>Weight <span class="toggle" aria-hidden="true"></span></div>
+    <div style="background:transparent;color:var(--ink-3);font-size:13px;padding:4px 0 0">Read-only · never writes</div>
+  </div>
+</div></section>
+
+<section class="section" id="pro"><div class="wrap row">
+  <div class="reveal">
+    <h2>Carbo-AI Pro</h2>
+    <p>Everything the app does, on a subscription billed by Apple. Cancel anytime.</p>
+    <ul class="pro__list" role="list">
+      <li><span class="tick" aria-hidden="true">✓</span><div><b>AI photo recognition</b><span>Snap a meal, get its carbs (fair use: 50/day).</span></div></li>
+      <li><span class="tick" aria-hidden="true">✓</span><div><b>Smart carb-day adjustment</b><span>Daily targets tuned with your Apple Health data.</span></div></li>
+      <li><span class="tick" aria-hidden="true">✓</span><div><b>Cloud backup &amp; restore</b><span>Keep your log safe and move it to a new phone.</span></div></li>
+      <li><span class="tick" aria-hidden="true">✓</span><div><b>Full progress &amp; trends</b><span>Your complete history, not just this week.</span></div></li>
     </ul>
-  </nav>
-  
-  <section class="hero">
-    <div class="hero-container">
-      <div class="hero-content">
-        <h1>CarboAI</h1>
-        <p class="hero-subtitle">Your Smart Carb Cycling Companion. AI-powered nutrition tracking and personalized carb cycling plans for optimal performance and health.</p>
-        <a href="#" class="cta-button">Download on App Store</a>
-      </div>
-      <div class="hero-image">
-        <div class="hero-image-placeholder">
-          App Screenshot
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <section class="features">
-    <div class="features-container">
-      <h2 class="features-title">Why CarboAI?</h2>
-      
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">📸</div>
-          <h3>Snap & Track</h3>
-          <p>Take a photo of your meal and get instant nutrition insights powered by AI. No manual logging required.</p>
-        </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <h3>Personalized Plans</h3>
-          <p>AI-driven carb cycling plans tailored to your goals, activity level, and metabolism.</p>
-        </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon">❤️</div>
-          <h3>Seamless Sync</h3>
-          <p>Connect with Apple Health and Google Fit to track your progress holistically.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <h3>CarboAI</h3>
-          <p>LIFEX TECHNOLOGIES LLC</p>
-        </div>
-        
-        <div class="footer-links">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="about.html">About</a></li>
-            <li><a href="privacy.html">Privacy</a></li>
-            <li><a href="terms.html">Terms</a></li>
-          </ul>
-        </div>
-        
-        <div class="footer-links">
-          <h4>Contact</h4>
-          <ul>
-            <li><a href="mailto:support@carboai.app">support@carboai.app</a></li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <p>&copy; 2026 LIFEX TECHNOLOGIES LLC. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+  </div>
+  <div class="reveal"><img class="pro__carbo" src="assets/img/carbo-data.webp" width="512" height="512" loading="lazy" decoding="async" alt=""></div>
+</div></section>
+
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track"><span>Snap a meal ·</span><span>Count the carbs ·</span><span>Follow the day ·</span><span>Snap a meal ·</span><span>Count the carbs ·</span><span>Follow the day ·</span></div>
+  <div class="marquee__track marquee__track--reverse"><span>High day ·</span><span>Low day ·</span><span>Medium day ·</span><span>High day ·</span><span>Low day ·</span><span>Medium day ·</span></div>
+</div>
+
+<section class="section section--wash" id="faq"><div class="wrap">
+  <div class="section__head reveal"><h2>Questions</h2></div>
+  <div class="faq reveal">
+    <details><summary>Is Carbo-AI free?</summary><p>Carbo-AI is free to download. Using it requires a Carbo-AI Pro subscription, billed through the App Store. If a free trial is offered, its terms are shown before you buy. Cancel anytime.</p></details>
+    <details><summary>How accurate is the carb estimate?</summary><p>It's an estimate: the app recognises the food, estimates the portion and looks up its nutrition. Treat it as a starting point and edit it before you save when it's off. Carb cycling aims at a daily range, not one exact number, so a close estimate is enough.</p></details>
+    <details><summary>What happens to my photos?</summary><p>Your photo goes to our servers and on to a third-party AI provider to recognise the food. Once the estimate comes back it's discarded — we don't store meal photos on our servers. The photo stays on your phone with the saved meal.</p></details>
+    <details><summary>Does it work on Android?</summary><p>Not yet — Carbo-AI is iPhone-only.</p></details>
+    <details><summary>How do I cancel?</summary><p>iPhone Settings → your name → Subscriptions → Carbo-AI → Cancel. Deleting the app doesn't cancel the subscription.</p></details>
+    <details><summary>How do I delete my account?</summary><p>In the app: Profile tab → gear icon → Settings → Delete account. Everything server-side is removed within 30 days.</p></details>
+    <details><summary>Which Apple Health data does it read?</summary><p>Active energy, resting energy, steps, weight, body fat and workouts — read-only, never written back.</p></details>
+  </div>
+</div></section>
+
+<section class="band" data-observe><div class="wrap band__in">
+  <div>
+    <h2>Ready when your next meal is.</h2>
+    <div style="margin-top:18px"><span class="soon-pill soon-pill--onorange">Coming soon to the App Store</span></div>
+  </div>
+  <img class="band__carbo" id="wave" src="assets/img/carbo-waving-1.webp" width="576" height="624" loading="lazy" decoding="async" data-frames="assets/img/carbo-waving-0.webp,assets/img/carbo-waving-1.webp,assets/img/carbo-waving-2.webp,assets/img/carbo-waving-3.webp" data-durations="150,180,220,320" alt="">
+</div></section>
+
+<!-- @sections -->
+
+<footer class="footer"><div class="wrap footer__in">
+  <span>© 2026 LIFEX TECHNOLOGIES LLC · Built in Boston, MA</span>
+  <span><a href="about.html">Support</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <span class="footer__tail"><a href="mailto:support@carboai.app">support@carboai.app</a> · <a href="zh/" hreflang="zh-Hans" lang="zh-Hans">中文</a></span></span>
+</div></footer>
+<script src="assets/site.js" defer></script>
 </body>
 </html>
