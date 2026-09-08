@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { joinCjk } from './cjk-joiner.mjs';
+import { joinCjk, joinHeadings } from './cjk-joiner.mjs';
 
 test('inserts U+2060 between consecutive CJK characters only', () => {
   assert.equal(joinCjk('拍一张，碳水算清。'), '拍⁠一⁠张，碳⁠水⁠算⁠清。');
@@ -11,4 +11,15 @@ test('leaves latin, digits and tags alone', () => {
 test('is idempotent', () => {
   const once = joinCjk('三步，然后开饭。');
   assert.equal(joinCjk(once), once);
+});
+test('joinHeadings joins h1, h2 and .bubble but nothing else', () => {
+  const html = '<h1>拍一张，<br>碳水算清。</h1><h2 class="x">三步，然后开饭。</h2>'
+    + '<div class="bubble">午饭给我看看。</div><p>今天这个碳水日还剩多少。</p>';
+  assert.equal(joinHeadings(html),
+    '<h1>拍⁠一⁠张，<br>碳⁠水⁠算⁠清。</h1><h2 class="x">三⁠步，然⁠后⁠开⁠饭。</h2>'
+    + '<div class="bubble">午⁠饭⁠给⁠我⁠看⁠看。</div><p>今天这个碳水日还剩多少。</p>');
+});
+test('joinHeadings is idempotent', () => {
+  const once = joinHeadings('<h2>常见问题</h2><div class="bubble is-in">碳水我来算。</div>');
+  assert.equal(joinHeadings(once), once);
 });

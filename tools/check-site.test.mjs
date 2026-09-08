@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Fixture tests for tools/check-site.mjs. The gate derives ROOT from its own location, so every
 // fixture is a throwaway directory with the script copied into <fixture>/tools/ and the pages laid
-// out around it. Run: node --test tools/
+// out around it. Run: node --test 'tools/**/*.test.mjs'
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -9,8 +9,11 @@ import { copyFileSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'nod
 import { dirname, join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
+import { joinHeadings } from './cjk-joiner.mjs';
 
-const SCRIPT = resolve(dirname(fileURLToPath(import.meta.url)), 'check-site.mjs');
+const TOOLS = dirname(fileURLToPath(import.meta.url));
+// check-site.mjs imports the joiner, so the fixture's tools/ needs both files.
+const SCRIPT = ['check-site.mjs', 'cjk-joiner.mjs'];
 const made = [];
 after(() => { for (const dir of made) rmSync(dir, { recursive: true, force: true }); });
 
@@ -19,7 +22,7 @@ const fixture = (files) => {
   const dir = mkdtempSync(join(tmpdir(), 'carbo gate '));
   made.push(dir);
   mkdirSync(join(dir, 'tools'), { recursive: true });
-  copyFileSync(SCRIPT, join(dir, 'tools', 'check-site.mjs'));
+  for (const f of SCRIPT) copyFileSync(join(TOOLS, f), join(dir, 'tools', f));
   for (const [rel, body] of Object.entries(files)) {
     const dest = join(dir, rel);
     mkdirSync(dirname(dest), { recursive: true });
@@ -105,6 +108,44 @@ test('every mailto: must be the real support address', () => {
   assert.match(bad.out, /mailto:suport@carboai\.app/);
 });
 
+test('every forbidden claim on one page is reported separately', () => {
+  const { status, out } = run(fixture({ ...ASSETS,
+    'index.html': page('', { body: '<p>CarboAI costs $9.99 on the free tier.</p>' }) }));
+  assert.equal(status, 1);
+  assert.match(out, /brand must be written "Carbo-AI"/);
+  assert.match(out, /no prices on the site \(found "\$9\.99"\)/);
+  assert.match(out, /there is no free tier \(found "free tier"\)/);
+});
+
+test('the zh claim guards read Chinese too', () => {
+  const zh = (body) => run(fixture({ ...ASSETS, 'zh/index.html': page('../', { lang: 'zh-Hans', body }) }));
+  assert.match(zh('<p>每月 30 元。</p>').out, /no prices on the site/);
+  assert.match(zh('<p>￥30 起。</p>').out, /no prices on the site/);
+  assert.match(zh('<p>促进代谢。</p>').out, /no metabolism claim/);
+  assert.match(zh('<p>支持谷歌健身。</p>').out, /no Google Fit claim/);
+  assert.match(zh('<p>有免费版。</p>').out, /there is no free tier/);
+  // The real zh FAQ answers "Carbo-AI 免费吗？" with "免费下载。" — that must stay legal.
+  const ok = zh('<p>Carbo-AI 免费吗？免费下载。如提供免费试用，条件会在购买前展示。</p>');
+  assert.equal(ok.status, 0, ok.out);
+});
+
+test('a page without a canonical link is reported', () => {
+  const { status, out } = run(fixture({ ...ASSETS,
+    'index.html': page().replace(/<link rel="canonical"[^>]*>/, '') }));
+  assert.equal(status, 1);
+  assert.match(out, /missing canonical/);
+});
+
+test('zh headings and the hero bubble must be run through the joiner', () => {
+  const body = '<h2>拍一张碳水算清</h2><div class="bubble">午饭给我看看。</div>';
+  const bad = run(fixture({ ...ASSETS, 'zh/index.html': page('../', { lang: 'zh-Hans', body }) }));
+  assert.equal(bad.status, 1);
+  assert.match(bad.out, /zh\/index\.html: heading\/bubble text not run through tools\/cjk-joiner\.mjs/);
+  const good = run(fixture({ ...ASSETS,
+    'zh/index.html': joinHeadings(page('../', { lang: 'zh-Hans', body })) }));
+  assert.equal(good.status, 0, good.out);
+});
+
 test('sitemap lists every page and points only at files that exist', () => {
   const ok = run(fixture({ ...ASSETS, 'index.html': page(), 'zh/index.html': page('../', { lang: 'zh-Hans' }),
     'sitemap.xml': sitemap('https://carboai.app/', 'https://carboai.app/zh/') }));
@@ -112,7 +153,7 @@ test('sitemap lists every page and points only at files that exist', () => {
   const ghost = run(fixture({ ...ASSETS, 'index.html': page(),
     'sitemap.xml': sitemap('https://carboai.app/', 'https://carboai.app/ghost.html') }));
   assert.equal(ghost.status, 1);
-  assert.match(ghost.out, /ghost\.html/);
+  assert.match(ghost.out, /<loc> .* has no file/);
   const unlisted = run(fixture({ ...ASSETS, 'index.html': page(), 'zh/index.html': page('../', { lang: 'zh-Hans' }),
     'sitemap.xml': sitemap('https://carboai.app/') }));
   assert.equal(unlisted.status, 1);

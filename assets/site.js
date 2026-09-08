@@ -70,20 +70,22 @@
   //    one-shot tiles (waving, failed) replay every time they re-enter the viewport or are hovered/tapped.
   const tiles = document.querySelectorAll('.emotion img[data-frames]');
   if (tiles.length && !reduce && 'IntersectionObserver' in window) {
-    const state = new WeakMap(); // img → { playing, started }
+    const state = new WeakMap(); // img → { playing, started, gen }
     const start = (img) => {
       const st = state.get(img) || {}; if (st.playing) return;
       const frames = list(img, 'frames'); const durations = list(img, 'durations').map(Number);
       const loop = img.dataset.loop === 'true';
-      st.playing = true; state.set(img, st);
-      const run = () => play(img, frames, durations, () => { if (loop && st.playing) run(); else { st.playing = false; } });
+      // gen is the cancellation token: pausing (or a fresh start) bumps it, and the in-flight chain
+      // stops at its next frame boundary instead of looping forever alongside the new one.
+      st.playing = true; st.gen = (st.gen || 0) + 1; const gen = st.gen; state.set(img, st);
+      const run = () => { if (st.gen !== gen) return; play(img, frames, durations, () => { if (st.gen !== gen) return; if (loop && st.playing) run(); else st.playing = false; }); };
       preload(frames); setTimeout(run, st.started ? 0 : 200); st.started = true;
     };
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
         const st = state.get(e.target) || {};
         if (e.isIntersecting) start(e.target);
-        else if (e.target.dataset.loop === 'true') { st.playing = false; state.set(e.target, st); } // pause loops off-screen
+        else if (e.target.dataset.loop === 'true') { st.playing = false; st.gen = (st.gen || 0) + 1; state.set(e.target, st); } // pause loops off-screen
       }
     }, { threshold: 0.5 });
     tiles.forEach((t) => { io.observe(t); t.closest('.emotion')?.addEventListener('mouseenter', () => start(t)); t.closest('.emotion')?.addEventListener('click', () => start(t)); });
@@ -97,8 +99,8 @@
   const wave = document.getElementById('wave');
   if (wave && !reduce && 'IntersectionObserver' in window) {
     const frames = list(wave, 'frames'); const durations = list(wave, 'durations').map(Number);
-    preload(frames);
-    const io = new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting)) { io.disconnect(); play(wave, frames, durations); } }, { threshold: 0.4 });
+    // Preload on intersection, not at parse time: three wave frames fetched before load would compete with the LCP.
+    const io = new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting)) { io.disconnect(); preload(frames); play(wave, frames, durations); } }, { threshold: 0.4 });
     io.observe(wave);
   }
 })();

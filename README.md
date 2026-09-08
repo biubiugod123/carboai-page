@@ -16,6 +16,8 @@ Static site for the Carbo-AI iPhone app.
 
 Open `index.html` in a browser to preview locally.
 Run `node tools/check-site.mjs` before committing — it fails on brand, claim and broken-link problems.
+Run `node --test 'tools/**/*.test.mjs'` for the tool tests (the quoted glob is required).
+Chinese headlines and the hero bubble must carry U+2060: `node tools/cjk-joiner.mjs zh/index.html` rewrites them, and the gate rejects a `zh/` page that skipped it.
 
 ## Deployment
 

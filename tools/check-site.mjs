@@ -5,6 +5,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { joinHeadings } from './cjk-joiner.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PAGES = ['index.html', 'about.html', 'how-it-works.html',
@@ -19,6 +20,11 @@ const FORBIDDEN = [
   [/\bmetabolism\b/i, 'no metabolism claim'],
   [/\$\s?\d+(\.\d\d)?/, 'no prices on the site'],
   [/free (tier|plan)/i, 'there is no free tier'],
+  [/谷歌健身/, 'no Google Fit claim'],
+  [/新陈代谢|促进代谢/, 'no metabolism claim'],
+  [/[￥¥]\s?\d/, 'no prices on the site'],
+  [/\d+\s?元/, 'no prices on the site'],
+  [/免费(版|套餐|试用期永久)/, 'there is no free tier'],
 ];
 const REQUIRED_HEAD = [
   [/<html[^>]+lang="(en|zh-Hans)"/, '<html lang>'],
@@ -37,7 +43,7 @@ if (PAGES.length === 0) fail('(site)', `no pages found under ${ROOT} — wrong R
 // Carries its own protocol guard: the srcset and data-frames loops call it directly.
 const checkLocal = (page, url) => {
   if (/^(https?:|mailto:|data:)/.test(url)) return;
-  const [path] = url.split('#');
+  const [path] = url.split(/[#?]/);
   if (!existsSync(resolve(dirname(join(ROOT, page)), path))) fail(page, `broken link ${url}`);
 };
 
@@ -51,11 +57,10 @@ for (const page of PAGES) {
   for (const [re, what] of REQUIRED_HEAD) if (!re.test(html)) fail(page, `missing ${what}`);
   if (/href="#"/.test(html)) fail(page, 'dead href="#"');
   // One wrong letter in the support address is the costliest single-character typo on the site.
-  for (const m of html.matchAll(/mailto:[^"'\s>]+/g)) if (m[0] !== SUPPORT) fail(page, `wrong support address ${m[0]}`);
+  for (const m of html.matchAll(/mailto:[^"'\s>]+/g)) if (m[0].split('?')[0] !== SUPPORT) fail(page, `wrong support address ${m[0]}`);
   const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
   for (const m of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
     const url = m[1];
-    if (/^(https?:|mailto:|data:)/.test(url)) continue;
     if (url === '#') continue; // already reported above
     if (url.startsWith('#')) { if (!ids.has(url.slice(1))) fail(page, `anchor ${url} not found`); continue; }
     checkLocal(page, url);
@@ -66,6 +71,9 @@ for (const page of PAGES) {
   }
   for (const m of html.matchAll(/data-frames="([^"]+)"/g)) {
     for (const frame of m[1].split(',')) checkLocal(page, frame.trim());
+  }
+  if (page.startsWith('zh/') && joinHeadings(html) !== html) {
+    fail(page, 'heading/bubble text not run through tools/cjk-joiner.mjs');
   }
 }
 

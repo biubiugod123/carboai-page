@@ -91,6 +91,11 @@ try {
     }
     if (!loaded) { console.log(`warning: load event never fired at ${width}px`); failures += 1; }
     await new Promise((r) => setTimeout(r, motion ? 2200 : 1200)); // fonts + images; with --motion, past the hero wave→bubble handoff (~1.3 s)
+    // captureBeyondViewport paints the whole document but never scrolls it, so loading="lazy" images below
+    // the fold stay blank. Grow the emulated viewport to the document height first and let them load.
+    const { result: docHeight } = await send('Runtime.evaluate', { expression: 'document.documentElement.scrollHeight', returnByValue: true }, sessionId);
+    await send('Emulation.setDeviceMetricsOverride', { width, height: Math.max(900, docHeight.value), deviceScaleFactor: 1, mobile: width < 768 }, sessionId);
+    await new Promise((r) => setTimeout(r, 500));
     const { result } = await send('Runtime.evaluate', { expression: 'document.documentElement.scrollWidth - document.documentElement.clientWidth', returnByValue: true }, sessionId);
     const shot = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true }, sessionId);
     const dest = join(out, `${label}-${width}.png`);

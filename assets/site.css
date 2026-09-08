@@ -132,10 +132,11 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 .toggle::after { content: ""; position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; }
 
 /* pro */
-.pro__list { display: grid; gap: 12px; margin-top: 16px; }
-.pro__list > div { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; }
+.pro__list { display: grid; gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; }
+.pro__list > li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; }
 .pro__list b { display: block; font-weight: 600; }
 .pro__list b + span { color: var(--ink-2); font-size: 15px; }
+.pro__carbo { display: block; width: 260px; height: auto; margin: 0 auto; }
 .tick { width: 22px; height: 22px; border-radius: 50%; background: color-mix(in srgb, var(--orange) 12%, var(--card)); color: var(--orange-lip); display: grid; place-items: center; font-size: 13px; font-weight: 800; }
 
 /* faq */
@@ -198,6 +199,9 @@ html.js .reveal.is-visible { opacity: 1; translate: 0 0; }
   .steps { grid-template-columns: 1fr; }
   .emotions { grid-template-columns: repeat(2, 1fr); }
   .marquee__track { font-size: 28px; }
+  /* the 40px .band h2 rule outranks the generic phone h2 above, so the band needs its own phone size */
+  .band h2 { font-size: 32px; }
+  .band__carbo { justify-self: center; }
   .nav__links { gap: 14px; } .nav__links a { font-size: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
