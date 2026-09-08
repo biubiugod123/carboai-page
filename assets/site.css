@@ -159,6 +159,12 @@ html { scroll-padding-top: 88px; } /* anchors, Tab focus and scrollIntoView all 
 html.js .reveal { opacity: 0; transform: translateY(12px); transition: opacity .5s ease, transform .5s ease; }
 html.js .reveal.is-visible { opacity: 1; transform: none; }
 
+@media (max-width: 640px) {
+  /* five links do not fit beside the brand on a phone; the three in-page anchors are one scroll away anyway */
+  .nav__links a[href^="#"] { display: none; }
+  .nav__brand { font-size: 17px; }
+}
+
 @media (max-width: 900px) {
   h1 { font-size: 36px; } h2 { font-size: 28px; }
   .section { padding: 64px 0; }
