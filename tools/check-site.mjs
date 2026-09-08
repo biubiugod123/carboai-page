@@ -2,7 +2,7 @@
 // Static gate for every page carboai.app publishes.
 // Usage: node tools/check-site.mjs   → exit 0 clean, 1 findings, 2 usage/config error (as tools/shoot.mjs).
 // CHECK_SITE_PAGES replaces the manifest whenever it is *set*: "a.html,b.html:legal", the ":legal"
-// suffix marking a legal page. Set but empty is a config error, not a quiet run of the real ten pages.
+// suffix marking a legal page. Set but empty is a config error, not a quiet run of the real eight pages.
 // House style this relies on: lowercase attribute names; site links relative (no leading "/").
 // Quoting is not part of it — href/src, srcset, data-frames, ids and the rel= tags parsed below are
 // all read in either quote style; only REQUIRED_HEAD still spells out this site's double-quoted head.
@@ -16,8 +16,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 // page quietly skipped. Marketing pages get every check. Legal pages ("…:legal") get only the claim
 // scan, the link checks and the support address — their design was frozen 2026-09-05 and their copy
 // is mirrored in the app repo's docs/legal, so they carry neither this site's <head> block nor U+2060.
-const MANIFEST = ['index.html', 'about.html', 'how-it-works.html',
-  'zh/index.html', 'zh/about.html', 'zh/how-it-works.html',
+const MANIFEST = ['index.html', 'about.html', 'zh/index.html', 'zh/about.html',
   'privacy.html:legal', 'terms.html:legal', 'privacy-zh.html:legal', 'terms-zh.html:legal'];
 // The fixture tests replace the manifest: CHECK_SITE_PAGES="index.html,zh/index.html,privacy-zh.html:legal".
 // Being set is what makes the override active — falling back to MANIFEST on an empty string would let

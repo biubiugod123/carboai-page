@@ -72,7 +72,7 @@ const sitemap = (...locs) => `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${locs.map((l) => `<url><loc>${l}</loc></url>`).join('')}</urlset>`;
 
 test('a manifest page that is not on disk fails; it is never silently skipped', () => {
-  const empty = run(fixture({})); // no override: the real ten-page manifest, none of it present
+  const empty = run(fixture({})); // no override: the real eight-page manifest, none of it present
   assert.equal(empty.status, 1);
   assert.match(empty.out, /\(site\): missing page: index\.html/);
   const gone = run(fixture({ ...ASSETS, ...pair() }), [...PAIR, 'gone.html']);
@@ -90,8 +90,8 @@ test('an override that names no page is a usage error, not a clean run', () => {
 });
 
 test('CHECK_SITE_PAGES counts as set even when it is empty', () => {
-  // Falling back to the built-in manifest here would run the real ten pages against a fixture that
-  // holds two — a caller who meant to narrow the run would get someone else's site, or ten
+  // Falling back to the built-in manifest here would run the real eight pages against a fixture that
+  // holds two — a caller who meant to narrow the run would get someone else's site, or eight
   // missing-page findings, instead of being told the override says nothing.
   const { status, out } = run(fixture({ ...ASSETS, ...pair() }), []);
   assert.equal(status, 2, out);
