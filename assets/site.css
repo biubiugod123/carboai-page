@@ -100,7 +100,7 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 .chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
 .chip--carbs { background: color-mix(in srgb, var(--orange) 12%, var(--card)); color: var(--orange-lip); }
 .chip--protein { background: var(--teal-chip-lo); color: var(--teal-ink); }
-.step__art img.carbo-sm { position: absolute; right: 10px; bottom: 8px; width: 96px; height: auto; object-fit: contain; } /* must outrank .step__art img above */
+.step__art img.carbo-sm { position: absolute; right: 8px; bottom: 6px; width: 80px; height: auto; object-fit: contain; } /* must outrank .step__art img above; 80px keeps the ears clear of the chip row */
 
 /* carb-day chip + week */
 .daychip { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; padding: 5px 12px; font-size: 13px; font-weight: 600; background: var(--teal-chip-lo); color: var(--teal-ink); }
