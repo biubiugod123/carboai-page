@@ -272,6 +272,30 @@ test('the marketing <head> must declare utf-8 and an initial-scale of 1', () => 
   assert.equal(frozen.status, 0, frozen.out);
 });
 
+test('a viewport that pins the scale is rejected on every page, legal included', () => {
+  const files = pair();
+  const swap = (to) => run(fixture({ ...ASSETS, ...files,
+    'index.html': files['index.html'].replace('initial-scale=1"', to) }), PAIR);
+  // user-scalable=0 is the same directive spelled as a number, and 1.0 the same ceiling as 1.
+  for (const tail of ['initial-scale=1, user-scalable=no"', 'initial-scale=1,user-scalable=0"',
+    'initial-scale=1, maximum-scale=1"', 'initial-scale=1, maximum-scale=1.0"']) {
+    const bad = swap(tail);
+    assert.equal(bad.status, 1, bad.out);
+    assert.match(bad.out, /index\.html: viewport blocks zoom/);
+  }
+  // A ceiling the reader can actually reach is not the defect — WCAG 1.4.4 asks for 200 %. And
+  // minimum-scale only sets the floor, which is why the initial-scale test above may write one.
+  for (const tail of ['initial-scale=1, maximum-scale=5"', 'initial-scale=1, minimum-scale=1"',
+    'initial-scale=1, user-scalable=yes"']) {
+    const ok = swap(tail);
+    assert.equal(ok.status, 0, ok.out);
+  }
+  // The legal pages' frozen <head> is exempt from house style, not from an accessibility defect.
+  const frozenLegal = run(fixture({ 'privacy.html': legal().replace('initial-scale=1"', 'initial-scale=1, user-scalable=no"') }), ['privacy.html:legal']);
+  assert.equal(frozenLegal.status, 1);
+  assert.match(frozenLegal.out, /privacy\.html: viewport blocks zoom/);
+});
+
 test('hreflang must point at a published page, and that page must point back', () => {
   const both = {
     'about.html': page('', { self: 'https://carboai.app/about.html',

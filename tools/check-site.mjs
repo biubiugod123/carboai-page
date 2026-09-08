@@ -53,8 +53,9 @@ const FORBIDDEN = [
 // presence and their value are the same question and the parse must not care about attribute order.
 const REQUIRED_HEAD = [
   [/<html[^>]+lang="(en|zh-Hans)"/, '<html lang>'],
-  // The charset *value* is case-insensitive per HTML, so "UTF-8" passes too; the attribute name
-  // is not, and house style writes it lowercase.
+  // The /i covers the whole pattern, not just the value: "UTF-8" passes because HTML says the
+  // charset value is case-insensitive, and "CHARSET" passes because lowercase attribute names are
+  // house style rather than something this rule is here to enforce.
   [/<meta charset="utf-8">/i, 'charset'],
   // Without it a phone — and tools/shoot.mjs's emulated one — lays the page out at 980 px and
   // shrinks the result, which is how the 320 px reflow check silently stops meaning anything. The
@@ -111,6 +112,16 @@ for (const { path: page, legal } of PAGES) {
     if (m) fail(page, `${why} (found "${m[0]}")`);
   }
   if (!legal) for (const [re, what] of REQUIRED_HEAD) if (!re.test(html)) fail(page, `missing ${what}`);
+  // WCAG 1.4.4 (200 % zoom) applies to the legal pages too: their <head> is frozen against redesign,
+  // not against a defect that stops a reader enlarging the text. user-scalable=0 is the same
+  // directive written as a number, and maximum-scale=1.0 the same ceiling as 1 — a reachable
+  // ceiling (maximum-scale=5) and a floor (minimum-scale) are not what this rejects.
+  for (const [tag] of html.matchAll(/<meta\s[^>]*name=["']viewport["'][^>]*>/gi)) {
+    const content = attrOf(tag, 'content') ?? '';
+    if (/user-scalable\s*=\s*(no|0)(?![\w.])|maximum-scale\s*=\s*1(\.0+)?(?![\d.])/i.test(content)) {
+      fail(page, 'viewport blocks zoom (user-scalable=no / maximum-scale=1)');
+    }
+  }
   if (!legal) {
     const canonical = attrOf(linkTags(html, 'canonical')[0] ?? '', 'href') ?? '';
     // A rel="alternate" without both attributes is some other kind of alternate (an RSS feed, say).

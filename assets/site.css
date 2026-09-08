@@ -171,7 +171,7 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 /* footer */
 .footer { padding: 40px 0 56px; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink-2); }
 .footer__in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
-.footer a { color: var(--ink-2); }
+.footer a { color: var(--ink-2); white-space: nowrap; } /* 服务条款 breaks as 服务条/款 at 320; the links wrap between themselves, never inside one */
 
 /* reveal on scroll (only when JS is on) */
 /* reveal uses the independent `translate` property so `transform` stays free for the card hover lift; .card.reveal merges the
@@ -190,10 +190,15 @@ html.js .reveal.is-visible { opacity: 1; translate: 0 0; }
   /* 7 × 34px dots + 6 × 14px gaps = 322px does not fit a 272px column at 320 (WCAG reflow width) */
   .week__dot { width: 28px; height: 28px; }
   .week__strip { gap: 8px; }
-  /* "4. 为什么碳循环容得下估算" wraps after the numeral at 320. The method pages set .prose h2 in
-     their own <style> — same specificity, later in the document — so this needs one class more;
-     the child combinator keeps it off the support pages' <summary><h2>. */
+  /* At 320 the numbered method-page headings wrap after the numeral in both languages —
+     "4. 为什么碳循环容得下估算", and in English "1. Where the photo goes". The method pages set
+     .prose h2 in their own <style> — same specificity, later in the document — so this needs one
+     class more; the child combinator keeps it off the support pages' <summary><h2>. */
   .wrap.prose > h2 { font-size: 21px; }
+  /* With the links unbreakable the English row runs to three lines at 320 ("中文" alone on the
+     third); one step down fits it in two. 13px is the smallest type on the site and only at this
+     width. */
+  .footer { font-size: 13px; }
 }
 @media (max-width: 900px) {
   h1 { font-size: 36px; } h2 { font-size: 28px; }
@@ -222,8 +227,11 @@ html.js .reveal.is-visible { opacity: 1; translate: 0 0; }
 .demo__photo { width: 100%; height: 100%; object-fit: cover; }
 .demo__frame .scan { opacity: 0; transition: opacity .2s; }
 .demo__frame.is-scanning .scan { opacity: 1; }
-.demo__frame.is-scanning::after { content: ""; position: absolute; left: 14%; right: 14%; top: 14%; height: 2px; background: #fff; box-shadow: 0 0 12px #fff; animation: sweep 2s linear 1 forwards; }
-@keyframes sweep { from { top: 14%; } to { top: 86%; opacity: 0; } }
+.demo__frame.is-scanning::after { content: ""; position: absolute; left: 14%; right: 14%; top: 14%; height: 2px; background: #fff; box-shadow: 0 0 12px #fff; animation: demo-sweep 2s linear 1 forwards; }
+/* Not "sweep": motion.css declares its own @keyframes sweep (for the step-1 art) and loads after
+   this file, so the two collide and motion.css's wins — the demo line silently runs the other
+   section's keyframes, and any future edit over there would change it again. */
+@keyframes demo-sweep { from { top: 14%; } to { top: 86%; opacity: 0; } }
 .demo__thumbs { display: flex; gap: 10px; margin-bottom: 18px; }
 .demo__thumb { padding: 0; border: 3px solid transparent; border-radius: 14px; overflow: hidden; background: none; cursor: pointer; line-height: 0; }
 .demo__thumb img { width: 84px; height: 84px; object-fit: cover; }
@@ -234,4 +242,5 @@ html.js .reveal.is-visible { opacity: 1; translate: 0 0; }
 .demo__bubble::after { content: ""; position: absolute; left: -9px; bottom: 16px; width: 14px; height: 14px; background: var(--card); border-left: 1.5px solid var(--line); border-bottom: 1.5px solid var(--line); transform: rotate(45deg); }
 .demo__note { font-size: 13px; color: var(--ink-3); margin-top: 12px; }
 @media (max-width: 900px) { .demo { grid-template-columns: 1fr; } }
-@media (prefers-reduced-motion: reduce) { .demo__frame.is-scanning::after { animation: none; } }
+/* animation: none would still paint the line, parked at top: 14% across the whole scan. */
+@media (prefers-reduced-motion: reduce) { .demo__frame.is-scanning::after { display: none; } .demo__frame .scan { transition: none; } }

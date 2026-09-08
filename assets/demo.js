@@ -6,7 +6,9 @@ if (root) {
   const lang = document.documentElement.lang.startsWith('zh') ? 'zh' : 'en';
   const base = root.dataset.base || '';
   const results = JSON.parse(document.getElementById('demo-data').textContent);
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Read per click, not once at import: the setting can flip while the page is open, and a value
+  // captured here would keep the scan running (or keep it off) for the rest of the visit.
+  const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
   const photo = root.querySelector('.demo__photo');
   const frame = root.querySelector('.demo__frame');
   const name = root.querySelector('.demo__name');
@@ -34,7 +36,7 @@ if (root) {
     const my = ++token;
     photo.src = `${base}${r.photo}`;
     root.querySelectorAll('.demo__thumb').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === r.id)));
-    if (reduce) { paint(r, COUNT_MS); finish(r); return; }
+    if (reduce()) { paint(r, COUNT_MS); finish(r); return; }
     frame.classList.add('is-scanning');
     bubble.textContent = lang === 'zh' ? '让我看看……' : 'Let me look…';
     const t0 = performance.now();
