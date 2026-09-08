@@ -243,3 +243,23 @@ html.js .reveal.is-visible { opacity: 1; translate: 0 0; }
 @media (max-width: 900px) { .demo { grid-template-columns: 1fr; } }
 /* animation: none would still paint the line, parked at top: 14% across the whole scan. */
 @media (prefers-reduced-motion: reduce) { .demo__frame.is-scanning::after { display: none; } .demo__frame .scan { transition: none; } }
+
+/* reminder banners (Carbo nudges) — real iOS banners pushed to the simulator with simctl and cropped,
+   not drawn in CSS. Each crop keeps ~12 source px of the screen behind the card so the banner's own
+   rounded corners and drop shadow survive; .nudge's 20px radius trims that margin's corners without
+   biting into the card (the card's radius is ~28 CSS px in the 440px slot and it sits ~4px inside the
+   crop, so its nearest point on the diagonal is twice as far out as the 20px round reaches). */
+.nudges .section__head { max-width: 46ch; margin-inline: auto; text-align: center; }
+/* pretty, not balance: balance splits the Chinese lead down the middle (提/醒), while the default greedy
+   wrap drops 发。 onto a line of its own; pretty only pulls the orphan back up. */
+.nudges .section__head p { text-wrap: pretty; }
+.nudges__stack { display: grid; gap: 14px; max-width: 440px; margin: 0 auto; }
+.nudge { margin: 0; border-radius: 20px; overflow: hidden; box-shadow: 0 12px 26px -14px rgba(17, 24, 39, .42); }
+.nudge img { width: 100%; }
+/* A cascade, not a ladder: each banner sits a little further in than the one above, the way a stack of
+   notifications recedes. margin, not translate — .reveal owns `translate` for its rise-in, and an
+   offset that moved the box would push the third banner out of a 272px column at 320. */
+.nudge:nth-child(2) { margin-left: 22px; }
+.nudge:nth-child(3) { margin-left: 44px; }
+.nudges__trust { max-width: 440px; margin: 22px auto 0; text-align: center; color: var(--ink-3); font-size: 14px; }
+@media (max-width: 480px) { .nudge:nth-child(2) { margin-left: 14px; } .nudge:nth-child(3) { margin-left: 28px; } }
