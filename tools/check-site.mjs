@@ -3,7 +3,9 @@
 // Usage: node tools/check-site.mjs   → exit 0 clean, 1 findings, 2 usage/config error (as tools/shoot.mjs).
 // CHECK_SITE_PAGES replaces the manifest whenever it is *set*: "a.html,b.html:legal", the ":legal"
 // suffix marking a legal page. Set but empty is a config error, not a quiet run of the real ten pages.
-// House style this relies on: double-quoted lowercase attributes; site links relative (no leading "/").
+// House style this relies on: lowercase attribute names; site links relative (no leading "/").
+// Quoting is not part of it — href/src, srcset, data-frames, ids and the rel= tags parsed below are
+// all read in either quote style; only REQUIRED_HEAD still spells out this site's double-quoted head.
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -74,7 +76,9 @@ const fileFor = (url) => {
 // then read each attribute on its own. The single regex this replaced spelled out rel → hreflang →
 // href in that order, so `<link rel="alternate" href="…" hreflang="zh-Hans">` parsed as no alternate
 // at all: the page lost its return leg silently and its partner was blamed for the missing pair.
-const linkTags = (html, rel) => [...html.matchAll(new RegExp(`<link\\s[^>]*rel=["']${rel}["'][^>]*>`, 'gi'))].map((m) => m[0]);
+// The lookbehind keeps the match on rel= itself — "data-rel" ends in rel, and a script's decoy tag
+// would otherwise be read as this page's canonical. attrOf's leading \s does that job for href.
+const linkTags = (html, rel) => [...html.matchAll(new RegExp(`<link\\s[^>]*(?<![-\\w])rel=["']${rel}["'][^>]*>`, 'gi'))].map((m) => m[0]);
 const attrOf = (tag, name) => tag.match(new RegExp(`\\s${name}=["']([^"']*)["']`, 'i'))?.[1];
 
 // Carries its own protocol guard: the srcset and data-frames loops call it directly.
@@ -103,7 +107,9 @@ for (const { path: page, legal } of PAGES) {
     const canonical = attrOf(linkTags(html, 'canonical')[0] ?? '', 'href') ?? '';
     // A rel="alternate" without both attributes is some other kind of alternate (an RSS feed, say).
     const alts = linkTags(html, 'alternate')
-      .map((tag) => ({ lang: attrOf(tag, 'hreflang'), href: attrOf(tag, 'href') }))
+      // hreflang is case-insensitive: normalise here, once, so "X-Default" cannot slip past the
+      // x-default rules below by spelling itself differently. Findings quote the normalised tag.
+      .map((tag) => ({ lang: attrOf(tag, 'hreflang')?.toLowerCase(), href: attrOf(tag, 'href') }))
       .filter((a) => a.lang && a.href);
     if (!alts.length) fail(page, 'missing hreflang');
     if (!/^https:\/\/carboai\.app\//.test(canonical)) fail(page, 'missing canonical');
@@ -114,21 +120,21 @@ for (const { path: page, legal } of PAGES) {
   for (const [tag] of html.matchAll(/<meta\s[^>]*name=["']robots["'][^>]*>/gi)) {
     if (/\b(noindex|none)\b/i.test(attrOf(tag, 'content') ?? '')) noindex.add(page);
   }
-  if (/href="#"/.test(html)) fail(page, 'dead href="#"');
+  if (/href=["']#["']/.test(html)) fail(page, 'dead href="#"');
   // One wrong letter in the support address is the costliest single-character typo on the site.
   for (const m of html.matchAll(/mailto:[^"'\s>]+/g)) if (m[0].split('?')[0] !== SUPPORT) fail(page, `wrong support address ${m[0]}`);
-  const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
-  for (const m of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
+  const ids = new Set([...html.matchAll(/\sid=["']([^"']+)["']/g)].map((m) => m[1]));
+  for (const m of html.matchAll(/(?:href|src)=["']([^"']+)["']/g)) {
     const url = m[1];
     if (url === '#') continue; // already reported above
     if (url.startsWith('#')) { if (!ids.has(url.slice(1))) fail(page, `anchor ${url} not found`); continue; }
     checkLocal(page, url);
   }
   // Candidates are comma-separated, but a data: URI carries commas of its own — match whole candidates.
-  for (const m of html.matchAll(/srcset="([^"]+)"/g)) {
+  for (const m of html.matchAll(/srcset=["']([^"']+)["']/g)) {
     for (const c of m[1].matchAll(/(?:data:\S+|[^\s,]+)(?:\s+[^\s,]+)?/g)) checkLocal(page, c[0].split(/\s+/)[0]);
   }
-  for (const m of html.matchAll(/data-frames="([^"]*)"/g)) {
+  for (const m of html.matchAll(/data-frames=["']([^"']*)["']/g)) {
     for (const frame of m[1].split(',')) checkLocal(page, frame.trim());
   }
   // Selected by content, not by path: any Chinese marketing page must have run through the joiner.
@@ -141,10 +147,13 @@ for (const { path: page, legal } of PAGES) {
 // this one back. x-default nominates the fallback rather than a locale, so it neither owes a return
 // leg nor supplies one — a page whose only inbound link is the fallback's x-default is still orphaned.
 const known = new Set(PAGES.map((p) => p.path));
+// A legal page carries no hreflang of its own, so it can be a page an alternate names but never the
+// counterpart the pair rule looks for: naming one leaves the marketing page as orphaned as before.
+const marketing = new Set(PAGES.filter((p) => !p.legal).map((p) => p.path));
 for (const [page, { canonical, alts }] of heads) {
   // The zh/ tree only exists to be reached: a marketing page that names no counterpart is a
   // translation nobody linked, and nothing on the page itself shows the omission.
-  if (!alts.some((a) => a.lang !== 'x-default' && known.has(fileFor(a.href)) && fileFor(a.href) !== page)) {
+  if (!alts.some((a) => a.lang !== 'x-default' && marketing.has(fileFor(a.href)) && fileFor(a.href) !== page)) {
     fail(page, 'no alternate-language page declared');
   }
   for (const { lang, href } of alts) {

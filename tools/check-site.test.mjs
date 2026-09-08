@@ -152,6 +152,29 @@ test('data-frames lists are checked like any other local path', () => {
   assert.equal(count(out, 'broken link gone.webp'), 1, out);
 });
 
+test('a single-quoted href is a link like any other', () => {
+  // The sweep spelled out `(?:href|src)="…"`, so a single-quoted link was not checked and not
+  // reported either — the one failure mode a link checker may not have.
+  const { status, out } = run(fixture({ ...ASSETS,
+    ...pair({ body: "<a href='does-not-exist.html'>go</a>" }) }), PAIR);
+  assert.equal(status, 1);
+  assert.match(out, /index\.html: broken link does-not-exist\.html/);
+});
+
+test('srcset, data-frames, ids and the dead "#" read single quotes too', () => {
+  const { status, out } = run(fixture({ ...ASSETS, 'b.png': 'png', ...pair({ body:
+    "<img src='b.png' srcset='a@2x.png 2x, b.png 640w' data-frames='b.png, gone.webp' alt=''>"
+    + "<a href='#'>dead</a><a href='#top'>anchor</a><h2 id='top'>top</h2>" }) }), PAIR);
+  assert.equal(status, 1);
+  assert.match(out, /broken link a@2x\.png/);
+  assert.match(out, /broken link gone\.webp/);
+  // A quoted "#" is still reported as a dead href and never chased as a file, and the anchor finds
+  // its target through a single-quoted id — the sweep and these two rules must agree on quoting.
+  assert.equal(count(out, 'dead href="#"'), 1, out);
+  assert.doesNotMatch(out, /broken link #/);
+  assert.doesNotMatch(out, /anchor #top not found/);
+});
+
 test('every mailto: must be the real support address', () => {
   const good = run(fixture({ ...ASSETS,
     ...pair({ body: '<a href="mailto:support@carboai.app">mail</a>' }) }), PAIR);
@@ -269,7 +292,9 @@ test('x-default does not stand in for the return leg', () => {
   const { status, out } = run(fixture({ ...ASSETS, ...files,
     'zh/index.html': files['zh/index.html'].replace(`<link rel="alternate" hreflang="en" href="${EN}">`, '') }), PAIR);
   assert.equal(status, 1);
-  assert.match(out, /index\.html: hreflang zh-Hans → zh\/index\.html has no alternate back/);
+  // hreflang values are case-insensitive, so the gate normalises them once and findings quote the
+  // normalised tag: the fixture writes hreflang="zh-Hans" and reads back as zh-hans.
+  assert.match(out, /index\.html: hreflang zh-hans → zh\/index\.html has no alternate back/);
   assert.match(out, /zh\/index\.html: no alternate-language page declared/);
 });
 
@@ -283,6 +308,75 @@ test('a marketing page must name a counterpart, not only itself', () => {
   assert.equal(count(solo.out, 'has no alternate back'), 0, solo.out);
   const paired = run(fixture({ ...ASSETS, ...pair() }), PAIR);
   assert.equal(paired.status, 0, paired.out);
+});
+
+test('an uppercase X-Default is the fallback too, not a counterpart or a return leg', () => {
+  // hreflang values are case-insensitive. Compared as written, "X-Default" did both of the jobs the
+  // fallback may not do: it stood in as a counterpart, and it answered another page's return leg.
+  const alone = (up, lang, self, other) => page(up, { lang, self, alts: [[lang, self], ['X-Default', other]] });
+  const both = run(fixture({ ...ASSETS,
+    'index.html': alone('', 'en', EN, ZH), 'zh/index.html': alone('../', 'zh-Hans', ZH, EN) }), PAIR);
+  assert.equal(both.status, 1);
+  assert.match(both.out, /index\.html: no alternate-language page declared/);
+  assert.match(both.out, /zh\/index\.html: no alternate-language page declared/);
+  assert.equal(count(both.out, 'has no alternate back'), 0, both.out); // the fallback owes no return leg
+  // And it supplies none: index.html names zh/index.html, which names nothing back but the fallback.
+  const files = pair();
+  const oneWay = run(fixture({ ...ASSETS, ...files,
+    'zh/index.html': page('../', { lang: 'zh-Hans', alts: [['zh-Hans', ZH], ['X-Default', EN]] }) }), PAIR);
+  assert.equal(oneWay.status, 1);
+  assert.match(oneWay.out, /index\.html: hreflang zh-hans → zh\/index\.html has no alternate back/);
+  assert.match(oneWay.out, /zh\/index\.html: no alternate-language page declared/);
+});
+
+test('a marketing page with no alternate at all is missing its hreflang', () => {
+  // The rule could be deleted with every test still green: the pair rule fires on the same page but
+  // says something else, and a page with no <link rel="alternate"> deserves to be told which tag.
+  const files = pair();
+  const { status, out } = run(fixture({ ...ASSETS, ...files,
+    'index.html': files['index.html'].replace(/<link rel="alternate"[^>]*>/g, '') }), PAIR);
+  assert.equal(status, 1);
+  assert.match(out, /index\.html: missing hreflang/);
+  assert.match(out, /index\.html: no alternate-language page declared/);
+  // A legal page is never asked for one: the four real ones carry no hreflang at all.
+  const frozen = run(fixture({ 'privacy.html': legal() }), ['privacy.html:legal']);
+  assert.equal(frozen.status, 0, frozen.out);
+  assert.doesNotMatch(frozen.out, /missing hreflang/);
+});
+
+test('rel= is the attribute name, not the tail of data-rel', () => {
+  // `<link\s[^>]*rel=` also matched `data-rel=`, so a stylesheet some script had tagged for itself
+  // was read as this page's canonical (the first match wins) and as an alternate it never declared.
+  // A decoy carrying no hreflang is dropped by the alternate filter anyway, so this one carries one.
+  const traps = '<link rel="stylesheet" data-rel="canonical" href="assets/site.css">'
+    + '<link rel="stylesheet" data-rel="alternate" hreflang="en" href="assets/site.css">';
+  const files = pair();
+  const { status, out } = run(fixture({ ...ASSETS, ...files,
+    'index.html': files['index.html'].replace('<link rel="canonical"', `${traps}<link rel="canonical"`) }), PAIR);
+  assert.equal(status, 0, out); // read without the guard: missing canonical, and an alternate → assets/site.css
+});
+
+test("data-href on an alternate is not that alternate's href", () => {
+  // attrOf's leading \s is the whole guard: `\shref=` cannot start inside `data-href`. Without it
+  // the first match wins and this alternate points at TRAP instead of at the Chinese page.
+  const files = pair();
+  const trapped = files['index.html'].replace(`hreflang="zh-Hans" href="${ZH}"`,
+    `hreflang="zh-Hans" data-href="TRAP" href="${ZH}"`);
+  // TRAP is on disk because the href/src sweep reads data-src lazy-loading paths on purpose: the
+  // finding under test is the hreflang one, and a broken link would just be noise on top of it.
+  const { status, out } = run(fixture({ ...ASSETS, ...files, 'index.html': trapped, TRAP: 'a file' }), PAIR);
+  assert.equal(status, 0, out);
+});
+
+test("a legal page is a page, but never a marketing page's counterpart", () => {
+  // privacy.html is in the manifest, so this alternate is not a ghost — but a frozen legal page
+  // carries no hreflang of its own, so naming it leaves index.html as orphaned as naming nothing.
+  const { status, out } = run(fixture({ ...ASSETS, 'privacy.html': legal(),
+    'index.html': page('', { alts: [['en', EN], ['zh-Hans', 'https://carboai.app/privacy.html'], ['x-default', EN]] }) }),
+  ['index.html', 'privacy.html:legal']);
+  assert.equal(status, 1);
+  assert.match(out, /index\.html: no alternate-language page declared/);
+  assert.doesNotMatch(out, /privacy\.html is not a page in the manifest/);
 });
 
 test('a robots noindex is read whatever its case, order, quoting or company', () => {
