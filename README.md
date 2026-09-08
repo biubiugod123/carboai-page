@@ -32,9 +32,12 @@ node tools/shoot.mjs index.html out/ label # full-page shots at 1280/768/375/320
 ```
 
 `check-site.mjs` walks a hand-written manifest of all ten pages and fails on brand and claim
-problems, broken links, a missing or one-sided `hreflang`, an incomplete `<head>`, a `noindex` page
-listed in `sitemap.xml` (or a live page missing from it), and Chinese headings that skipped the
-joiner. `shoot.mjs` exits 1 if any width overflows horizontally.
+problems, broken links, an `hreflang` that is missing, one-sided or names no page but itself, an
+incomplete `<head>`, a `noindex` page listed in `sitemap.xml` (or a live page missing from it), and
+Chinese headings that skipped the joiner. `CHECK_SITE_PAGES="a.html,b.html:legal"` replaces the
+manifest for one run — being *set* is what activates it, so an empty value is an error rather than a
+quiet run of all ten. `shoot.mjs` exits 1 if any width overflows horizontally. Both follow the same
+convention: **exit 0** clean, **1** findings, **2** a usage or config error.
 
 ## Deployment
 

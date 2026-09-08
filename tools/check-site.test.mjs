@@ -32,7 +32,8 @@ const fixture = (files) => {
 };
 
 // `pages` replaces the gate's built-in manifest with the pages this fixture actually wrote
-// ("privacy.html:legal" marks a legal page); omit it to run against the real site manifest.
+// ("privacy.html:legal" marks a legal page); omit it to run against the real site manifest, and pass
+// `[]` for the set-but-empty override the gate rejects as a config error.
 const run = (dir, pages) => {
   const script = join(dir, 'tools', 'check-site.mjs');
   const env = { ...process.env };
@@ -42,20 +43,27 @@ const run = (dir, pages) => {
 };
 const count = (hay, needle) => hay.split(needle).length - 1;
 
+const EN = 'https://carboai.app/';
+const ZH = 'https://carboai.app/zh/';
 // The valid minimal page is Task 13's placeholder: the full marketing <head> and the site's
-// `<main class="section"><div class="wrap">` gutter, with the paths for this depth. `self` and
-// `alts` default to a page that is its own only alternate — which is what the reciprocity check
-// asks of a page with no translation; tests that need a real pair pass both explicitly.
+// `<main class="section"><div class="wrap">` gutter, with the paths for this depth. `self` and `alts`
+// default to this site's conventional pair — index.html ↔ zh/index.html, each naming the other —
+// because the gate requires every marketing page to declare a counterpart; tests about a page in
+// isolation, or about a broken pair, pass `self` and `alts` explicitly.
 const page = (up = '', {
   lang = 'en', body = '', noindex = false,
-  self = up ? 'https://carboai.app/zh/' : 'https://carboai.app/',
-  alts = [[lang, self], ['x-default', self]],
+  self = up ? ZH : EN,
+  alts = up ? [['zh-Hans', ZH], ['en', EN], ['x-default', EN]] : [['en', EN], ['zh-Hans', ZH], ['x-default', EN]],
 } = {}) => `<!DOCTYPE html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How the estimate works — Carbo-AI</title><meta name="description" content="How Carbo-AI turns a meal photo into a carb estimate, and why carb cycling tolerates estimates.">${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="canonical" href="${self}">${alts.map(([l, href]) => `<link rel="alternate" hreflang="${l}" href="${href}">`).join('')}
 <meta property="og:title" content="How the estimate works — Carbo-AI"><meta property="og:description" content="Photo, food, portion, carbs — and why a carb-cycling day tolerates an estimate."><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="${up}favicon.svg" type="image/svg+xml"><meta property="og:image" content="https://carboai.app/og-en.png"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"><link rel="stylesheet" href="${up}assets/tokens.css"><link rel="stylesheet" href="${up}assets/site.css"></head>
 <body><main class="section"><div class="wrap"><h1>How the estimate works</h1>${body}</div></main></body></html>`;
+// The smallest fixture the gate calls clean is a pair, so most tests write both halves and shape the
+// English one; `PAIR` is the matching manifest.
+const pair = (opts) => ({ 'index.html': page('', opts), 'zh/index.html': page('../', { lang: 'zh-Hans' }) });
+const PAIR = ['index.html', 'zh/index.html'];
 // A legal page as the real ones are: frozen 2026-09-05, so no description, canonical, og:image or icon.
 const legal = (body = '', lang = 'en') => `<!DOCTYPE html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy Policy — Carbo-AI</title></head><body><h1>Privacy Policy</h1>${body}</body></html>`;
@@ -67,48 +75,58 @@ test('a manifest page that is not on disk fails; it is never silently skipped', 
   const empty = run(fixture({})); // no override: the real ten-page manifest, none of it present
   assert.equal(empty.status, 1);
   assert.match(empty.out, /\(site\): missing page: index\.html/);
-  const gone = run(fixture({ ...ASSETS, 'index.html': page() }), ['index.html', 'gone.html']);
+  const gone = run(fixture({ ...ASSETS, ...pair() }), [...PAIR, 'gone.html']);
   assert.equal(gone.status, 1);
   assert.match(gone.out, /\(site\): missing page: gone\.html/);
 });
 
 test('an override that names no page is a usage error, not a clean run', () => {
   for (const override of ['   ', ',,,']) {
-    const { status, out } = run(fixture({ ...ASSETS, 'index.html': page() }), [override]);
+    const { status, out } = run(fixture({ ...ASSETS, ...pair() }), [override]);
     assert.equal(status, 2, out);
     assert.match(out, /no pages to check/);
     assert.doesNotMatch(out, /page\(s\) clean/);
   }
 });
 
-test('one valid page under a path with spaces is clean', () => {
-  const { status, out } = run(fixture({ ...ASSETS, 'index.html': page() }), ['index.html']);
+test('CHECK_SITE_PAGES counts as set even when it is empty', () => {
+  // Falling back to the built-in manifest here would run the real ten pages against a fixture that
+  // holds two — a caller who meant to narrow the run would get someone else's site, or ten
+  // missing-page findings, instead of being told the override says nothing.
+  const { status, out } = run(fixture({ ...ASSETS, ...pair() }), []);
+  assert.equal(status, 2, out);
+  assert.match(out, /no pages to check/);
+  assert.doesNotMatch(out, /missing page/);
+  assert.doesNotMatch(out, /page\(s\) clean/);
+});
+
+test('a valid pair under a path with spaces is clean', () => {
+  const { status, out } = run(fixture({ ...ASSETS, ...pair() }), PAIR);
   assert.equal(status, 0, out);
-  assert.match(out, /OK — 1 page\(s\) clean/);
+  assert.match(out, /OK — 2 page\(s\) clean/);
 });
 
 test('links from zh/ resolve against zh/, not the site root', () => {
-  const ok = run(fixture({ ...ASSETS, 'privacy.html': 'privacy',
-    'zh/index.html': page('../', { lang: 'zh-Hans', body: '<a href="../privacy.html">privacy</a>' }) }), ['zh/index.html']);
+  const files = (body) => ({ ...ASSETS, 'index.html': page(), 'zh/index.html': page('../', { lang: 'zh-Hans', body }) });
+  const ok = run(fixture({ ...files('<a href="../privacy.html">privacy</a>'), 'privacy.html': 'privacy' }), PAIR);
   assert.equal(ok.status, 0, ok.out);
-  const bad = run(fixture({ ...ASSETS,
-    'zh/index.html': page('../', { lang: 'zh-Hans', body: '<a href="../nope.html">nope</a>' }) }), ['zh/index.html']);
+  const bad = run(fixture(files('<a href="../nope.html">nope</a>')), PAIR);
   assert.equal(bad.status, 1);
   assert.match(bad.out, /zh\/index\.html: broken link \.\.\/nope\.html/);
 });
 
 test('a link that is only a query or fragment string has no target', () => {
-  const query = run(fixture({ ...ASSETS, 'index.html': page('', { body: '<a href="?utm=x">go</a>' }) }), ['index.html']);
+  const query = run(fixture({ ...ASSETS, ...pair({ body: '<a href="?utm=x">go</a>' }) }), PAIR);
   assert.equal(query.status, 1);
   assert.match(query.out, /index\.html: empty link \?utm=x/);
-  const frames = run(fixture({ ...ASSETS, 'index.html': page('', { body: '<img src="favicon.svg" data-frames="" alt="">' }) }), ['index.html']);
+  const frames = run(fixture({ ...ASSETS, ...pair({ body: '<img src="favicon.svg" data-frames="" alt="">' }) }), PAIR);
   assert.equal(frames.status, 1);
   assert.match(frames.out, /index\.html: empty link/);
 });
 
 test('a missing srcset candidate is reported exactly once', () => {
   const { status, out } = run(fixture({ ...ASSETS, 'b.png': 'png',
-    'index.html': page('', { body: '<img src="b.png" srcset="a@2x.png 2x, b.png 640w" alt="">' }) }), ['index.html']);
+    ...pair({ body: '<img src="b.png" srcset="a@2x.png 2x, b.png 640w" alt="">' }) }), PAIR);
   assert.equal(status, 1);
   assert.equal(count(out, 'broken link a@2x.png'), 1, out);
 });
@@ -116,37 +134,37 @@ test('a missing srcset candidate is reported exactly once', () => {
 test('remote and data: candidates are not local files', () => {
   const dataUri = 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
   const { status, out } = run(fixture({ ...ASSETS, 'b.png': 'png',
-    'index.html': page('', { body: `<img src="${dataUri}" srcset="https://cdn.example.com/y.png 2x, ${dataUri} 1x, b.png 640w" alt="">` }) }), ['index.html']);
+    ...pair({ body: `<img src="${dataUri}" srcset="https://cdn.example.com/y.png 2x, ${dataUri} 1x, b.png 640w" alt="">` }) }), PAIR);
   assert.equal(status, 0, out);
 });
 
 test('dead href="#" is reported once however many there are', () => {
   const { status, out } = run(fixture({ ...ASSETS,
-    'index.html': page('', { body: '<a href="#">one</a> <a href="#">two</a>' }) }), ['index.html']);
+    ...pair({ body: '<a href="#">one</a> <a href="#">two</a>' }) }), PAIR);
   assert.equal(status, 1);
   assert.equal(count(out, 'dead href="#"'), 1, out);
 });
 
 test('data-frames lists are checked like any other local path', () => {
   const { status, out } = run(fixture({ ...ASSETS, 'a.webp': 'webp',
-    'index.html': page('', { body: '<img src="a.webp" data-frames="a.webp, gone.webp" alt="">' }) }), ['index.html']);
+    ...pair({ body: '<img src="a.webp" data-frames="a.webp, gone.webp" alt="">' }) }), PAIR);
   assert.equal(status, 1);
   assert.equal(count(out, 'broken link gone.webp'), 1, out);
 });
 
 test('every mailto: must be the real support address', () => {
   const good = run(fixture({ ...ASSETS,
-    'index.html': page('', { body: '<a href="mailto:support@carboai.app">mail</a>' }) }), ['index.html']);
+    ...pair({ body: '<a href="mailto:support@carboai.app">mail</a>' }) }), PAIR);
   assert.equal(good.status, 0, good.out);
   const bad = run(fixture({ ...ASSETS,
-    'index.html': page('', { body: '<a href="mailto:suport@carboai.app">mail</a>' }) }), ['index.html']);
+    ...pair({ body: '<a href="mailto:suport@carboai.app">mail</a>' }) }), PAIR);
   assert.equal(bad.status, 1);
   assert.match(bad.out, /mailto:suport@carboai\.app/);
 });
 
 test('every forbidden claim on one page is reported separately', () => {
   const { status, out } = run(fixture({ ...ASSETS,
-    'index.html': page('', { body: '<p>CarboAI costs $9.99 on the free tier.</p>' }) }), ['index.html']);
+    ...pair({ body: '<p>CarboAI costs $9.99 on the free tier.</p>' }) }), PAIR);
   assert.equal(status, 1);
   assert.match(out, /brand must be written "Carbo-AI"/);
   assert.match(out, /no prices on the site \(found "\$9\.99"\)/);
@@ -154,7 +172,8 @@ test('every forbidden claim on one page is reported separately', () => {
 });
 
 test('the zh claim guards read Chinese too', () => {
-  const zh = (body) => run(fixture({ ...ASSETS, 'zh/index.html': page('../', { lang: 'zh-Hans', body }) }), ['zh/index.html']);
+  const zh = (body) => run(fixture({ ...ASSETS, 'index.html': page(),
+    'zh/index.html': page('../', { lang: 'zh-Hans', body }) }), PAIR);
   assert.match(zh('<p>每月 30 元。</p>').out, /no prices on the site/);
   assert.match(zh('<p>￥30 起。</p>').out, /no prices on the site/);
   assert.match(zh('<p>促进代谢。</p>').out, /metabolism wording/);
@@ -166,7 +185,8 @@ test('the zh claim guards read Chinese too', () => {
 });
 
 test('the widened zh guards catch more claims without catching ordinary Chinese', () => {
-  const zh = (body) => run(fixture({ ...ASSETS, 'zh/index.html': page('../', { lang: 'zh-Hans', body }) }), ['zh/index.html']);
+  const zh = (body) => run(fixture({ ...ASSETS, 'index.html': page(),
+    'zh/index.html': page('../', { lang: 'zh-Hans', body }) }), PAIR);
   const forever = zh('<p>永久免费。</p>');
   assert.equal(forever.status, 1);
   assert.match(forever.out, /there is no free tier \(found "永久免费"\)/);
@@ -174,7 +194,7 @@ test('the widened zh guards catch more claims without catching ordinary Chinese'
   const meta = zh('<p>本应用不做任何代谢方面的承诺。</p>');
   assert.equal(meta.status, 1);
   assert.match(meta.out, /metabolism wording \(site rule: no metabolism claims, not even disclaimers\) \(found "代谢"\)/);
-  const english = run(fixture({ ...ASSETS, 'index.html': page('', { body: '<p>This is not a metabolism claim.</p>' }) }), ['index.html']);
+  const english = run(fixture({ ...ASSETS, ...pair({ body: '<p>This is not a metabolism claim.</p>' }) }), PAIR);
   assert.equal(english.status, 1);
   assert.match(english.out, /metabolism wording \(site rule: no metabolism claims, not even disclaimers\) \(found "metabolism"\)/);
   // 元 opens 元旦 as often as it closes a price, and downloading really is free.
@@ -183,32 +203,34 @@ test('the widened zh guards catch more claims without catching ordinary Chinese'
 });
 
 test('a page without a canonical link is reported', () => {
-  const { status, out } = run(fixture({ ...ASSETS,
-    'index.html': page().replace(/<link rel="canonical"[^>]*>/, '') }), ['index.html']);
+  const files = pair();
+  const { status, out } = run(fixture({ ...ASSETS, ...files,
+    'index.html': files['index.html'].replace(/<link rel="canonical"[^>]*>/, '') }), PAIR);
   assert.equal(status, 1);
-  assert.match(out, /missing canonical/);
+  assert.match(out, /index\.html: missing canonical/);
 });
 
 test('the marketing <head> must carry the sharing tags a shared link renders from', () => {
-  const { status, out } = run(fixture({ ...ASSETS,
-    'index.html': page().replace(/<meta property="og:title"[^>]*>/, '') }), ['index.html']);
+  const files = pair();
+  const { status, out } = run(fixture({ ...ASSETS, ...files,
+    'index.html': files['index.html'].replace(/<meta property="og:title"[^>]*>/, '') }), PAIR);
   assert.equal(status, 1);
   assert.match(out, /index\.html: missing og:title/);
 });
 
 test('hreflang must point at a published page, and that page must point back', () => {
-  const pair = {
+  const both = {
     'about.html': page('', { self: 'https://carboai.app/about.html',
       alts: [['en', 'https://carboai.app/about.html'], ['zh-Hans', 'https://carboai.app/zh/about.html'], ['x-default', 'https://carboai.app/about.html']] }),
     'zh/about.html': page('../', { lang: 'zh-Hans', self: 'https://carboai.app/zh/about.html',
       alts: [['zh-Hans', 'https://carboai.app/zh/about.html'], ['en', 'https://carboai.app/about.html'], ['x-default', 'https://carboai.app/about.html']] }),
   };
-  const ok = run(fixture({ ...ASSETS, ...pair }), ['about.html', 'zh/about.html']);
+  const ok = run(fixture({ ...ASSETS, ...both }), ['about.html', 'zh/about.html']);
   assert.equal(ok.status, 0, ok.out);
   // The gap this rule was written to find: the English page forgot its Chinese alternate, so the
   // Chinese page names a page that does not name it back and Google drops the pair.
-  const oneWay = run(fixture({ ...ASSETS, ...pair,
-    'about.html': pair['about.html'].replace('<link rel="alternate" hreflang="zh-Hans" href="https://carboai.app/zh/about.html">', '') }),
+  const oneWay = run(fixture({ ...ASSETS, ...both,
+    'about.html': both['about.html'].replace('<link rel="alternate" hreflang="zh-Hans" href="https://carboai.app/zh/about.html">', '') }),
   ['about.html', 'zh/about.html']);
   assert.equal(oneWay.status, 1);
   assert.match(oneWay.out, /zh\/about\.html: hreflang en → about\.html has no alternate back/);
@@ -216,34 +238,90 @@ test('hreflang must point at a published page, and that page must point back', (
   assert.equal(count(oneWay.out, 'has no alternate back'), 1, oneWay.out);
   // x-default nominates the fallback; the fallback need not name every locale that falls back to it.
   assert.doesNotMatch(oneWay.out, /hreflang x-default .* has no alternate back/);
+  // Dropping that alternate also left about.html with no counterpart of its own.
+  assert.match(oneWay.out, /about\.html: no alternate-language page declared/);
   const ghost = run(fixture({ ...ASSETS, 'index.html': page('', { alts: [['en', 'https://carboai.app/gone.html']] }) }), ['index.html']);
   assert.equal(ghost.status, 1);
   assert.match(ghost.out, /index\.html: hreflang en → https:\/\/carboai\.app\/gone\.html is not a page in the manifest/);
 });
 
-test('sitemap lists every page and points only at files that exist', () => {
-  const ok = run(fixture({ ...ASSETS, 'index.html': page(), 'zh/index.html': page('../', { lang: 'zh-Hans' }),
-    'sitemap.xml': sitemap('https://carboai.app/', 'https://carboai.app/zh/') }), ['index.html', 'zh/index.html']);
+test('an alternate is read whatever order and quoting its attributes come in', () => {
+  // The parse must never be the thing that decides a pair is broken. Spelling out rel → hreflang →
+  // href in one regex meant `<link rel="alternate" href="…" hreflang="zh-Hans">` parsed as no
+  // alternate at all: this page silently lost its return leg, and zh/ was blamed for the gap.
+  const files = pair();
+  const flipped = files['index.html'].replace(`<link rel="alternate" hreflang="zh-Hans" href="${ZH}">`,
+    `<link rel='alternate' href="${ZH}" hreflang='zh-Hans'>`);
+  const ok = run(fixture({ ...ASSETS, ...files, 'index.html': flipped }), PAIR);
   assert.equal(ok.status, 0, ok.out);
-  const ghost = run(fixture({ ...ASSETS, 'index.html': page(),
-    'sitemap.xml': sitemap('https://carboai.app/', 'https://carboai.app/ghost.html') }), ['index.html']);
+  // And a pair that really is one-sided is still reported against the page missing the return leg.
+  const dropped = files['index.html'].replace(`<link rel="alternate" hreflang="zh-Hans" href="${ZH}">`, '');
+  const bad = run(fixture({ ...ASSETS, ...files, 'index.html': dropped }), PAIR);
+  assert.equal(bad.status, 1);
+  assert.match(bad.out, /zh\/index\.html: hreflang en → index\.html has no alternate back/);
+});
+
+test('x-default does not stand in for the return leg', () => {
+  // x-default names the fallback, not a locale: a page whose only link back is the fallback's is
+  // still an unpaired page as far as Google is concerned. Losing that leg also leaves the Chinese
+  // page with no counterpart at all, which the pair rule reports in its own words.
+  const files = pair();
+  const { status, out } = run(fixture({ ...ASSETS, ...files,
+    'zh/index.html': files['zh/index.html'].replace(`<link rel="alternate" hreflang="en" href="${EN}">`, '') }), PAIR);
+  assert.equal(status, 1);
+  assert.match(out, /index\.html: hreflang zh-Hans → zh\/index\.html has no alternate back/);
+  assert.match(out, /zh\/index\.html: no alternate-language page declared/);
+});
+
+test('a marketing page must name a counterpart, not only itself', () => {
+  const alone = (up, lang, self) => page(up, { lang, self, alts: [[lang, self], ['x-default', self]] });
+  const solo = run(fixture({ ...ASSETS, 'index.html': alone('', 'en', EN), 'zh/index.html': alone('../', 'zh-Hans', ZH) }), PAIR);
+  assert.equal(solo.status, 1);
+  assert.match(solo.out, /index\.html: no alternate-language page declared/);
+  assert.match(solo.out, /zh\/index\.html: no alternate-language page declared/);
+  // Each page is its own only alternate, which is reciprocal — the pair rule is what catches it.
+  assert.equal(count(solo.out, 'has no alternate back'), 0, solo.out);
+  const paired = run(fixture({ ...ASSETS, ...pair() }), PAIR);
+  assert.equal(paired.status, 0, paired.out);
+});
+
+test('a robots noindex is read whatever its case, order, quoting or company', () => {
+  const withRobots = (robots) => run(fixture({ ...ASSETS, ...pair(),
+    'zh/index.html': page('../', { lang: 'zh-Hans' }).replace('<link rel="canonical"', `${robots}<link rel="canonical"`),
+    'sitemap.xml': sitemap(EN, ZH) }), PAIR);
+  for (const robots of ['<meta name="robots" content="NOINDEX">',
+    '<meta content="noindex, nofollow" name="ROBOTS">',
+    "<meta name='robots' content='noindex'>",
+    '<meta name="robots" content="none">']) {
+    const { status, out } = withRobots(robots);
+    assert.equal(status, 1, `${robots}\n${out}`);
+    assert.match(out, /sitemap\.xml: zh\/index\.html is noindex and must not be listed/);
+  }
+  // "index, follow" contains neither directive, and an indexable page belongs in the sitemap.
+  const indexable = withRobots('<meta name="robots" content="index, follow">');
+  assert.equal(indexable.status, 0, indexable.out);
+});
+
+test('sitemap lists every page and points only at files that exist', () => {
+  const ok = run(fixture({ ...ASSETS, ...pair(), 'sitemap.xml': sitemap(EN, ZH) }), PAIR);
+  assert.equal(ok.status, 0, ok.out);
+  const ghost = run(fixture({ ...ASSETS, ...pair(),
+    'sitemap.xml': sitemap(EN, ZH, 'https://carboai.app/ghost.html') }), PAIR);
   assert.equal(ghost.status, 1);
   assert.match(ghost.out, /<loc> .* has no file/);
-  const unlisted = run(fixture({ ...ASSETS, 'index.html': page(), 'zh/index.html': page('../', { lang: 'zh-Hans' }),
-    'sitemap.xml': sitemap('https://carboai.app/') }), ['index.html', 'zh/index.html']);
+  const unlisted = run(fixture({ ...ASSETS, ...pair(), 'sitemap.xml': sitemap(EN) }), PAIR);
   assert.equal(unlisted.status, 1);
   assert.match(unlisted.out, /missing <loc> for zh\/index\.html/);
 });
 
 test('a noindex page stays out of the sitemap, and only a noindex page may', () => {
   const both = { ...ASSETS, 'index.html': page(), 'zh/index.html': page('../', { lang: 'zh-Hans', noindex: true }) };
-  const listed = run(fixture({ ...both, 'sitemap.xml': sitemap('https://carboai.app/', 'https://carboai.app/zh/') }), ['index.html', 'zh/index.html']);
+  const listed = run(fixture({ ...both, 'sitemap.xml': sitemap(EN, ZH) }), PAIR);
   assert.equal(listed.status, 1);
   assert.match(listed.out, /sitemap\.xml: zh\/index\.html is noindex and must not be listed/);
-  const held = run(fixture({ ...both, 'sitemap.xml': sitemap('https://carboai.app/') }), ['index.html', 'zh/index.html']);
+  const held = run(fixture({ ...both, 'sitemap.xml': sitemap(EN) }), PAIR);
   assert.equal(held.status, 0, held.out); // noindex earns the exemption from "every page is listed"
-  const indexable = run(fixture({ ...ASSETS, 'index.html': page(), 'zh/index.html': page('../', { lang: 'zh-Hans' }),
-    'sitemap.xml': sitemap('https://carboai.app/') }), ['index.html', 'zh/index.html']);
+  const indexable = run(fixture({ ...ASSETS, ...pair(), 'sitemap.xml': sitemap(EN) }), PAIR);
   assert.equal(indexable.status, 1);
   assert.match(indexable.out, /sitemap\.xml: missing <loc> for zh\/index\.html/);
 });
@@ -254,29 +332,31 @@ test('legal pages are scanned for claims but not for the marketing <head> or the
   const vendor = run(fixture({ 'privacy.html': legal('<p>Stored in Supabase.</p>') }), ['privacy.html:legal']);
   assert.equal(vendor.status, 1);
   assert.match(vendor.out, /privacy\.html: no vendor names \(found "Supabase"\)/);
-  assert.doesNotMatch(vendor.out, /missing (canonical|meta description|og:image|og:title|twitter:card)/);
+  assert.doesNotMatch(vendor.out, /missing (canonical|meta description|og:image|og:title|twitter:card|hreflang)/);
+  assert.doesNotMatch(vendor.out, /no alternate-language page declared/);
   const zh = run(fixture({ 'privacy-zh.html': legal('<h2>照片怎么处理</h2>', 'zh-Hans') }), ['privacy-zh.html:legal']);
   assert.equal(zh.status, 0, zh.out); // frozen Chinese copy, no U+2060
 });
 
 test('zh headings and the hero bubble must be run through the joiner', () => {
   const body = '<h2>拍一张碳水算清</h2><div class="bubble">午饭给我看看。</div>';
-  const bad = run(fixture({ ...ASSETS, 'zh/index.html': page('../', { lang: 'zh-Hans', body }) }), ['zh/index.html']);
+  const bad = run(fixture({ ...ASSETS, 'index.html': page(),
+    'zh/index.html': page('../', { lang: 'zh-Hans', body }) }), PAIR);
   assert.equal(bad.status, 1);
   assert.match(bad.out, /zh\/index\.html: heading\/bubble text not run through tools\/cjk-joiner\.mjs/);
-  const good = run(fixture({ ...ASSETS,
-    'zh/index.html': joinHeadings(page('../', { lang: 'zh-Hans', body })) }), ['zh/index.html']);
+  const good = run(fixture({ ...ASSETS, 'index.html': page(),
+    'zh/index.html': joinHeadings(page('../', { lang: 'zh-Hans', body })) }), PAIR);
   assert.equal(good.status, 0, good.out);
   // The rule follows <html lang>, not the directory: the same file at the root is checked the same way.
-  const root = run(fixture({ ...ASSETS, 'index.html': page('', { lang: 'zh-Hans', body }) }), ['index.html']);
+  const root = run(fixture({ ...ASSETS, ...pair({ lang: 'zh-Hans', body }) }), PAIR);
   assert.equal(root.status, 1);
   assert.match(root.out, /index\.html: heading\/bubble text not run through/);
 });
 
 test('assets/site.js must release the inline head guard', () => {
-  const bad = run(fixture({ ...ASSETS, 'index.html': page(), 'assets/site.js': 'console.log("no guard release")' }), ['index.html']);
+  const bad = run(fixture({ ...ASSETS, ...pair(), 'assets/site.js': 'console.log("no guard release")' }), PAIR);
   assert.equal(bad.status, 1);
   assert.match(bad.out, /__jsGuard/);
-  const good = run(fixture({ ...ASSETS, 'index.html': page(), 'assets/site.js': 'clearTimeout(window.__jsGuard);' }), ['index.html']);
+  const good = run(fixture({ ...ASSETS, ...pair(), 'assets/site.js': 'clearTimeout(window.__jsGuard);' }), PAIR);
   assert.equal(good.status, 0, good.out);
 });

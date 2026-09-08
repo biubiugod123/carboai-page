@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // Static gate for every page carboai.app publishes.
-// Usage: node tools/check-site.mjs   (exit 1 on any problem)
+// Usage: node tools/check-site.mjs   → exit 0 clean, 1 findings, 2 usage/config error (as tools/shoot.mjs).
+// CHECK_SITE_PAGES replaces the manifest whenever it is *set*: "a.html,b.html:legal", the ":legal"
+// suffix marking a legal page. Set but empty is a config error, not a quiet run of the real ten pages.
 // House style this relies on: double-quoted lowercase attributes; site links relative (no leading "/").
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -16,7 +18,10 @@ const MANIFEST = ['index.html', 'about.html', 'how-it-works.html',
   'zh/index.html', 'zh/about.html', 'zh/how-it-works.html',
   'privacy.html:legal', 'terms.html:legal', 'privacy-zh.html:legal', 'terms-zh.html:legal'];
 // The fixture tests replace the manifest: CHECK_SITE_PAGES="index.html,zh/index.html,privacy-zh.html:legal".
-const PAGES = (process.env.CHECK_SITE_PAGES || MANIFEST.join(','))
+// Being set is what makes the override active — falling back to MANIFEST on an empty string would let
+// a caller that meant to narrow the run silently check the whole real site instead.
+const OVERRIDE = process.env.CHECK_SITE_PAGES;
+const PAGES = (OVERRIDE === undefined ? MANIFEST.join(',') : OVERRIDE)
   .split(',').map((s) => s.trim()).filter(Boolean)
   .map((s) => { const [path, kind] = s.split(':'); return { path, legal: kind === 'legal' }; });
 // An override of whitespace or bare commas parses to nothing; reporting "0 page(s) clean" would be
@@ -42,6 +47,8 @@ const FORBIDDEN = [
   // is — 永久免费试用期 — is already caught by the leading-modifier branch.
   [/(永久|完全|一直|基础.{0,4})免费|免费(版|套餐)/, 'there is no free tier'],
 ];
+// hreflang and canonical are not here: they are read off the parsed <head> below, because their
+// presence and their value are the same question and the parse must not care about attribute order.
 const REQUIRED_HEAD = [
   [/<html[^>]+lang="(en|zh-Hans)"/, '<html lang>'],
   [/<title>[^<]+<\/title>/, '<title>'],
@@ -51,8 +58,6 @@ const REQUIRED_HEAD = [
   [/<meta property="og:image" content="https:\/\/carboai\.app\/[^"]+"/, 'og:image (absolute URL)'],
   [/<meta name="twitter:card" content="[^"]+"/, 'twitter:card'],
   [/<link rel="icon"/, 'favicon link'],
-  [/<link rel="alternate" hreflang="/, 'hreflang'],
-  [/<link rel="canonical" href="https:\/\/carboai\.app\//, 'canonical'],
 ];
 
 let failures = 0;
@@ -64,6 +69,13 @@ const fileFor = (url) => {
   const rel = url.replace(/^https:\/\/carboai\.app\//, '');
   return rel === '' || rel.endsWith('/') ? `${rel}index.html` : rel;
 };
+
+// Attribute order, quoting and case are the author's business, not the gate's: find a tag by its rel,
+// then read each attribute on its own. The single regex this replaced spelled out rel → hreflang →
+// href in that order, so `<link rel="alternate" href="…" hreflang="zh-Hans">` parsed as no alternate
+// at all: the page lost its return leg silently and its partner was blamed for the missing pair.
+const linkTags = (html, rel) => [...html.matchAll(new RegExp(`<link\\s[^>]*rel=["']${rel}["'][^>]*>`, 'gi'))].map((m) => m[0]);
+const attrOf = (tag, name) => tag.match(new RegExp(`\\s${name}=["']([^"']*)["']`, 'i'))?.[1];
 
 // Carries its own protocol guard: the srcset and data-frames loops call it directly.
 const checkLocal = (page, url) => {
@@ -87,11 +99,21 @@ for (const { path: page, legal } of PAGES) {
     if (m) fail(page, `${why} (found "${m[0]}")`);
   }
   if (!legal) for (const [re, what] of REQUIRED_HEAD) if (!re.test(html)) fail(page, `missing ${what}`);
-  if (!legal) heads.set(page, {
-    canonical: html.match(/<link rel="canonical" href="([^"]+)"/)?.[1] ?? '',
-    alts: [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)].map((m) => ({ lang: m[1], href: m[2] })),
-  });
-  if (/<meta name="robots" content="[^"]*noindex/.test(html)) noindex.add(page);
+  if (!legal) {
+    const canonical = attrOf(linkTags(html, 'canonical')[0] ?? '', 'href') ?? '';
+    // A rel="alternate" without both attributes is some other kind of alternate (an RSS feed, say).
+    const alts = linkTags(html, 'alternate')
+      .map((tag) => ({ lang: attrOf(tag, 'hreflang'), href: attrOf(tag, 'href') }))
+      .filter((a) => a.lang && a.href);
+    if (!alts.length) fail(page, 'missing hreflang');
+    if (!/^https:\/\/carboai\.app\//.test(canonical)) fail(page, 'missing canonical');
+    heads.set(page, { canonical, alts });
+  }
+  // robots is a directive list, not a string: read the tag, then look for the directive inside its
+  // content, so "noindex, nofollow", NOINDEX and the none shorthand all land the same way.
+  for (const [tag] of html.matchAll(/<meta\s[^>]*name=["']robots["'][^>]*>/gi)) {
+    if (/\b(noindex|none)\b/i.test(attrOf(tag, 'content') ?? '')) noindex.add(page);
+  }
   if (/href="#"/.test(html)) fail(page, 'dead href="#"');
   // One wrong letter in the support address is the costliest single-character typo on the site.
   for (const m of html.matchAll(/mailto:[^"'\s>]+/g)) if (m[0].split('?')[0] !== SUPPORT) fail(page, `wrong support address ${m[0]}`);
@@ -116,16 +138,21 @@ for (const { path: page, legal } of PAGES) {
 }
 
 // hreflang is a promise in both directions: Google drops a pair where the other page does not name
-// this one back. x-default is exempt from the return leg — it nominates the fallback, and the
-// fallback page is not obliged to name every locale that falls back to it.
+// this one back. x-default nominates the fallback rather than a locale, so it neither owes a return
+// leg nor supplies one — a page whose only inbound link is the fallback's x-default is still orphaned.
 const known = new Set(PAGES.map((p) => p.path));
 for (const [page, { canonical, alts }] of heads) {
+  // The zh/ tree only exists to be reached: a marketing page that names no counterpart is a
+  // translation nobody linked, and nothing on the page itself shows the omission.
+  if (!alts.some((a) => a.lang !== 'x-default' && known.has(fileFor(a.href)) && fileFor(a.href) !== page)) {
+    fail(page, 'no alternate-language page declared');
+  }
   for (const { lang, href } of alts) {
     const target = fileFor(href);
     if (!known.has(target)) { fail(page, `hreflang ${lang} → ${href} is not a page in the manifest`); continue; }
     // With no canonical there is nothing for the other page to point back at — already reported above.
     if (lang === 'x-default' || !canonical) continue;
-    if (!heads.get(target)?.alts.some((a) => a.href === canonical)) fail(page, `hreflang ${lang} → ${target} has no alternate back`);
+    if (!heads.get(target)?.alts.some((a) => a.lang !== 'x-default' && a.href === canonical)) fail(page, `hreflang ${lang} → ${target} has no alternate back`);
   }
 }
 
