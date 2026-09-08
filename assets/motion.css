@@ -55,6 +55,6 @@ html.js .band.is-visible h2 { opacity: 1; transform: none; }
   html.js .week__dot, html.js .is-visible .week__dot, html.js .is-visible .week__dot--today { transform: none; animation: none; }
   html.js .step--scan .scan, html.js .step--scan.is-visible .scan { opacity: 1; animation: none; }
   html.js .step--scan.is-visible .step__art::after { display: none; }
-  .marquee__track { animation: none; }
+  .marquee__track { animation: none; padding-left: 24px; } /* at rest the first glyph would sit flush against the edge */
   html.js .band h2, html.js .band.is-visible h2 { opacity: 1; transform: none; transition: none; }
 }

@@ -6,6 +6,7 @@
   --teal-chip-lo: #E3EEEE; --teal-chip-md: #C2DCDC; --teal-chip-hi: #94C2C2;
   --teal-dot-lo: #639999;  --teal-dot-md: #3F7F7F;  --teal-dot-hi: #1F4E4E;
   --teal-ink: #1F4E4E;
+  --teal-wash: color-mix(in srgb, #E3EEEE 45%, #FDFBF7);
   --orange: var(--c-brand-primary, #F59E0B);
   --on-orange: var(--c-brand-onPrimary, #4A1B0C);
   --orange-lip: var(--c-brand-secondary, #B45309);
@@ -36,7 +37,7 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
 .section { padding: 96px 0; }
 .section--wash { background: var(--card); }
-.section--teal { background: color-mix(in srgb, var(--teal-chip-lo) 45%, var(--ground)); }
+.section--teal { background: var(--teal-wash); }
 .section__head { margin-bottom: 40px; max-width: 60ch; }
 .section__head p { color: var(--ink-2); margin-top: 10px; font-size: 18px; }
 .muted { color: var(--ink-2); }
@@ -89,6 +90,9 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 .step p { color: var(--ink-2); font-size: 15.5px; }
 .step__art { margin-top: 18px; border-radius: 14px; overflow: hidden; background: var(--muted); aspect-ratio: 4 / 3; position: relative; max-width: 420px; }
 .step__art img { width: 100%; height: 100%; object-fit: cover; }
+/* step 2 holds a result card, not a photo: height from content, and 104px of bottom padding reserves room for the small Carbo */
+.step__art--result { aspect-ratio: auto; padding: 22px 16px 104px; }
+.step__art--result .result { position: static; }
 .scan { position: absolute; inset: 14%; border: 2px solid #fff; border-radius: 12px; -webkit-mask: linear-gradient(#000 0 0) top left / 28px 28px no-repeat, linear-gradient(#000 0 0) top right / 28px 28px no-repeat, linear-gradient(#000 0 0) bottom left / 28px 28px no-repeat, linear-gradient(#000 0 0) bottom right / 28px 28px no-repeat; mask: linear-gradient(#000 0 0) top left / 28px 28px no-repeat, linear-gradient(#000 0 0) top right / 28px 28px no-repeat, linear-gradient(#000 0 0) bottom left / 28px 28px no-repeat, linear-gradient(#000 0 0) bottom right / 28px 28px no-repeat; filter: drop-shadow(0 1px 2px rgba(0,0,0,.4)); }
 
 /* result card (shared by step 2 and the demo) */
@@ -100,7 +104,7 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 .chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
 .chip--carbs { background: color-mix(in srgb, var(--orange) 12%, var(--card)); color: var(--orange-lip); }
 .chip--protein { background: var(--teal-chip-lo); color: var(--teal-ink); }
-.step__art img.carbo-sm { position: absolute; right: 8px; bottom: 6px; width: 80px; height: auto; object-fit: contain; } /* must outrank .step__art img above; 80px keeps the ears clear of the chip row */
+.step__art img.carbo-sm { position: absolute; right: 10px; bottom: 8px; width: 96px; height: auto; object-fit: contain; } /* must outrank .step__art img above; the card's padding-bottom keeps the chips clear of him */
 
 /* carb-day chip + week */
 .daychip { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; padding: 5px 12px; font-size: 13px; font-weight: 600; background: var(--teal-chip-lo); color: var(--teal-ink); }
@@ -112,7 +116,7 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 .week__day { display: grid; gap: 8px; justify-items: center; font-size: 12px; color: var(--ink-2); font-weight: 600; }
 .week__dot { width: 34px; height: 34px; border-radius: 50%; background: var(--teal-dot-lo); }
 .week__dot--md { background: var(--teal-dot-md); } .week__dot--hi { background: var(--teal-dot-hi); }
-.week__dot--today { box-shadow: 0 0 0 3px var(--card), 0 0 0 5px var(--teal-dot-hi); }
+.week__dot--today { box-shadow: 0 0 0 3px var(--teal-wash), 0 0 0 5px var(--teal-dot-hi); }
 .legend { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
 
 /* two-column feature rows */
@@ -143,11 +147,11 @@ a { color: #356B6B; } /* --teal-dot-md (#3F7F7F) is 4.46:1 on the ground; same h
 .faq details[open] summary::after { content: "–"; }
 .faq details p { color: var(--ink-2); padding: 0 0 16px; max-width: 68ch; }
 
-/* emotion strip (Carbo reacts) — site.js plays the frames; no animation CSS needed */
+/* emotion strip (Carbo reacts) — tiles are .card.emotion; site.js plays the frames, no animation CSS needed */
 .emotions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-.emotion { background: var(--card); border-radius: 20px; box-shadow: var(--shadow-lg); padding: 18px 16px 14px; text-align: center; }
+.emotion { padding: 18px 16px 14px; text-align: center; }
 .emotion img { width: 128px; height: auto; margin: 0 auto 8px; }
-.emotion b { display: block; font-weight: 600; }
+.emotion h3 { font-size: 17px; margin-bottom: 2px; }
 .emotion span { color: var(--ink-2); font-size: 14px; }
 
 /* kinetic type band — the scrolling itself lives in motion.css */
@@ -178,6 +182,11 @@ html.js .reveal.is-visible { opacity: 1; translate: 0 0; }
   /* five links do not fit beside the brand on a phone; the three in-page anchors are one scroll away anyway */
   .nav__links a[href^="#"] { display: none; }
   .nav__brand { font-size: 17px; }
+}
+@media (max-width: 380px) {
+  /* 7 × 34px dots + 6 × 14px gaps = 322px does not fit a 272px column at 320 (WCAG reflow width) */
+  .week__dot { width: 28px; height: 28px; }
+  .week__strip { gap: 8px; }
 }
 @media (max-width: 900px) {
   h1 { font-size: 36px; } h2 { font-size: 28px; }

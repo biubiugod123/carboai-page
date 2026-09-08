@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Full-page screenshots at true emulated viewports via CDP. Exits 1 if any width overflows horizontally
 // or a page never fires its load event; exits 2 on usage errors.
-// Usage: node tools/shoot.mjs <page.html> <outdir> <label> [--motion]   → <outdir>/<label>-{1280,768,375}.png
+// Usage: node tools/shoot.mjs <page.html> <outdir> <label> [--motion]   → <outdir>/<label>-{1280,768,375,320}.png
 // Why not `chrome --screenshot --window-size=375,…`: macOS clamps the window to ~640 px, so mobile shots come out clipped.
 // Pages must carry <meta name="viewport"> — without it, mobile emulation lays the page out at 980 px.
 // Screenshots emulate prefers-reduced-motion so every reveal element and the hero's resting state are visible, unless --motion is passed.
@@ -75,7 +75,7 @@ try {
     ws.send(JSON.stringify({ id: i, method, params, ...(sessionId ? { sessionId } : {}) }));
   });
 
-  for (const width of [1280, 768, 375]) {
+  for (const width of [1280, 768, 375, 320]) {
     const { targetId } = await send('Target.createTarget', { url: 'about:blank' });
     const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true });
     await send('Page.enable', {}, sessionId);
@@ -90,7 +90,7 @@ try {
       if (!loaded) await new Promise((r) => setTimeout(r, 100));
     }
     if (!loaded) { console.log(`warning: load event never fired at ${width}px`); failures += 1; }
-    await new Promise((r) => setTimeout(r, 1200)); // fonts + images
+    await new Promise((r) => setTimeout(r, motion ? 2200 : 1200)); // fonts + images; with --motion, past the hero wave→bubble handoff (~1.3 s)
     const { result } = await send('Runtime.evaluate', { expression: 'document.documentElement.scrollWidth - document.documentElement.clientWidth', returnByValue: true }, sessionId);
     const shot = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true }, sessionId);
     const dest = join(out, `${label}-${width}.png`);

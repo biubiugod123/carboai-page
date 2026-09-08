@@ -1,6 +1,6 @@
 // Carbo-AI site behaviour. Every effect respects prefers-reduced-motion; the page is complete without JS.
 (() => {
-  clearTimeout(window.__jsGuard); // the inline head script drops the js class after 4 s if this file never runs
+  clearTimeout(window.__jsGuard); // the inline head script drops the js class after 1.5 s if this file never runs
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const list = (el, key) => (el.dataset[key] || '').split(',').map((x) => x.trim()).filter(Boolean);
   const preload = (srcs) => srcs.forEach((src) => { const i = new Image(); i.src = src; });
@@ -66,21 +66,27 @@
   // 4. Week dots: index for the pop stagger
   document.querySelectorAll('.week__strip .week__dot').forEach((d, i) => d.style.setProperty('--i', i));
 
-  // 5. Emotion strip: each tile plays its frames when half of it is in view (loops if data-loop="true")
+  // 5. Emotion strip: each tile plays its frames when half of it is in view. Looping tiles keep going;
+  //    one-shot tiles (waving, failed) replay every time they re-enter the viewport or are hovered/tapped.
   const tiles = document.querySelectorAll('.emotion img[data-frames]');
   if (tiles.length && !reduce && 'IntersectionObserver' in window) {
+    const state = new WeakMap(); // img → { playing, started }
+    const start = (img) => {
+      const st = state.get(img) || {}; if (st.playing) return;
+      const frames = list(img, 'frames'); const durations = list(img, 'durations').map(Number);
+      const loop = img.dataset.loop === 'true';
+      st.playing = true; state.set(img, st);
+      const run = () => play(img, frames, durations, () => { if (loop && st.playing) run(); else { st.playing = false; } });
+      preload(frames); setTimeout(run, st.started ? 0 : 200); st.started = true;
+    };
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
-        if (!e.isIntersecting) continue;
-        io.unobserve(e.target);
-        const frames = list(e.target, 'frames'); const durations = list(e.target, 'durations').map(Number);
-        preload(frames);
-        const loop = e.target.dataset.loop === 'true';
-        const run = () => play(e.target, frames, durations, loop ? run : null);
-        setTimeout(run, 200);
+        const st = state.get(e.target) || {};
+        if (e.isIntersecting) start(e.target);
+        else if (e.target.dataset.loop === 'true') { st.playing = false; state.set(e.target, st); } // pause loops off-screen
       }
     }, { threshold: 0.5 });
-    tiles.forEach((t) => io.observe(t));
+    tiles.forEach((t) => { io.observe(t); t.closest('.emotion')?.addEventListener('mouseenter', () => start(t)); t.closest('.emotion')?.addEventListener('click', () => start(t)); });
   }
 
   // 6. FAQ: only one open at a time

@@ -14,5 +14,6 @@ unsplash.com answers a plain `curl` with 401, and the Download button's
 `assets/demo/src/` in .gitignore; the committed files are 1200 px wide (q80, progressive)
 plus 240x240 thumbs.
 
-meal-1 carries a faint dark-on-dark photographer's watermark in the bottom-right corner —
-invisible at the size the step-1 card renders it, and gone once the owner's own photos land.
+The mark in meal-1's bottom-right corner is a business's crown logo — a third-party
+trademark that happened to be in frame, not a photographer's watermark. It is invisible at
+the size the step-1 card renders it, and gone once the owner's own photos land.
