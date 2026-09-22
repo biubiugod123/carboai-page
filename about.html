@@ -30,6 +30,101 @@
   <link rel="stylesheet" href="assets/site.css">
   <!-- No motion.css, no site.js and no html.js guard: <details> opens without JS, and nothing here reveals or animates. -->
   <style>.prose{max-width:720px}.faq{margin-top:32px}.faq details ol{color:var(--ink-2);max-width:68ch;padding-left:1.3em;margin:2px 0 10px}.faq details li{margin-bottom:4px}</style>
+  <!-- jsonld -->
+  <script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebPage",
+   "@id": "https://carboai.app/about.html",
+   "url": "https://carboai.app/about.html",
+   "name": "Support — Carbo-AI",
+   "description": "Carbo-AI support: how the carb estimate works, what happens to your photos, cancelling a subscription, deleting your account, and how to reach us.",
+   "inLanguage": "en"
+  },
+  {
+   "@type": "FAQPage",
+   "@id": "https://carboai.app/about.html#faq",
+   "url": "https://carboai.app/about.html",
+   "inLanguage": "en",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "How accurate is the carb estimate?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "It's an estimate. Carbo-AI recognises the food in your photo, estimates the portion, and looks up its nutrition. No app can weigh food through a camera, so treat the number as a starting point, not a lab result. Carb cycling doesn't need a lab: each day has a target range rather than a single number to hit. When the estimate is off, adjust the portion before you save and the day is calculated from your numbers."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What happens to my photos?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Your photo is sent to our servers and on to a third-party AI provider to recognise the food. Once the estimate comes back, the photo is discarded — we don't store meal photos on our servers. The photo stays on your phone with the saved meal. Pro cloud backup stores only a reference to it, never the image. Details are in the Privacy Policy."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Is Carbo-AI free?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Carbo-AI is free to download. Using it requires a Carbo-AI Pro subscription, billed through the App Store. If a free trial is offered, its length and terms are shown in the App Store listing and in the app before you buy. You can cancel at any time."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I cancel my subscription?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "- Open Settings on your iPhone and tap your name at the top.\n- Tap Subscriptions, then Carbo-AI.\n- Tap Cancel Subscription. You keep access until the end of the current period.\nDeleting the app does not cancel the subscription. Refunds are handled by Apple through reportaproblem.apple.com."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "I already subscribed, but the app asks me to pay",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "On the Upgrade to Pro screen, scroll to the bottom and tap Restore Purchases. Purchases are tied to your Apple ID, so this also works on a new phone."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I delete my account?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "In the app, open the Profile tab, tap the gear icon to open Settings, then tap Delete account. Your account and all server-side data — meals, plan, profile, backups and usage events — are removed within 30 days. Data stored only on your phone goes away when you delete the app. You can also email us and we'll do it for you."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Which Apple Health data does it read?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "With your permission: active energy, resting energy, steps, weight, body fat percentage and workouts. Access is read-only — the app never writes to Apple Health. You can withdraw access any time in the Health app under Sharing → Apps."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Is there an Android version?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Not yet. Carbo-AI is iPhone-only."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Something else?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Email support@carboai.app. Include your iPhone model and iOS version if you're reporting a problem."
+     }
+    }
+   ]
+  }
+ ]
+}</script>
+  <!-- /jsonld -->
 </head>
 <body>
 
