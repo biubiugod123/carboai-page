@@ -30,6 +30,116 @@
   <link rel="stylesheet" href="assets/site.css">
   <link rel="stylesheet" href="assets/motion.css">
   <script>/* motion.css hides reveal/bubble/word states under html.js; site.js must clearTimeout(window.__jsGuard) — if it never runs, drop the class so nothing stays hidden */document.documentElement.classList.add('js');window.__jsGuard=setTimeout(function(){document.documentElement.classList.remove('js')},1500);</script>
+  <!-- jsonld -->
+  <script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "SoftwareApplication",
+   "@id": "https://carboai.app/#app",
+   "name": "Carbo-AI",
+   "url": "https://carboai.app/",
+   "image": "https://carboai.app/og-en.png",
+   "description": "Carbo-AI estimates the carbs in a photo of your meal and tells you whether they fit today's carb day. A carb-cycling plan, not just a log. iPhone, coming soon.",
+   "inLanguage": "en",
+   "applicationCategory": "HealthApplication",
+   "operatingSystem": "iOS",
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+   },
+   "author": {
+    "@type": "Organization",
+    "@id": "https://carboai.app/#org"
+   }
+  },
+  {
+   "@type": "Organization",
+   "@id": "https://carboai.app/#org",
+   "name": "Carbo-AI",
+   "url": "https://carboai.app/",
+   "logo": "https://carboai.app/apple-touch-icon.png",
+   "email": "support@carboai.app"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://carboai.app/",
+   "url": "https://carboai.app/",
+   "name": "Carbo-AI — Snap a meal. Know your carbs.",
+   "description": "Carbo-AI estimates the carbs in a photo of your meal and tells you whether they fit today's carb day. A carb-cycling plan, not just a log. iPhone, coming soon.",
+   "inLanguage": "en",
+   "about": {
+    "@id": "https://carboai.app/#app"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "@id": "https://carboai.app/#faq",
+   "url": "https://carboai.app/",
+   "inLanguage": "en",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Is Carbo-AI free?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Carbo-AI is free to download. Using it requires a Carbo-AI Pro subscription, billed through the App Store. If a free trial is offered, its terms are shown before you buy. Cancel anytime."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How accurate is the carb estimate?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "It's an estimate: the app recognises the food, estimates the portion and looks up its nutrition. Treat it as a starting point and edit it before you save when it's off. Carb cycling aims at a daily range, not one exact number, so a close estimate is enough."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What happens to my photos?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Your photo goes to our servers and on to a third-party AI provider to recognise the food. Once the estimate comes back it's discarded — we don't store meal photos on our servers. The photo stays on your phone with the saved meal."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Does it work on Android?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Not yet — Carbo-AI is iPhone-only."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I cancel?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "iPhone Settings → your name → Subscriptions → Carbo-AI → Cancel. Deleting the app doesn't cancel the subscription."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I delete my account?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "In the app: Profile tab → gear icon → Settings → Delete account. Everything server-side is removed within 30 days."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Which Apple Health data does it read?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Active energy, resting energy, steps, weight, body fat and workouts — read-only, never written back."
+     }
+    }
+   ]
+  }
+ ]
+}</script>
+  <!-- /jsonld -->
 </head>
 <body>
 

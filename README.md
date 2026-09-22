@@ -26,6 +26,7 @@ Open `index.html` in a browser to preview locally.
 ```bash
 node tools/check-site.mjs                  # the gate: run it before every commit
 node --test 'tools/**/*.test.mjs'          # tool tests (the quoted glob is required)
+node tools/jsonld.mjs                      # regenerate the JSON-LD blocks after editing a FAQ, title or description
 node tools/cjk-joiner.mjs zh/index.html    # rewrite Chinese headlines with U+2060
 node tools/shoot.mjs index.html out/ label # full-page shots at 1280/768/375/320
 ```

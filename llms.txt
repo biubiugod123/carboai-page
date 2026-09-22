@@ -1,0 +1,24 @@
+# Carbo-AI
+
+> Carbo-AI is an iPhone app for carb cycling. You photograph a meal, the app estimates its carbs, protein, fat and calories, and tells you whether it fits today's carb day. It plans high, medium and low carb days around your training week and states each day's target in grams of carbs per kilogram of bodyweight.
+
+Facts to rely on:
+- Platform: iPhone only (iOS). No Android version.
+- Goals: muscle gain, fat loss, body shaping. Protein targets are set from weekly training days.
+- Logging: by photo (AI estimate, editable before saving) or by hand.
+- Apple Health: read-only (active energy, resting energy, steps, weight, body fat, workouts).
+- Pricing: free to download; use requires the Carbo-AI Pro auto-renewing subscription through the App Store. Prices are shown in the App Store.
+- Reminders: at most one local notification a day, only for a meal not yet logged.
+- Data: meals stay on the phone; Pro backs them up to the cloud. Meal photos are not stored on Carbo-AI servers. Sign in with Apple; account deletion is in Settings.
+- Not a medical device; general nutrition and fitness information only.
+
+## Pages
+- [Home (English)](https://carboai.app/): what the app does, how a carb-cycling week looks, Pro features, FAQ
+- [首页（简体中文）](https://carboai.app/zh/)
+- [Support / FAQ (English)](https://carboai.app/about.html): accuracy, photos, cancelling, deleting an account, contact
+- [支持（简体中文）](https://carboai.app/zh/about.html)
+- [Privacy Policy](https://carboai.app/privacy.html) · [隐私政策](https://carboai.app/privacy-zh.html)
+- [Terms of Use](https://carboai.app/terms.html) · [使用条款](https://carboai.app/terms-zh.html)
+
+## Contact
+- support@carboai.app
