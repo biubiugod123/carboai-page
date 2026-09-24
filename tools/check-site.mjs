@@ -33,7 +33,8 @@ const SUPPORT = 'mailto:support@carboai.app';
 const METABOLISM = 'metabolism wording (site rule: no metabolism claims, not even disclaimers)';
 const FORBIDDEN = [
   [/\bCarboAI\b/, 'brand must be written "Carbo-AI"'],
-  [/\b(supabase|gemini|revenuecat)\b/i, 'no vendor names'],
+  // Owner rule: recipients are named by category only. \b keeps fonts.googleapis.com in <head> legal.
+  [/\b(supabase|gemini|revenuecat|sentry|google|expo)\b/i, 'no vendor names'],
   [/google fit/i, 'no Google Fit claim'],
   [/\bmetabolism\b/i, METABOLISM],
   [/\$\s?\d+(\.\d\d)?/, 'no prices on the site'],
