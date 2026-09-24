@@ -38,7 +38,7 @@
 <body>
 
 <h1>Privacy Policy</h1>
-<p class="updated">Carbo-AI · Last updated: 2026-09-05</p>
+<p class="updated">Carbo-AI · Last updated: 2026-09-23</p>
 
 <p class="lang-nav"><strong>English</strong> · <a href="privacy-zh.html">简体中文</a> · <a href="terms.html">Terms of Service</a></p>
 
@@ -48,23 +48,28 @@
 
 <h2>What we collect</h2>
 <ul>
-  <li><strong>Account information</strong> — the email address and display name on your account. You sign in with Sign in with Apple. If you choose Apple’s Hide My Email, we only receive the relay address Apple creates for you.</li>
+  <li><strong>Account information</strong> — you need Sign in with Apple to use the app. We receive your email address (or, if you choose Apple’s Hide My Email, the relay address Apple creates for you), your name if you choose to share it, and the Apple account identifier that links your sign-in to your account. If you don't share a name, your display name is taken from the part of your email address before the @. We store this for every signed-in user, whether or not you subscribe.</li>
   <li><strong>Meal photos</strong> — photos you take in the app or choose from your photo library, at the moment you submit them for analysis. See <a href="#photos">Meal photos and AI</a> below.</li>
-  <li><strong>Meal entries and nutrition totals</strong> — the food items, portions and nutrition figures that come out of an analysis, plus anything you edit or add yourself.</li>
+  <li><strong>Meal entries and nutrition totals</strong> — the food items, portions and nutrition figures that come out of an analysis, plus anything you edit or add yourself, including notes.</li>
   <li><strong>Apple Health data (read-only, with your permission)</strong> — active energy, resting energy, steps, weight, body fat percentage and workouts.</li>
-  <li><strong>Profile and plan data</strong> — the goals, body measurements and carb-cycling plan you set up in the app.</li>
-  <li><strong>Usage data</strong> — basic records of which screens you open and which controls you tap, stored together with your user ID.</li>
+  <li><strong>Profile and plan data</strong> — the details you enter (such as gender, age, height, weight and goal), your body measurements and the carb-cycling plan you set up in the app.</li>
+  <li><strong>Usage data</strong> — records of which screens you open and which buttons you tap, with the time and, in some cases, the meal slot or the reminder you opened the app from. They are stored together with your user ID, for every signed-in user.</li>
+  <li><strong>Photo-analysis count</strong> — a daily count of how many meal photos your account submits for analysis, which we use to prevent abuse.</li>
+  <li><strong>Device and diagnostic information</strong> — if the app crashes, freezes or hits an error, it sends a report, and it also sends a small sample of performance measurements. These contain error details, your device model, iOS and app version, and a short trail of recent in-app events, such as screens shown and requests the app made to our servers. They can be linked to your account, because identifiers such as your account ID can appear in them.</li>
+  <li><strong>Device identifiers</strong> — an identifier Apple assigns to our apps on your device, used to verify your subscription, and random identifiers created for this installation of the app, used for diagnostics and app updates.</li>
   <li><strong>Subscription status</strong> — whether you have an active Carbo-AI Pro subscription, based on your Apple App Store purchases.</li>
 </ul>
-<p>We do not collect your precise location, your contacts, your activity in other apps, or your payment card details.</p>
+<p>We do not collect your precise location, your contacts, your activity in other apps, or your payment card details. Like any internet service, our providers receive your device's IP address when the app connects to them; we do not use it to locate you.</p>
 
 <h2>How we use it</h2>
 <ul>
   <li>To create and maintain your account and let you sign in.</li>
   <li>To estimate the food and carbohydrates in a meal photo and show you the result.</li>
   <li>To calculate your daily energy expenditure and your carb-cycling plan, and to show your history and progress.</li>
-  <li>To back up and restore your data if you are a Pro subscriber.</li>
+  <li>To back up your data, and restore it on a new phone, while you have an active Pro subscription (including an App Store free trial).</li>
   <li>To understand which parts of the app are used, so we can fix problems and improve the product.</li>
+  <li>To detect, diagnose and fix crashes, errors and performance problems, and to deliver app updates.</li>
+  <li>To prevent abuse of meal-photo analysis.</li>
   <li>To unlock Pro features for subscribers and to provide customer support.</li>
 </ul>
 <p>We do not use your data for advertising, we do not sell it, and we do not share it with data brokers.</p>
@@ -73,52 +78,56 @@
 <p>If you grant permission, Carbo-AI reads the following from Apple Health: <strong>active energy, resting energy, steps, weight, body fat percentage and workouts</strong>.</p>
 <ul>
   <li>Access is <strong>read-only</strong>. The app never writes data to Apple Health.</li>
-  <li>These readings are used <strong>on your device</strong> to work out your daily energy expenditure and your carb-day plan.</li>
-  <li>We never use Health data for advertising or marketing, we never sell it, and we never share it with data brokers.</li>
-  <li>The app does not store Health data, or anything calculated from it, in iCloud.</li>
-  <li>If you are a Pro subscriber, your backup contains the <strong>daily energy totals the app calculated</strong> — not your raw Apple Health records.</li>
-  <li>You can review or withdraw Health permissions at any time in the iOS Health app, under Sharing → Apps.</li>
+  <li>These readings are used <strong>on your device</strong> to estimate your daily energy expenditure, set your carb-day plan and daily targets, and show your weight trend and activity.</li>
+  <li>The app keeps your daily weigh-ins and daily energy totals in its on-device database, which is excluded from iCloud and device backups.</li>
+  <li>Health data, and anything calculated from it, is never stored in iCloud, never used in usage analytics, never used for advertising or marketing, and never sold. We never share it with data brokers.</li>
+  <li>If you are a Pro subscriber, your backup contains your <strong>daily active and resting energy totals</strong> and the carb-day types and targets calculated from them — not your raw Apple Health records. Weigh-ins, steps, workouts and body fat readings from Apple Health are never uploaded.</li>
+  <li>Turning off Health access stops new readings. Copies the app has already saved stay until you delete your account or the app.</li>
+  <li>You can review or withdraw Health permissions at any time in iOS Settings → Privacy &amp; Security → Health → Carbo-AI.</li>
 </ul>
 
 <h2 id="photos">Meal photos and AI</h2>
 <p>When you submit a meal photo for analysis:</p>
 <ul>
-  <li>The photo is sent from your device to our servers and passed to a third-party AI provider, which identifies the food and estimates its nutrition.</li>
-  <li>Once the estimate comes back, <strong>the photo is discarded</strong>. We do not store meal photos on our servers.</li>
-  <li>The photo stays on your device — and in your photo library, if you took or saved it there — under your control.</li>
+  <li>Before upload, the app resizes the photo and removes its metadata, including location.</li>
+  <li>The photo is sent to our servers, which pass it to a third-party AI provider that identifies the food and estimates its nutrition. <strong>Our servers never store the photo.</strong></li>
+  <li>The provider receives only the image — not your name, email address or account ID. Under its terms for our paid service, it does not use your photos to improve its products, and it may keep them for a limited period solely to detect abuse.</li>
+  <li>Photos you take with the in-app camera are kept only in the app's temporary storage on your phone and are not added to your photo library. Photos you pick from your library stay there, under your control.</li>
   <li>What we keep is the <em>result</em>: the food items and nutrition figures saved to your meal history.</li>
 </ul>
 <p>Because the image is sent off your device for analysis, please avoid including other people, documents or anything sensitive in the frame.</p>
 
 <h2>Usage analytics</h2>
-<p>The app records simple usage events — which screens are opened and which controls are tapped — stored in our database together with your user ID, so they are linked to you rather than fully anonymous.</p>
+<p>The app records simple usage events — which screens are opened, which controls are tapped, and when you open the app from a reminder — stored in our database together with your user ID, so they are linked to you rather than fully anonymous. They are recorded for every signed-in user.</p>
 <ul>
+  <li>They never contain food names, nutrition or Health values, photos, text you type, or your email address.</li>
   <li>We use them only to understand how the app is used and to improve it.</li>
   <li>There are no advertising SDKs in the app, and we do not track you across other companies' apps or websites.</li>
-  <li>These events are deleted when you delete your account.</li>
+  <li>We keep these events while your account exists, and delete them when you delete your account.</li>
 </ul>
 
 <h2>Subscriptions and payments</h2>
 <p>Carbo-AI Pro is an auto-renewable subscription sold through the Apple App Store. Payment is handled entirely by Apple.</p>
 <ul>
-  <li>We check with the App Store whether your subscription is active, so we can unlock Pro features.</li>
-  <li>We receive purchase and subscription <em>status</em> only. <strong>We never see your card number or your Apple ID password.</strong></li>
+  <li>We use a subscription-verification provider to check with the App Store whether your subscription is active, so we can unlock Pro features.</li>
+  <li>That provider receives your App Store transaction records, your account ID, the device identifier Apple assigns to our apps, and your App Store country. <strong>We never see your card number or your Apple ID password.</strong></li>
   <li>Refunds and billing questions are handled by Apple.</li>
 </ul>
 
 <h2>Who we share it with</h2>
 <p>We do not sell your personal information and we do not share it for advertising. We share it only with:</p>
 <ul>
-  <li><strong>Service providers</strong> who run parts of the app for us — cloud hosting and databases, AI food recognition, and subscription verification. They act on our instructions and may use the data only to provide their service to us.</li>
-  <li><strong>Apple</strong>, for purchases and — with your permission — Apple Health.</li>
+  <li><strong>Service providers</strong> who run parts of the app for us — cloud hosting and databases, AI food recognition, subscription verification, crash reporting and performance monitoring, and app update delivery. They act on our instructions and may use the data only to provide their service to us.</li>
+  <li><strong>Apple</strong>, for Sign in with Apple (including revoking it when you delete your account), for purchases and — with your permission — Apple Health.</li>
   <li><strong>Others, when the law requires it</strong>: for example in response to a valid legal request, to protect our rights or someone's safety, or to a successor if the business is transferred.</li>
 </ul>
 
 <h2>Storage, backups and security</h2>
 <ul>
-  <li>Your account, meal entries, profile, plan and usage events are stored in our database, hosted by a cloud provider on servers <strong>outside mainland China</strong>.</li>
+  <li>Your account details, usage events and daily photo-analysis counts are stored in our database for every signed-in user. The database is hosted by a cloud provider on servers <strong>outside mainland China</strong>.</li>
   <li>Meal photos are not stored on our servers.</li>
-  <li><strong>Pro backup:</strong> for Pro subscribers, the app backs up your meals, plan, profile, body measurements and daily energy totals, so you can restore them on a new phone. Free users' data stays on the device.</li>
+  <li><strong>Pro backup:</strong> while you have an active Pro subscription or free trial, your meal entries, profile, body measurements, plan, daily energy totals and carb-day records are also stored in our database as your backup, so you can restore them on a new phone. Data you enter before subscribing, or while your subscription has lapsed, stays on your phone and is backed up once your subscription is active again. Apple Health weigh-ins and meal photos are never backed up.</li>
+  <li>Diagnostic reports are stored by our crash-reporting provider in the United States.</li>
   <li>Data travels over encrypted connections, and access is restricted so that you can only reach your own data.</li>
   <li>No system is perfectly secure, so we cannot promise absolute security, but we take reasonable measures to protect your information.</li>
 </ul>
@@ -127,10 +136,12 @@
 <h2>Retention and deletion</h2>
 <ul>
   <li>We keep your account data for as long as your account exists.</li>
-  <li>You can delete your account inside the app: <strong>Settings → Delete account</strong>.</li>
-  <li>When you delete your account, we remove the account and all associated server-side data — meal entries, profile and plan data, backups and usage events — <strong>within 30 days</strong>.</li>
-  <li>Data stored only on your device is removed when you delete the app.</li>
-  <li>We may keep records we are legally required to keep. Transaction records held by Apple are outside our control.</li>
+  <li>If your subscription ends, we stop backing up new data and keep your existing backup until you delete your account, so you can restore it if you subscribe again.</li>
+  <li>Signing out or deleting the app does not delete your account. You can delete your account inside the app: <strong>Settings → Delete account</strong> (also available from the subscription screen).</li>
+  <li>When you delete your account, we <strong>immediately</strong> delete your account and all of your data in our database — meal entries, profile, plan, backups, usage events and photo-analysis counts — revoke Sign in with Apple, and have our subscription provider delete its customer record. Copies in our encrypted database backups expire <strong>within 30 days</strong>.</li>
+  <li>Diagnostic reports are kept by our crash-reporting provider for a limited period and then deleted automatically. You can ask us to delete them sooner.</li>
+  <li>Data stored only on your device is removed when you delete the app; it is excluded from device backups.</li>
+  <li>We may keep records we are legally required to keep. Apple keeps its own transaction records, which are outside our control.</li>
 </ul>
 
 <h2>Your rights</h2>
@@ -139,7 +150,7 @@
   <li><strong>Access and copy:</strong> email <a href="mailto:support@carboai.app">support@carboai.app</a> and we will provide a copy of the data we hold about you.</li>
   <li><strong>Correction:</strong> most of your data — profile, meals, plan — can be edited directly in the app; write to us for anything you cannot change yourself.</li>
   <li><strong>Deletion:</strong> use Settings → Delete account in the app, or email us and we will do it for you.</li>
-  <li><strong>Withdrawing permission:</strong> you can revoke Apple Health, camera and photo access at any time in iOS Settings; the app keeps working with reduced functionality.</li>
+  <li><strong>Withdrawing permission:</strong> you can revoke Apple Health, camera, photo and notification access at any time in iOS Settings, and you can also switch notifications off in the app's Settings. The app keeps working with reduced functionality, but meal-photo analysis needs camera or photo library access.</li>
 </ul>
 <p>We do not sell personal information, and we do not share it for cross-context behavioural advertising. We will not treat you differently for exercising any of these rights. If you believe we have not handled your request properly, you may be able to complain to your local data protection authority.</p>
 
