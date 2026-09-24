@@ -11,7 +11,7 @@ Eight published pages — four marketing (English at the root, Simplified Chines
 
 - `index.html` / `zh/index.html` - Homepage
 - `about.html` / `zh/about.html` - Support / FAQ (`about.html` is the App Store Support URL)
-- `privacy.html`, `terms.html`, `privacy-zh.html`, `terms-zh.html` - Legal, frozen 2026-09-05 and mirrored in the app repo's `docs/legal`
+- `privacy.html`, `terms.html`, `privacy-zh.html`, `terms-zh.html` - Legal, design frozen 2026-09-05, copy last updated 2026-09-23; mirrored in the app repo's `docs/legal` (re-copy the four pages there after every legal edit)
 
 Everything else:
 

@@ -483,6 +483,11 @@ test('legal pages are scanned for claims but not for the marketing <head> or the
   assert.match(vendor.out, /privacy\.html: no vendor names \(found "Supabase"\)/);
   assert.doesNotMatch(vendor.out, /missing (canonical|meta description|og:image|og:title|twitter:card|hreflang)/);
   assert.doesNotMatch(vendor.out, /no alternate-language page declared/);
+  for (const name of ['Sentry', 'Google', 'Expo']) {
+    const named = run(fixture({ 'terms.html': legal(`<p>Crash reports go to ${name}.</p>`) }), ['terms.html:legal']);
+    assert.equal(named.status, 1, name);
+    assert.match(named.out, new RegExp(`terms\\.html: no vendor names \\(found "${name}"\\)`));
+  }
   const zh = run(fixture({ 'privacy-zh.html': legal('<h2>照片怎么处理</h2>', 'zh-Hans') }), ['privacy-zh.html:legal']);
   assert.equal(zh.status, 0, zh.out); // frozen Chinese copy, no U+2060
 });
